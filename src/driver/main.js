@@ -1602,7 +1602,9 @@ function earningsView() {
   const updateWalletUI = async () => {
     try {
       if (!user || !user.id) return;
-      const { balance, transactions } = await api('/drivers/' + user.id + '/wallet');
+      const walletData = await api('/drivers/' + user.id + '/wallet');
+      const balance = walletData.balance || 0;
+      const transactions = walletData.transactions || [];
       const driverData = await Drivers.get(user.id);
 
       user.walletBalance = balance;

@@ -799,11 +799,15 @@ function trackingView(data) {
     <div class="flex-1 h-full bg-emerald-500/30"></div>
   </div>
 
-  <div id="tmap" class="w-full bg-slate-200 dark:bg-background-dark z-0" style="height:62%"></div>
+  <div id="tmap" class="w-full bg-slate-200 dark:bg-background-dark z-0 transition-all duration-300" style="height:62%"></div>
   
-  <div class="flex-1 bg-white dark:bg-background-dark border-t border-slate-200 dark:border-white/5 rounded-t-[40px] -mt-10 relative z-20 p-6 flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.2)]">
+  <div id="tracking-sheet" class="flex-1 bg-white dark:bg-background-dark border-t border-slate-200 dark:border-white/5 rounded-t-[40px] -mt-10 relative z-20 p-6 flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.2)] transition-transform duration-300 ease-out">
     <!-- Visual Handle -->
-    <div class="w-12 h-1.5 bg-slate-200 dark:bg-white/10 rounded-full mx-auto mb-6 shrink-0 transition-all hover:w-20"></div>
+    <div id="tracking-handle" class="w-full py-2 -mt-2 mb-4 cursor-pointer">
+      <div class="w-12 h-1.5 bg-slate-200 dark:bg-white/10 rounded-full mx-auto transition-all hover:w-20"></div>
+    </div>
+
+    <div id="tracking-content" class="flex flex-col flex-1 overflow-hidden transition-all duration-300" style="max-height: 1000px;">
 
     <!-- Active Service Info (Mini) -->
     <div class="flex items-center gap-2 mb-6 opacity-0 animate-[fadeInUp_0.5s_ease_forwards_0.1s] shrink-0">
@@ -892,6 +896,7 @@ function trackingView(data) {
         <button id="btn-call-delay" class="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-black font-black dark:text-white py-4 rounded-xl flex items-center justify-center gap-2 text-sm">Ligar</button>
         <button id="btn-cancel" class="bg-red-500 text-white font-black py-4 rounded-xl shadow-lg text-sm active:scale-95">Sair e Cancelar</button>
       </div>
+      </div>
     </div>
   </div>
 
@@ -902,6 +907,32 @@ function trackingView(data) {
     }
   </style>
 </div>`;
+
+  const sheet = d.querySelector('#tracking-sheet');
+  const content = d.querySelector('#tracking-content');
+  const handle = d.querySelector('#tracking-handle');
+  const tmap = d.querySelector('#tmap');
+  let isCollapsed = false;
+
+  function toggleSheet() {
+    isCollapsed = !isCollapsed;
+    if (isCollapsed) {
+      content.style.maxHeight = '0px';
+      content.style.opacity = '0';
+      content.style.margin = '0';
+      sheet.style.transform = 'translateY(calc(100% - 60px))';
+      tmap.style.height = '100dvh';
+    } else {
+      content.style.maxHeight = '1000px';
+      content.style.opacity = '1';
+      sheet.style.transform = 'translateY(0)';
+      tmap.style.height = '62%';
+    }
+    setTimeout(() => { if (tmapInstance) tmapInstance.invalidateSize(); }, 300);
+  }
+
+  handle.onclick = toggleSheet;
+
   d.querySelector('#btn-chat').onclick = () => {
     const dot = document.getElementById('chat-dot');
     if (dot) dot.remove();
@@ -922,7 +953,7 @@ function trackingView(data) {
     }
   };
 
-  let tmap = null, routePolyline = null;
+  let tmapInstance = null, routePolyline = null;
   const etaText = d.querySelector('#eta-text');
   const cLat = data.pickupLat || -23.55, cLon = data.pickupLon || -46.63;
 
@@ -961,14 +992,14 @@ function trackingView(data) {
   // Listen for real-time driver location to update the map
   const onDriverLoc = ({ latitude, longitude }) => {
     if (driverMarker) driverMarker.setLatLng([latitude, longitude]);
-    if (tmap) tmap.panTo([latitude, longitude]);
+    if (tmapInstance) tmapInstance.panTo([latitude, longitude]);
     updateRoute(latitude, longitude);
   };
   socket.on('driver:location', onDriverLoc);
 
   let routeTimeout = null;
   async function updateRoute(dLat, dLon) {
-    if (!tmap) return;
+    if (!tmapInstance) return;
     if (routeTimeout) return;
     routeTimeout = setTimeout(() => { routeTimeout = null; }, 10000);
 
@@ -983,8 +1014,8 @@ function trackingView(data) {
       const json = await resp.json();
       if (json.routes && json.routes.length > 0) {
         const coords = json.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-        if (routePolyline) tmap.removeLayer(routePolyline);
-        routePolyline = L.polyline(coords, { color: '#2563eb', weight: 5, opacity: 0.85 }).addTo(tmap);
+        if (routePolyline) tmapInstance.removeLayer(routePolyline);
+        routePolyline = L.polyline(coords, { color: '#2563eb', weight: 5, opacity: 0.85 }).addTo(tmapInstance);
         const dur = Math.round(json.routes[0].duration / 60);
         const dist = (json.routes[0].distance / 1000).toFixed(1);
         const distTxt = d.querySelector('#dist-text');
@@ -998,8 +1029,8 @@ function trackingView(data) {
     } catch (e) { /* fallback */ }
 
     // Straight-line fallback
-    if (routePolyline) tmap.removeLayer(routePolyline);
-    routePolyline = L.polyline([[dLat, dLon], [cLat, cLon]], { color: '#2563eb', weight: 4, dashArray: '10,8', opacity: 0.7 }).addTo(tmap);
+    if (routePolyline) tmapInstance.removeLayer(routePolyline);
+    routePolyline = L.polyline([[dLat, dLon], [cLat, cLon]], { color: '#2563eb', weight: 4, dashArray: '10,8', opacity: 0.7 }).addTo(tmapInstance);
     const lineDist = (Math.sqrt(Math.pow(dLat - cLat, 2) + Math.pow(dLon - cLon, 2)) * 111).toFixed(1);
     const distTxt = d.querySelector('#dist-text');
     if (distTxt) distTxt.textContent = `${lineDist} km`;
@@ -1008,14 +1039,14 @@ function trackingView(data) {
 
   setTimeout(async () => {
     const dLat0 = data.driverLat || cLat, dLon0 = data.driverLon || cLon;
-    tmap = L.map(d.querySelector('#tmap'), { zoomControl: false, attributionControl: false }).setView([dLat0, dLon0], 18);
-    L.tileLayer(tileUrl()).addTo(tmap);
-    driverMarker = L.marker([dLat0, dLon0], { icon: L.divIcon({ className: '', html: '<div style="background:#2563eb;color:#fff;width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 0 15px rgba(37,99,235,0.5)"><span class="material-symbols-outlined" style="font-size:18px">car_repair</span></div>', iconSize: [30, 30], iconAnchor: [15, 15] }) }).addTo(tmap);
-    L.marker([cLat, cLon], { icon: L.divIcon({ className: '', html: '<div style="position:relative;width:24px;height:24px;display:flex;align-items:center;justify-content:center"><div style="position:absolute;width:24px;height:24px;border-radius:50%;background:rgba(59,130,246,0.2);animation:pulseAura 2s ease-out infinite"></div><div style="width:8px;height:8px;border-radius:50%;background:#3b82f6;z-index:2"></div></div><style>@keyframes pulseAura{0%{transform:scale(.5);opacity:.8}100%{transform:scale(1.5);opacity:0}}</style>', iconSize: [24, 24], iconAnchor: [12, 12] }) }).addTo(tmap);
+    tmapInstance = L.map(d.querySelector('#tmap'), { zoomControl: false, attributionControl: false }).setView([dLat0, dLon0], 18);
+    L.tileLayer(tileUrl()).addTo(tmapInstance);
+    driverMarker = L.marker([dLat0, dLon0], { icon: L.divIcon({ className: '', html: '<div style="background:#2563eb;color:#fff;width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 0 15px rgba(37,99,235,0.5)"><span class="material-symbols-outlined" style="font-size:18px">car_repair</span></div>', iconSize: [30, 30], iconAnchor: [15, 15] }) }).addTo(tmapInstance);
+    L.marker([cLat, cLon], { icon: L.divIcon({ className: '', html: '<div style="position:relative;width:24px;height:24px;display:flex;align-items:center;justify-content:center"><div style="position:absolute;width:24px;height:24px;border-radius:50%;background:rgba(59,130,246,0.25);animation:pulseAura 2s ease-out infinite"></div><div style="width:8px;height:8px;border-radius:50%;background:#3b82f6;z-index:2"></div></div><style>@keyframes pulseAura{0%{transform:scale(.5);opacity:.8}100%{transform:scale(1.5);opacity:0}}</style>', iconSize: [24, 24], iconAnchor: [12, 12] }) }).addTo(tmapInstance);
 
     if (dLat0 !== cLat || dLon0 !== cLon) {
       updateRoute(dLat0, dLon0);
-      tmap.fitBounds([[dLat0, dLon0], [cLat, cLon]], { padding: [40, 40] });
+      tmapInstance.fitBounds([[dLat0, dLon0], [cLat, cLon]], { padding: [40, 40] });
     }
 
     // Fetch Pix Key for quick pay

@@ -95,10 +95,14 @@ router.post('/login/driver', async (req, res) => {
 router.post('/login/admin', async (req, res) => {
     const email = req.body.email?.trim().toLowerCase();
     const password = req.body.password?.trim();
-    console.log(`[AUTH] Admin login attempt: ${email} / ${password}`);
-    if (email === 'admin@movvi.com' && password === 'admin123') {
+    console.log(`[AUTH] Admin login attempt: ${email}`);
+    
+    const admin = req.db.data.admins.find(a => a.email.toLowerCase() === email && a.password === password);
+    
+    if (admin) {
         console.log('[AUTH] Admin login success');
-        res.json({ user: { id: 'admin', name: 'Administrador', role: 'admin' }, token: 'admin_token' });
+        const { password: _, ...safe } = admin;
+        res.json({ user: safe, token: 'admin_token' });
     } else {
         console.log('[AUTH] Admin login failed: Invalid credentials');
         res.status(401).json({ error: 'Credenciais inválidas' });

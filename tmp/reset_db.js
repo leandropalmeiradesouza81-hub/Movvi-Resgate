@@ -1,10 +1,9 @@
+import { readFileSync, writeFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { Low } from 'lowdb';
-import { JSONFile } from 'lowdb/node';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DB_PATH = join(__dirname, 'db.json');
+const DB_PATH = join(__dirname, '../server/db.json');
 
 const defaultData = {
     clients: [],
@@ -26,25 +25,19 @@ const defaultData = {
         maxSearchRadius: -1,
         platformFee: 15
     },
-    admins: []
+    admins: [
+        {
+            email: "leadnro2703palmeira@gmail.com",
+            password: "Lps27031981@",
+            role: "admin",
+            name: "Administrador"
+        }
+    ]
 };
 
-export async function initDB() {
-    const adapter = new JSONFile(DB_PATH);
-    const db = new Low(adapter, defaultData);
-    await db.read();
-
-    // Robust initialization
-    if (!db.data) db.data = { ...defaultData };
-    else {
-        for (const key in defaultData) {
-            if (db.data[key] === undefined) {
-                db.data[key] = defaultData[key];
-            }
-        }
-    }
-
-    await db.write();
-    console.log('[DB] LowDB initialized at', DB_PATH);
-    return db;
+try {
+    writeFileSync(DB_PATH, JSON.stringify(defaultData, null, 2));
+    console.log('Database reset and admin seeded successfully.');
+} catch (error) {
+    console.error('Error resetting database:', error);
 }

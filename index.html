@@ -1387,6 +1387,14 @@
                 text-align: left;
             }
 
+            .hero-title {
+                font-size: 38px !important; /* 60% larger than 24px */
+            }
+
+            .hero-sub {
+                font-size: 22.4px !important; /* 60% larger than 14px */
+            }
+
             .hero-actions {
                 display: flex;
                 justify-content: flex-start;
@@ -1632,8 +1640,9 @@
             e.preventDefault();
             deferredPrompt = e;
             const textBtn = document.getElementById('installAppText');
-            const install = () => {
+            const install = (ev) => {
                 if (!deferredPrompt) return;
+                ev.preventDefault();
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
             };

@@ -1,9 +1,10 @@
 {
-    "name": "Movvi Resgate",
+    "name": "Movvi Resgate - Cliente",
     "short_name": "Movvi Cliente",
-    "description": "App de Resgate - Cliente",
+    "description": "Peça seu resgate veicular rápido e barato onde estiver.",
     "start_url": "/client.html",
     "display": "standalone",
+    "orientation": "portrait",
     "background_color": "#ffffff",
     "theme_color": "#ffd900",
     "icons": [
@@ -16,7 +17,8 @@
         {
             "src": "assets/images/logo_movvi_icon.png",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         }
     ]
 }

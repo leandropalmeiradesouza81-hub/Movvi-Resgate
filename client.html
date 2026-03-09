@@ -6,6 +6,10 @@
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
   <title>Movvi Resgate — Cliente</title>
   <meta name="theme-color" content="#ffd900" />
+  <link rel="manifest" href="/manifest_client.json" />
+  <link rel="apple-touch-icon" href="/assets/images/logo_movvi_icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700&display=swap"
     rel="stylesheet" />
@@ -65,20 +69,34 @@
     }
 
     #phone {
-      width: 390px;
+      width: 100%;
       height: 100dvh;
       background: #ffffff;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 0 60px rgba(0, 0, 0, 0.2);
-      border: 1px solid #d1d5db;
+      box-shadow: none;
+      border: none;
       transition: background 0.3s, border 0.3s;
+    }
+
+    @media (min-width: 480px) {
+      #phone {
+        width: 390px;
+        box-shadow: 0 0 60px rgba(0, 0, 0, 0.2);
+        border: 1px solid #d1d5db;
+        margin: 0 auto;
+      }
     }
 
     html.dark #phone {
       background: #000000;
-      box-shadow: 0 0 60px rgba(0, 0, 0, 1);
       border-color: #1a1a1a;
+    }
+    
+    @media (min-width: 480px) {
+      html.dark #phone {
+        box-shadow: 0 0 60px rgba(0, 0, 0, 1);
+      }
     }
 
     #app-content {

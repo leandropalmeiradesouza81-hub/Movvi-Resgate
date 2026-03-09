@@ -8,6 +8,7 @@ export default defineConfig({
     outDir: 'dist',
     rollupOptions: {
       input: {
+        main: resolve(__dirname, 'index.html'),
         client: resolve(__dirname, 'client.html'),
         driver: resolve(__dirname, 'driver.html'),
         admin: resolve(__dirname, 'admin.html'),

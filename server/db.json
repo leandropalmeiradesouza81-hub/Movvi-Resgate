@@ -10,7 +10,7 @@
       "password": "123456",
       "createdAt": "2026-02-27T01:32:46.930Z",
       "rating": 4.8,
-      "totalOrders": 34,
+      "totalOrders": 35,
       "latitude": -22.8447935,
       "longitude": -43.339476
     }
@@ -32,13 +32,13 @@
       "longitude": -43.339476,
       "activeOrderId": null,
       "rating": 5,
-      "totalOrders": 28,
-      "totalEarnings": 3500.3600000000006,
+      "totalOrders": 29,
+      "totalEarnings": 3547.140000000001,
       "kitAcquired": false,
       "approved": true,
       "createdAt": "2026-02-27T01:37:46.903Z",
       "pixKey": "11988888888",
-      "walletBalance": 0,
+      "walletBalance": -7.02,
       "blocked": false,
       "blockingReason": ""
     },
@@ -229,6 +229,42 @@
     }
   ],
   "orders": [
+    {
+      "id": "ba1c01b8-48f4-4608-9b9d-80187da355f0",
+      "clientId": "b62af43e-84da-4ff2-ad59-ecc87c531a06",
+      "clientName": "Jo�o Silva",
+      "clientPhone": "11999999999",
+      "clientPhoto": "",
+      "driverId": "31455668-e513-49ff-a75a-651485599efc",
+      "driverName": "Ricardo Souza",
+      "serviceType": "pane_seca",
+      "serviceName": "Pane Seca",
+      "pickupAddress": "Rua Toriba, 113, escola amapa, Colégio - Rio de Janeiro",
+      "pickupLat": -22.8406804,
+      "pickupLon": -43.343402,
+      "destinationAddress": "Rua Ururaí, 245",
+      "destinationLat": -22.8481095,
+      "destinationLon": -43.3578456,
+      "vehicleModel": "Toyota Corolla 2024",
+      "vehiclePlate": "",
+      "problemDescription": "",
+      "distanceKm": 1.7,
+      "price": 46.78,
+      "driverPrice": 46.78,
+      "status": "completed",
+      "rating": null,
+      "driverRating": 5,
+      "createdAt": "2026-03-09T03:47:19.811Z",
+      "acceptedAt": "2026-03-09T03:47:27.947Z",
+      "completedAt": "2026-03-09T03:47:40.995Z",
+      "cancelledAt": null,
+      "driverPhone": "11988888888",
+      "driverVehicle": "Chevrolet Spin 2024",
+      "driverPlate": "ABC1D23",
+      "driverPhoto": "",
+      "driverLat": -22.8447935,
+      "driverLon": -43.339476
+    },
     {
       "id": "96906c89-5814-4178-9446-849a7cff15d6",
       "clientId": "b62af43e-84da-4ff2-ad59-ecc87c531a06",
@@ -2861,6 +2897,17 @@
       "amount": 54.36,
       "balanceAfter": 0,
       "createdAt": "2026-03-08T14:44:21.077Z"
+    },
+    {
+      "id": "b1a77d5c-6026-4612-a37a-c451b7383b8c",
+      "driverId": "31455668-e513-49ff-a75a-651485599efc",
+      "orderId": "ba1c01b8-48f4-4608-9b9d-80187da355f0",
+      "type": "fee",
+      "description": "Taxa (15%) - # Pane Seca (ba1c01b8)",
+      "amount": -7.02,
+      "orderValue": 46.78,
+      "balanceAfter": -7.02,
+      "createdAt": "2026-03-09T03:47:40.995Z"
     }
   ]
 }

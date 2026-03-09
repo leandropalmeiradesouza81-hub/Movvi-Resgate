@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR" id="html-root">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+  <title>Movvi Reboque — Cliente</title>
+  <meta name="theme-color" content="#ffd900" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,0..1&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = { darkMode: "class", theme: { extend: { colors: { "primary": "#ffd900", "background-light": "#f8f8f5", "background-dark": "#23200f", "surface-dark": "#363117", "border-dark": "#6b622e" }, fontFamily: { "display": ["Inter", "sans-serif"], "mono": ["JetBrains Mono", "monospace"] }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" } } } }
+  </script>
+  <script>
+    var manualTheme = localStorage.getItem('movvi_client_theme');
+    function applyTheme() {
+      if (manualTheme === 'dark') document.documentElement.classList.add('dark');
+      else if (manualTheme === 'light') document.documentElement.classList.remove('dark');
+      else {
+        var h = new Date().getHours();
+        if (h < 6 || h >= 18) document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+      }
+    }
+    if (!manualTheme) { manualTheme = 'light'; localStorage.setItem('movvi_client_theme', 'light'); }
+    applyTheme();
+  </script>
+  <style>
+    html,
+    body {
+      background: #e5e7eb;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      transition: background 0.3s;
+    }
+
+    html.dark,
+    html.dark body {
+      background: #050505;
+    }
+
+    /* Dark mode map tiles - invert to create dark look while keeping blue ocean */
+    html.dark .leaflet-tile-pane {
+      filter: invert(1) hue-rotate(180deg) brightness(0.8) contrast(1.1);
+    }
+
+    html.dark .leaflet-marker-pane,
+    html.dark .leaflet-overlay-pane {
+      filter: none;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #phone {
+      width: 390px;
+      height: 100dvh;
+      background: #ffffff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.2);
+      border: 1px solid #d1d5db;
+      transition: background 0.3s, border 0.3s;
+    }
+
+    html.dark #phone {
+      background: #000000;
+      box-shadow: 0 0 60px rgba(0, 0, 0, 1);
+      border-color: #1a1a1a;
+    }
+
+    #app-content {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 1;
+    }
+
+    .view {
+      display: none;
+      flex-direction: column;
+      min-height: 100%;
+      background: #ffffff;
+      transition: background 0.3s;
+    }
+
+    html.dark .view {
+      background: #000000;
+    }
+
+    .view.active {
+      display: flex;
+    }
+
+    #sidebar-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(3px);
+      z-index: 80;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    html.dark #sidebar-overlay {
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    #sidebar-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #sidebar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 78%;
+      max-width: 310px;
+      background: #f9fafb;
+      border-right: 1px solid #e5e7eb;
+      z-index: 90;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s, border 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    html.dark #sidebar {
+      background: #0a0a0a;
+      border-color: #222;
+    }
+
+    #sidebar.open {
+      transform: translateX(0);
+    }
+
+    .leaflet-container {
+      background: #f9fafb !important;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.3s;
+    }
+
+    html.dark .leaflet-container {
+      background: #0a0a0a !important;
+    }
+
+    .leaflet-control-zoom {
+      display: none !important;
+    }
+
+    .leaflet-control-attribution {
+      display: none !important;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.25s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .form-input {
+      border-radius: 0.25rem;
+      transition: background 0.3s, border-color 0.3s, color 0.3s;
+    }
+
+    .form-input:focus {
+      border-color: #2563eb;
+      box-shadow: none;
+      outline: none;
+      border-width: 2px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 2px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 2px
+    }
+
+    html.dark ::-webkit-scrollbar-thumb {
+      background: #333;
+      border-radius: 2px
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #f2d00d
+    }
+
+    /* Brutalist Radio */
+    .custom-radio:checked {
+      background-color: #2563eb;
+      border-color: #2563eb;
+      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23000' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/client-CWTaeKUI.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/api-ttBfcqYz.js">
+  <link rel="modulepreload" crossorigin href="/assets/geo-Dl6lxGpH.js">
+</head>
+
+<body>
+  <div id="phone">
+    <div id="sidebar-overlay"></div>
+    <aside id="sidebar"></aside>
+    <div id="app-content"></div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Avaliação do Serviço - Movvi Reboque</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f2d00d",
+                        "primary-dark": "#cbb00b",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#221f10",
+                        "surface-dark": "#2d2a1d",
+                        "text-secondary": "#cbc290",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Custom scrollbar hiding for clean mobile look */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col items-center justify-center font-display text-slate-900 dark:text-slate-100 overflow-hidden">
+<div class="relative w-full max-w-md h-screen max-h-[900px] flex flex-col bg-background-light dark:bg-background-dark overflow-y-auto no-scrollbar shadow-2xl">
+<!-- Top Bar -->
+<div class="sticky top-0 z-50 flex items-center justify-between p-4 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-200 dark:border-white/5">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-white text-2xl">close</span>
+</button>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold tracking-tight">Avaliação</h2>
+<div class="w-10"></div> <!-- Spacer for alignment -->
+</div>
+<!-- Success Header -->
+<div class="flex flex-col items-center justify-center px-6 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+<div class="relative mb-6">
+<div class="absolute inset-0 bg-primary/20 blur-xl rounded-full transform scale-150"></div>
+<div class="relative bg-primary rounded-full p-4 text-background-dark shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-4xl font-bold">check</span>
+</div>
+</div>
+<h1 class="text-2xl font-bold text-center text-slate-900 dark:text-white mb-2">Serviço Finalizado!</h1>
+<p class="text-center text-gray-500 dark:text-text-secondary text-sm">Seu reboque foi concluído com sucesso às 14:30.</p>
+</div>
+<!-- Driver Card -->
+<div class="px-4 pb-6">
+<div class="bg-white dark:bg-surface-dark rounded-2xl p-5 shadow-sm border border-gray-200 dark:border-white/5 flex items-center gap-4">
+<div class="relative">
+<div class="w-16 h-16 rounded-full bg-gray-200 dark:bg-gray-700 bg-cover bg-center border-2 border-primary" data-alt="Portrait of a smiling male driver" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA-GASmvT-AIrllWpJEobEsnjFeSLs5n4R8JOt1lqPAt3tNnZ7Uo_Ze8dWXyECKQCPEIhOBqbisQCoBo_4HbGIWF2KMHoHQ5Pxay_M5K96lIAPmpjggfZCR0H-6U4_v8vLM-ip0FyU8JfJarCgnwr5CsXynTQwTswEwKaZFBRH1zswLFK_l3FYNbQL40aKMVjOv0wr86o-G46OV0C7CzJHKvduQ_u6HRU2eJNbai1JrmCdUeGnlbMtiM-_SngKTIHnU54664ikVQDdk');">
+</div>
+<div class="absolute -bottom-1 -right-1 bg-primary text-background-dark text-[10px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-0.5 border-2 border-surface-dark">
+<span>5.0</span>
+<span class="material-symbols-outlined text-[10px] icon-filled">star</span>
+</div>
+</div>
+<div class="flex-1">
+<h3 class="font-bold text-lg text-slate-900 dark:text-white">Ricardo Silva</h3>
+<p class="text-sm text-gray-500 dark:text-text-secondary flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-base">directions_car</span>
+                        Chevrolet Spin 2024
+                    </p>
+<p class="text-xs text-gray-400 dark:text-gray-500 mt-1">Placa ABC-1234 • Movvi Partner</p>
+</div>
+</div>
+</div>
+<!-- Rating Section -->
+<div class="px-6 py-2 flex flex-col items-center gap-4">
+<h3 class="text-center font-semibold text-lg text-slate-900 dark:text-white">Como foi sua experiência?</h3>
+<div class="flex gap-3 justify-center py-2">
+<button class="group transition-transform active:scale-90 focus:outline-none">
+<span class="material-symbols-outlined text-4xl text-gray-300 dark:text-gray-600 group-hover:text-primary transition-colors fill-0">star</span>
+</button>
+<button class="group transition-transform active:scale-90 focus:outline-none">
+<span class="material-symbols-outlined text-4xl text-gray-300 dark:text-gray-600 group-hover:text-primary transition-colors fill-0">star</span>
+</button>
+<button class="group transition-transform active:scale-90 focus:outline-none">
+<span class="material-symbols-outlined text-4xl text-gray-300 dark:text-gray-600 group-hover:text-primary transition-colors fill-0">star</span>
+</button>
+<button class="group transition-transform active:scale-90 focus:outline-none">
+<span class="material-symbols-outlined text-4xl text-gray-300 dark:text-gray-600 group-hover:text-primary transition-colors fill-0">star</span>
+</button>
+<button class="group transition-transform active:scale-90 focus:outline-none">
+<span class="material-symbols-outlined text-4xl text-gray-300 dark:text-gray-600 group-hover:text-primary transition-colors fill-0">star</span>
+</button>
+</div>
+</div>
+<!-- Comment Box -->
+<div class="px-4 py-4 w-full">
+<label class="sr-only" for="comment">Deixe um comentário</label>
+<textarea class="w-full bg-gray-50 dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl p-4 text-slate-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent resize-none text-sm transition-shadow" id="comment" placeholder="Deixe um comentário (opcional)..." rows="3"></textarea>
+<div class="flex gap-2 mt-3 overflow-x-auto pb-2 no-scrollbar">
+<button class="whitespace-nowrap px-3 py-1.5 rounded-full border border-gray-200 dark:border-white/10 text-xs font-medium text-gray-600 dark:text-text-secondary hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-colors">
+                    Motorista educado
+                </button>
+<button class="whitespace-nowrap px-3 py-1.5 rounded-full border border-gray-200 dark:border-white/10 text-xs font-medium text-gray-600 dark:text-text-secondary hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-colors">
+                    Chegou rápido
+                </button>
+<button class="whitespace-nowrap px-3 py-1.5 rounded-full border border-gray-200 dark:border-white/10 text-xs font-medium text-gray-600 dark:text-text-secondary hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-colors">
+                    Carro limpo
+                </button>
+</div>
+</div>
+<!-- Receipt Section -->
+<div class="mt-auto w-full bg-white dark:bg-surface-dark rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.3)] p-6 space-y-6">
+<div class="space-y-3">
+<div class="flex justify-between items-center text-sm text-gray-500 dark:text-text-secondary">
+<span>Taxa base</span>
+<span>R$ 80,00</span>
+</div>
+<div class="flex justify-between items-center text-sm text-gray-500 dark:text-text-secondary">
+<span>Quilometragem (15km)</span>
+<span>R$ 60,00</span>
+</div>
+<div class="flex justify-between items-center text-sm text-gray-500 dark:text-text-secondary">
+<span>Taxa de serviço</span>
+<span>R$ 10,00</span>
+</div>
+<div class="h-px w-full bg-gray-100 dark:bg-white/10 my-2"></div>
+<div class="flex justify-between items-center">
+<span class="font-bold text-lg text-slate-900 dark:text-white">Total Pago</span>
+<span class="font-bold text-2xl text-primary">R$ 150,00</span>
+</div>
+<div class="flex justify-end">
+<span class="text-xs text-gray-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">credit_card</span>
+                        Pago via Cartão de Crédito **** 8842
+                    </span>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-primary-dark text-background-dark font-bold py-4 px-6 rounded-xl transition-colors shadow-lg shadow-primary/20 active:scale-[0.98] transform">
+                Enviar Avaliação
+            </button>
+</div>
+</div>
+</body></html>

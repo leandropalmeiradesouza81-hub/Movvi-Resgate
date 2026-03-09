@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ganhos Detalhados do Motorista</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f9d406",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#23200f",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display selection:bg-primary selection:text-black">
+<div class="relative flex h-full min-h-screen w-full max-w-md mx-auto flex-col overflow-hidden bg-background-light dark:bg-background-dark shadow-2xl">
+<!-- Header -->
+<header class="flex items-center p-4 pb-2 justify-between sticky top-0 z-10 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md">
+<button class="text-slate-900 dark:text-white flex size-12 shrink-0 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 24px;">arrow_back</span>
+</button>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12">Ganhos Detalhados</h2>
+</header>
+<main class="flex-1 overflow-y-auto pb-20 no-scrollbar">
+<!-- Summary Card -->
+<div class="flex flex-wrap gap-4 p-4">
+<div class="flex min-w-[158px] flex-1 flex-col gap-1 rounded-xl p-6 bg-slate-900 dark:bg-[#322e1b] shadow-lg border border-slate-200 dark:border-white/5 relative overflow-hidden group">
+<div class="absolute -right-6 -top-6 w-24 h-24 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all duration-500"></div>
+<p class="text-slate-400 dark:text-gray-400 text-sm font-medium leading-normal z-10">Saldo Disponível</p>
+<div class="flex items-end gap-2 z-10">
+<p class="text-primary tracking-tight text-3xl font-bold leading-tight">R$ 1.245,50</p>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 py-2 px-3 rounded-lg bg-primary text-background-dark text-sm font-bold text-center hover:bg-yellow-400 transition-colors">
+                            Sacar Agora
+                         </button>
+</div>
+</div>
+</div>
+<!-- Weekly Chart Section -->
+<div class="flex flex-col gap-4 px-4 py-4">
+<div class="flex min-w-72 flex-1 flex-col gap-2 rounded-xl p-5 bg-white dark:bg-[#2a2614] border border-slate-200 dark:border-white/5 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<div class="flex flex-col">
+<p class="text-slate-500 dark:text-gray-400 text-sm font-medium leading-normal">Ganhos dos últimos 7 dias</p>
+<p class="text-slate-900 dark:text-white tracking-tight text-2xl font-bold leading-tight truncate">R$ 840,00</p>
+</div>
+<div class="px-2 py-1 rounded bg-slate-100 dark:bg-white/5">
+<p class="text-slate-600 dark:text-[#ccc38e] text-xs font-semibold leading-normal">20 Mar - 26 Mar</p>
+</div>
+</div>
+<!-- Chart Visual -->
+<div class="grid min-h-[160px] grid-cols-7 gap-3 items-end justify-items-center mt-4 pt-4 border-t border-slate-100 dark:border-white/5">
+<!-- Mon -->
+<div class="group flex flex-col items-center gap-2 w-full h-full justify-end">
+<div class="relative w-full bg-slate-100 dark:bg-white/5 rounded-t-sm h-full flex items-end overflow-hidden">
+<div class="bg-primary w-full transition-all duration-500 hover:opacity-80" style="height: 60%;"></div>
+</div>
+<p class="text-slate-400 dark:text-gray-500 text-[11px] font-bold uppercase tracking-wider">Seg</p>
+</div>
+<!-- Tue -->
+<div class="group flex flex-col items-center gap-2 w-full h-full justify-end">
+<div class="relative w-full bg-slate-100 dark:bg-white/5 rounded-t-sm h-full flex items-end overflow-hidden">
+<div class="bg-primary w-full transition-all duration-500 hover:opacity-80" style="height: 35%;"></div>
+</div>
+<p class="text-slate-400 dark:text-gray-500 text-[11px] font-bold uppercase tracking-wider">Ter</p>
+</div>
+<!-- Wed -->
+<div class="group flex flex-col items-center gap-2 w-full h-full justify-end">
+<div class="relative w-full bg-slate-100 dark:bg-white/5 rounded-t-sm h-full flex items-end overflow-hidden">
+<div class="bg-primary/40 w-full transition-all duration-500 hover:bg-primary/60" style="height: 80%;"></div>
+</div>
+<p class="text-slate-400 dark:text-gray-500 text-[11px] font-bold uppercase tracking-wider">Qua</p>
+</div>
+<!-- Thu -->
+<div class="group flex flex-col items-center gap-2 w-full h-full justify-end">
+<div class="relative w-full bg-slate-100 dark:bg-white/5 rounded-t-sm h-full flex items-end overflow-hidden">
+<div class="bg-primary w-full transition-all duration-500 hover:opacity-80" style="height: 55%;"></div>
+</div>
+<p class="text-slate-400 dark:text-gray-500 text-[11px] font-bold uppercase tracking-wider">Qui</p>
+</div>
+<!-- Fri -->
+<div class="group flex flex-col items-center gap-2 w-full h-full justify-end">
+<div class="relative w-full bg-slate-100 dark:bg-white/5 rounded-t-sm h-full flex items-end overflow-hidden">
+<div class="bg-primary w-full transition-all duration-500 hover:opacity-80" style="height: 90%;"></div>
+</div>
+<p class="text-slate-400 dark:text-gray-500 text-[11px] font-bold uppercase tracking-wider">Sex</p>
+</div>
+<!-- Sat -->
+<div class="group flex flex-col items-center gap-2 w-full h-full justify-end">
+<div class="relative w-full bg-slate-100 dark:bg-white/5 rounded-t-sm h-full flex items-end overflow-hidden">
+<div class="bg-primary w-full transition-all duration-500 hover:opacity-80" style="height: 45%;"></div>
+</div>
+<p class="text-slate-400 dark:text-gray-500 text-[11px] font-bold uppercase tracking-wider">Sáb</p>
+</div>
+<!-- Sun -->
+<div class="group flex flex-col items-center gap-2 w-full h-full justify-end">
+<div class="relative w-full bg-slate-100 dark:bg-white/5 rounded-t-sm h-full flex items-end overflow-hidden">
+<div class="bg-primary w-full transition-all duration-500 hover:opacity-80" style="height: 25%;"></div>
+</div>
+<p class="text-slate-400 dark:text-gray-500 text-[11px] font-bold uppercase tracking-wider">Dom</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Trips Title -->
+<div class="flex items-center justify-between px-6 pt-4 pb-2">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Últimas Viagens</h3>
+<button class="text-primary text-sm font-semibold hover:text-yellow-400">Ver todas</button>
+</div>
+<!-- Trips List -->
+<div class="flex flex-col">
+<!-- Trip Item 1 -->
+<div class="group flex items-center gap-4 px-6 py-4 border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer">
+<div class="flex items-center gap-4 flex-1">
+<div class="text-slate-700 dark:text-white flex items-center justify-center rounded-xl bg-slate-100 dark:bg-[#322e1b] shrink-0 size-12 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">local_taxi</span>
+</div>
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-normal line-clamp-1">Chevrolet Spin 2024</p>
+<p class="text-slate-500 dark:text-gray-400 text-xs font-medium leading-normal line-clamp-2">Hoje • 14:30 • Reboque</p>
+</div>
+</div>
+<div class="shrink-0 text-right">
+<p class="text-green-600 dark:text-[#a3e635] text-base font-bold leading-normal">+ R$ 45,50</p>
+</div>
+</div>
+<!-- Trip Item 2 -->
+<div class="group flex items-center gap-4 px-6 py-4 border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer">
+<div class="flex items-center gap-4 flex-1">
+<div class="text-slate-700 dark:text-white flex items-center justify-center rounded-xl bg-slate-100 dark:bg-[#322e1b] shrink-0 size-12 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">local_shipping</span>
+</div>
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-normal line-clamp-1">Hyundai HR</p>
+<p class="text-slate-500 dark:text-gray-400 text-xs font-medium leading-normal line-clamp-2">Ontem • 09:15 • Guincho</p>
+</div>
+</div>
+<div class="shrink-0 text-right">
+<p class="text-green-600 dark:text-[#a3e635] text-base font-bold leading-normal">+ R$ 120,00</p>
+</div>
+</div>
+<!-- Trip Item 3 -->
+<div class="group flex items-center gap-4 px-6 py-4 border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer">
+<div class="flex items-center gap-4 flex-1">
+<div class="text-slate-700 dark:text-white flex items-center justify-center rounded-xl bg-slate-100 dark:bg-[#322e1b] shrink-0 size-12 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">airport_shuttle</span>
+</div>
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-normal line-clamp-1">Fiat Ducato</p>
+<p class="text-slate-500 dark:text-gray-400 text-xs font-medium leading-normal line-clamp-2">24 Mar • 16:45 • Mudança</p>
+</div>
+</div>
+<div class="shrink-0 text-right">
+<p class="text-green-600 dark:text-[#a3e635] text-base font-bold leading-normal">+ R$ 85,20</p>
+</div>
+</div>
+<!-- Trip Item 4 -->
+<div class="group flex items-center gap-4 px-6 py-4 border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer">
+<div class="flex items-center gap-4 flex-1">
+<div class="text-slate-700 dark:text-white flex items-center justify-center rounded-xl bg-slate-100 dark:bg-[#322e1b] shrink-0 size-12 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">local_taxi</span>
+</div>
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-normal line-clamp-1">Renault Master</p>
+<p class="text-slate-500 dark:text-gray-400 text-xs font-medium leading-normal line-clamp-2">23 Mar • 11:20 • Reboque</p>
+</div>
+</div>
+<div class="shrink-0 text-right">
+<p class="text-green-600 dark:text-[#a3e635] text-base font-bold leading-normal">+ R$ 150,00</p>
+</div>
+</div>
+<!-- Footer spacer -->
+<div class="h-8"></div>
+</div>
+</main>
+</div>
+</body></html>

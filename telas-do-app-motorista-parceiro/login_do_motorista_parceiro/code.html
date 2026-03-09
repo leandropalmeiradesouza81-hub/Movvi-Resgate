@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Movvi Reboque - Login do Motorista</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f9d406",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#23200f",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col items-center justify-center">
+<div class="relative flex h-full min-h-screen w-full max-w-md flex-col overflow-hidden bg-background-light dark:bg-background-dark shadow-xl mx-auto">
+<!-- Header / Navigation -->
+<div class="flex items-center p-4 pb-2 justify-between absolute top-0 left-0 right-0 z-10">
+<div class="text-slate-900 dark:text-slate-100 flex size-12 shrink-0 items-center justify-center rounded-full bg-black/10 dark:bg-white/10 cursor-pointer hover:bg-black/20 dark:hover:bg-white/20 transition-colors">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</div>
+<!-- Hidden placeholder for centering if needed, though title is requested elsewhere -->
+<div class="size-12"></div>
+</div>
+<!-- Main Content Scrollable Area -->
+<div class="flex-1 overflow-y-auto w-full pt-16 px-6 pb-8 flex flex-col">
+<!-- Branding / Logo Area -->
+<div class="flex flex-col items-center justify-center pt-8 pb-8">
+<div class="w-24 h-24 bg-primary rounded-2xl flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(249,212,6,0.3)]">
+<span class="material-symbols-outlined text-background-dark text-[48px] font-bold">auto_towing</span>
+</div>
+<h1 class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight text-center">Movvi Reboque</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal mt-2 text-center uppercase tracking-wide">Área do Parceiro</p>
+</div>
+<!-- Welcome Text -->
+<div class="mb-8">
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-semibold leading-tight text-center">Bem-vindo de volta!</h2>
+<p class="text-slate-500 dark:text-slate-400 text-base font-normal leading-normal pt-2 text-center">Faça login para começar a receber chamados.</p>
+</div>
+<!-- Form Fields -->
+<div class="flex flex-col gap-5 w-full">
+<!-- Email/CPF Field -->
+<div class="relative">
+<label class="block text-slate-700 dark:text-slate-300 text-sm font-medium mb-2 pl-1" for="identity">
+                        Email ou CPF
+                    </label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400">person</span>
+</div>
+<input class="form-input block w-full rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-[#2c2914] text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 pl-10 pr-4 placeholder:text-slate-400 transition-colors" id="identity" placeholder="Digite seu email ou CPF" type="text" value=""/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="relative">
+<label class="block text-slate-700 dark:text-slate-300 text-sm font-medium mb-2 pl-1" for="password">
+                        Senha
+                    </label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400">lock</span>
+</div>
+<input class="form-input block w-full rounded-xl border-slate-200 dark:border-slate-700 bg-white dark:bg-[#2c2914] text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 pl-10 pr-10 placeholder:text-slate-400 transition-colors" id="password" placeholder="Digite sua senha" type="password" value=""/>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility_off</span>
+</div>
+</div>
+<div class="flex justify-end mt-2">
+<a class="text-sm font-medium text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-primary transition-colors" href="#">Esqueci minha senha</a>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<div class="mt-8">
+<button class="w-full bg-primary text-background-dark font-bold h-14 rounded-xl text-lg shadow-lg shadow-primary/20 hover:shadow-primary/40 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+<span>Entrar como Parceiro</span>
+<span class="material-symbols-outlined text-[20px]">login</span>
+</button>
+</div>
+<div class="flex-1"></div>
+<!-- Footer Link -->
+<div class="mt-8 mb-4 text-center">
+<p class="text-slate-500 dark:text-slate-400 text-sm">Ainda não é cadastrado?</p>
+<a class="inline-flex items-center justify-center gap-1 mt-2 text-primary hover:text-yellow-300 font-semibold transition-colors py-2 px-4 rounded-lg hover:bg-white/5" href="#">
+<span>Quero ser um parceiro</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Texture Overlay (Subtle) -->
+<div class="pointer-events-none absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
+</div>
+</div>
+</body></html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Movvi Reboque - Pagamento</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f2d00d",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#221f10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(242, 208, 13, 0.3);
+            border-radius: 4px;
+        }
+        
+        /* Custom radio button styling to match design */
+        .custom-radio:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23221f10' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+            border-color: #f2d00d;
+            background-color: #f2d00d;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col items-center justify-center">
+<!-- Phone Container -->
+<div class="relative flex h-full min-h-screen w-full max-w-md flex-col bg-background-light dark:bg-background-dark overflow-x-hidden shadow-2xl">
+<!-- Top App Bar -->
+<header class="flex items-center px-4 py-4 justify-between sticky top-0 z-10 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm">
+<button class="text-slate-900 dark:text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h1 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Pagamento</h1>
+<div class="size-10"></div> <!-- Spacer for centering title -->
+</header>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col p-6 gap-6">
+<!-- Page Title -->
+<div>
+<h2 class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">Escolha a forma de pagamento</h2>
+<p class="text-slate-500 dark:text-slate-400 text-sm mt-2">Selecione como deseja pagar pelo serviço.</p>
+</div>
+<!-- Payment Options -->
+<form class="flex flex-col gap-4">
+<!-- Credit Card Option -->
+<label class="group relative flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 p-4 transition-all hover:border-primary/50 dark:hover:border-primary/50 active:scale-[0.99]">
+<div class="flex items-center gap-4">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white">
+<span class="material-symbols-outlined">credit_card</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-900 dark:text-white text-base font-semibold">Cartão de Crédito</span>
+<span class="text-slate-500 dark:text-slate-400 text-sm">Visa •••• 4242</span>
+</div>
+</div>
+<input checked="" class="custom-radio h-5 w-5 border-2 border-slate-300 dark:border-slate-600 bg-transparent text-primary focus:ring-primary/50 focus:ring-offset-0 checked:border-primary" name="payment-method" type="radio"/>
+</label>
+<!-- Pix Option -->
+<label class="group relative flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 p-4 transition-all hover:border-primary/50 dark:hover:border-primary/50 active:scale-[0.99]">
+<div class="flex items-center gap-4">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white">
+<span class="material-symbols-outlined">qr_code_2</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-900 dark:text-white text-base font-semibold">Pix</span>
+<span class="text-slate-500 dark:text-slate-400 text-sm">Copie e cole a chave Pix</span>
+</div>
+</div>
+<input class="custom-radio h-5 w-5 border-2 border-slate-300 dark:border-slate-600 bg-transparent text-primary focus:ring-primary/50 focus:ring-offset-0 checked:border-primary" name="payment-method" type="radio"/>
+</label>
+<!-- Cash Option -->
+<label class="group relative flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 p-4 transition-all hover:border-primary/50 dark:hover:border-primary/50 active:scale-[0.99]">
+<div class="flex items-center gap-4">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-900 dark:text-white text-base font-semibold">Dinheiro</span>
+<span class="text-slate-500 dark:text-slate-400 text-sm">Pagamento direto ao motorista</span>
+</div>
+</div>
+<input class="custom-radio h-5 w-5 border-2 border-slate-300 dark:border-slate-600 bg-transparent text-primary focus:ring-primary/50 focus:ring-offset-0 checked:border-primary" name="payment-method" type="radio"/>
+</label>
+</form>
+<!-- Warning Box -->
+<div class="mt-auto pt-6 pb-2">
+<div class="relative overflow-hidden rounded-xl border border-primary/40 bg-primary/10 p-4 shadow-sm">
+<div class="absolute -right-4 -top-4 opacity-10">
+<span class="material-symbols-outlined text-[100px] text-primary">warning</span>
+</div>
+<div class="relative z-10 flex gap-3">
+<span class="material-symbols-outlined text-primary shrink-0 mt-0.5">info</span>
+<div>
+<p class="text-primary font-bold mb-1">Aviso Importante</p>
+<p class="text-slate-700 dark:text-slate-200 text-sm leading-relaxed">
+                                Taxa de cancelamento de R$ 35,00 será aplicada após o deslocamento do motorista.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Confirm Button -->
+<div class="mt-2">
+<button class="w-full flex cursor-pointer items-center justify-center rounded-xl h-14 bg-primary hover:bg-primary/90 active:bg-primary/80 text-background-dark text-lg font-bold tracking-wide transition-colors shadow-lg shadow-primary/20">
+                    Confirmar Pagamento
+                </button>
+</div>
+</main>
+<!-- Bottom Safe Area Spacer (iOS style) -->
+<div class="h-6 w-full"></div>
+</div>
+</body></html>

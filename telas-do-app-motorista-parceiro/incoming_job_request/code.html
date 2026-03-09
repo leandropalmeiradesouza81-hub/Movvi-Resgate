@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Chamado Corolla com Problema Detalhado</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ffd900",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#1a1a1a",
+                        "card-dark": "#2a2a2a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .pulsing-aura {
+            box-shadow: 0 0 0 0 rgba(255, 217, 0, 0.4);
+            animation: pulse-yellow 2s infinite;
+        }
+        @keyframes pulse-yellow {
+            0% { box-shadow: 0 0 0 0 rgba(255, 217, 0, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 217, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 217, 0, 0); }
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-hidden">
+<div class="relative min-h-screen w-full flex flex-col items-center justify-between p-6">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-background-dark/80 z-10"></div>
+<div class="w-full h-full bg-center bg-cover grayscale brightness-[0.3]" data-alt="A dark styled map showing city streets and routes." data-location="São Paulo, Brazil" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQW6_B_yJofsXxIipCHTSlqdgYc0jISS39T_YMIErWPfJXH8RLfS3b20wUWucfgS_usW02bH697oknJvKH-KKjhBFFOw64SR_GU6CkZ-dWH-NIx-4uGr6mzGsAnYoyF0sIXDkm-mdUmNYR94IBm6g0xf9eJk-7NZtAU7aKX_MqvDQiz9F9_oiarREDXmN_rfenE5qr3VMdDPi_L2jXrJgm-UOoiEifqo5XOIfS8RdIJKCjP6-i2fRTM21TuY4euLN761KFlC4l6Qet');">
+</div>
+</div>
+<div class="relative z-20 w-full flex flex-col items-center pt-8">
+<div class="w-16 h-16 mb-4 flex items-center justify-center bg-primary rounded-xl shadow-lg border-2 border-primary/50">
+<img alt="Logo" class="w-10 h-10 object-contain" data-alt="Corporate logo for the driver application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiWr6-MpIYoIcraiz4k1ChuLvJyc4MTleXUjg6EjEawuxNwEvV-iGrF-XrJYNl_99lpXgoid1fhCjN4XYHAcbMPvl19k4uS33aol1ApW4ugQMekHcYqLqbG1cDe7d8O-at_F-QYq9Wi7k4zfJUIo_o5Bl_V3oeRwuMNwSZAaahXs2SSOeW3WxnsT3U2iv-mjN549SPmbpsr2tLOl-QsRWfZAYyFuNWAkbBOLNi5fT8HktAgZTK6wc4JNbuQlUl5CZC3TPEMj6uqYGw"/>
+</div>
+<div class="bg-card-dark/90 backdrop-blur-md px-6 py-2 rounded-full border border-primary/20 shadow-xl">
+<span class="text-primary font-bold tracking-widest text-xs uppercase flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                    Nova Solicitação
+                </span>
+</div>
+</div>
+<div class="relative z-20 w-full max-w-md">
+<div class="pulsing-aura bg-card-dark/95 backdrop-blur-xl border border-primary/20 rounded-3xl p-6 flex flex-col items-center gap-5 shadow-2xl">
+<div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary text-5xl">directions_car</span>
+</div>
+<div class="text-center space-y-1">
+<h2 class="text-2xl font-bold text-white">Modelo: Toyota Corolla 2024</h2>
+<p class="text-slate-400 text-sm font-medium">Chamado urgente em andamento</p>
+</div>
+<div class="w-full grid grid-cols-2 gap-3">
+<div class="bg-black/20 rounded-xl p-3 border border-white/5 flex flex-col items-center">
+<span class="material-symbols-outlined text-primary mb-1 text-2xl">distance</span>
+<span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Distância</span>
+<span class="text-lg font-bold text-white">12km</span>
+</div>
+<div class="bg-black/20 rounded-xl p-3 border border-white/5 flex flex-col items-center">
+<span class="material-symbols-outlined text-primary mb-1 text-2xl">payments</span>
+<span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Valor</span>
+<span class="text-lg font-bold text-white">R$ 85,00</span>
+</div>
+</div>
+<div class="w-full bg-black/40 rounded-xl p-3 border border-white/5 flex items-center justify-between px-6">
+<span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Placa do Veículo</span>
+<div class="flex items-center gap-2">
+<div class="bg-white border-2 border-slate-300 rounded px-2 py-0.5 shadow-sm flex flex-col items-center w-24">
+<div class="w-full h-1.5 bg-blue-700 mb-0.5"></div>
+<span class="text-slate-900 font-mono font-bold text-sm leading-none tracking-wider">BRA2E19</span>
+</div>
+</div>
+</div>
+<div class="w-full bg-primary/10 rounded-xl p-4 border border-primary/30">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-sm">warning</span>
+<span class="text-[10px] text-primary uppercase font-bold tracking-wider">PROBLEMA RELATADO</span>
+</div>
+<p class="text-white font-medium text-sm pl-0.5">Pane Elétrica - Veículo não liga</p>
+</div>
+<div class="w-full flex flex-col gap-0 pt-2 relative">
+<div class="absolute left-[1.15rem] top-3 bottom-3 w-0.5 bg-slate-700/50 -z-10"></div>
+<div class="flex items-start gap-4 p-2">
+<div class="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center shrink-0 border border-slate-600 mt-0.5">
+<div class="w-2 h-2 bg-primary rounded-full"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase font-bold">Origem</span>
+<span class="text-sm text-slate-200 font-medium">Av. Paulista, 1000</span>
+</div>
+</div>
+<div class="flex items-start gap-4 p-2">
+<div class="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center shrink-0 border border-slate-600 mt-0.5">
+<span class="material-symbols-outlined text-primary text-[14px]">flag</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 uppercase font-bold">Destino</span>
+<span class="text-sm text-slate-200 font-medium">Oficina Central</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="relative z-20 w-full max-w-md flex flex-col gap-3 pb-8 pt-4">
+<button class="w-full h-14 bg-primary hover:bg-yellow-400 text-black font-bold text-lg rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+<span class="material-symbols-outlined font-bold text-2xl">check_circle</span>
+                ACEITAR CORRIDA
+            </button>
+<button class="w-full h-14 bg-[#2a2a2a] hover:bg-[#333] text-slate-300 font-semibold text-lg rounded-xl border border-slate-700/50 transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+<span class="material-symbols-outlined text-2xl">close</span>
+                RECUSAR
+            </button>
+</div>
+</div>
+</body></html>

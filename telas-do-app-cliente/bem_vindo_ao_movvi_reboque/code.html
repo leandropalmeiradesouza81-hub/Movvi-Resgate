@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Movvi Reboque - Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ffd900",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#23200f",
+                        "surface-dark": "#363117",
+                        "border-dark": "#6b622e",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col items-center justify-center p-4">
+<div class="w-full max-w-md flex flex-col gap-8">
+<div class="flex flex-col items-center text-center gap-6 pt-8">
+<div class="w-32 h-32 rounded-xl bg-[#23200f] border border-border-dark flex items-center justify-center shadow-lg mb-2 overflow-hidden relative">
+<div class="absolute inset-0 flex items-center justify-center">
+<svg class="w-full h-full p-4" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<path d="M72 45 L62 55 L58 45 L68 35 Z" fill="#374151"></path>
+<path d="M42 45 L32 55 L32 75 L42 75 L45 55 Z" fill="#374151"></path>
+<path d="M38 28 L50 55 L62 28 L80 28 L60 65 L40 65 L20 28 Z" fill="#ffd900"></path>
+<path d="M60 65 Q60 80 72 80 Q78 80 78 72 L72 72 Q72 75 70 75 Q65 75 65 65 Z" fill="#ffd900"></path>
+<rect fill="#ffd900" height="4" rx="2" width="20" x="12" y="32"></rect>
+<rect fill="#ffd900" height="4" rx="2" width="12" x="5" y="42"></rect>
+<rect fill="#374151" height="4" rx="2" width="15" x="15" y="52"></rect>
+<rect fill="#374151" height="4" rx="2" width="8" x="10" y="62"></rect>
+</svg>
+</div>
+<img alt="Movvi Reboque Logo" class="w-full h-full object-cover hidden" data-alt="Yellow stylized M with tow hook on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3qoBnPfMxKm9g2_0SZT9ParUO4_-C4yE91iid38TlnM03RNAr_N4niMakqn6p8Wog2ijQRkMQgwJCyjbrgkiCBfiVzuXP5g_JGQx_fj462NbwE8nlfAo07QR1doUnQm8AxETRlQb--3S0HdbOXJ43FH8kV3ZA14vzMCvhUpUoZ3IgG3ZwRWo1WMIflSOSEyNjpZKbHeBZUA4KNS83_1fCu5WToib5LwUpb-modlBpRIhOVXqJxIDYiyQ6YMk4EMUiGoXmMolMVhhR"/>
+</div>
+<div class="space-y-2">
+<h1 class="text-slate-900 dark:text-slate-100 text-3xl font-bold tracking-tight">Movvi Reboque</h1>
+<p class="text-slate-600 dark:text-slate-400 text-base">Seu parceiro de confiança na estrada.</p>
+</div>
+</div>
+<form class="flex flex-col gap-5 w-full bg-white dark:bg-surface-dark/50 p-6 rounded-xl border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex flex-col gap-2">
+<label class="text-slate-900 dark:text-slate-200 text-sm font-medium" for="email">Email</label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 dark:text-[#cec48d]">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+</span>
+<input class="form-input w-full rounded-lg bg-slate-50 dark:bg-[#363117] border-slate-300 dark:border-[#6b622e] text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-[#cec48d]/60 focus:border-primary focus:ring-primary pl-10 py-3 transition-colors" id="email" placeholder="exemplo@email.com" type="email"/>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<label class="text-slate-900 dark:text-slate-200 text-sm font-medium" for="password">Senha</label>
+<a class="text-sm text-primary hover:text-primary/80 font-medium transition-colors" href="#">Esqueceu a senha?</a>
+</div>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 dark:text-[#cec48d]">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</span>
+<input class="form-input w-full rounded-lg bg-slate-50 dark:bg-[#363117] border-slate-300 dark:border-[#6b622e] text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-[#cec48d]/60 focus:border-primary focus:ring-primary pl-10 py-3 transition-colors" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-500 dark:text-[#cec48d] hover:text-slate-700 dark:hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-slate-900 font-bold py-3.5 px-4 rounded-lg shadow-md transition-all active:scale-[0.98] mt-2 flex items-center justify-center gap-2">
+<span>Entrar</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<div class="relative flex py-2 items-center">
+<div class="flex-grow border-t border-slate-200 dark:border-border-dark"></div>
+<span class="flex-shrink-0 mx-4 text-slate-400 dark:text-[#cec48d] text-xs uppercase">Ou continue com</span>
+<div class="flex-grow border-t border-slate-200 dark:border-border-dark"></div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark hover:bg-slate-50 dark:hover:bg-[#4a4422] rounded-lg py-2.5 transition-colors" type="button">
+<img alt="Google" class="w-5 h-5" data-alt="Google G logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQ41a5C-ao7PPQAn5PObXytemGgHVyyeaxHw3UKeZuO50W-0-Yak02iZPbeOsYr6YOA5s8LFMXCBdCOIiG9266HaB648TH4gpldlrJkFr0YRLRXptwtsDqmKl6WNKtLurfqt2QSzVRhhWIO_UXBrEHohFGniL8Iz0Tp_o5HWMrWIqmjPwSGauOW1QxEyZHTdxbytDDyi6-ns_1jklZNTDLRgkS5Fdw_fiG6j-Af7buBomwhRtDxuovj9j4-BcIIfEwTNn627_M4agT"/>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-200">Google</span>
+</button>
+<button class="flex items-center justify-center gap-2 bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark hover:bg-slate-50 dark:hover:bg-[#4a4422] rounded-lg py-2.5 transition-colors" type="button">
+<img alt="Facebook" class="w-5 h-5" data-alt="Facebook f logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaTAV1zebl_EJ0WHf7Zr2KirppORk8PTkGFCCKhiJwrtofwmXaf7Tqa_p2zyodU3fYCejIxDcIcEgwaJzW4v692f3PtaamlS187Ra9oblO0boLtT5-TVRwf0YUM2u8vlUXVE3xiOCz8r-7nEBEDu5B2KxqICkIfMne5BKlBwfOLSA_X1LDUZP3bxJ-cFTnt7efmakliZ1dzn9mEZhWvUC-He8rj8T37SkDYO_-qicYUoZFzfxmXemFtwjfxSN9OPWn7EcAs6ioEFy3"/>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-200">Facebook</span>
+</button>
+</div>
+</form>
+<div class="text-center pb-8">
+<p class="text-slate-600 dark:text-slate-400">
+                Não tem uma conta? 
+                <a class="text-primary font-bold hover:underline decoration-2 underline-offset-4" href="#">Criar conta</a>
+</p>
+</div>
+</div>
+</body></html>

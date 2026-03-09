@@ -1,0 +1,22 @@
+{
+    "name": "Movvi Resgate",
+    "short_name": "Movvi",
+    "description": "Resgate veicular rápido e barato",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#ffd900",
+    "icons": [
+        {
+            "src": "assets/images/logo_movvi_icon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "assets/images/logo_movvi_icon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

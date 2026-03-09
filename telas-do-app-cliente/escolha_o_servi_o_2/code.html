@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ffd900",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#23200f",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav {
+            color: #ffd900;
+        }.no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col relative overflow-hidden">
+<div class="fixed inset-0 bg-black/60 z-40 backdrop-blur-sm"></div>
+<aside class="fixed inset-y-0 left-0 w-3/4 max-w-xs bg-white dark:bg-[#1a180b] shadow-2xl z-50 transform transition-transform duration-300 ease-in-out flex flex-col h-full border-r border-slate-200 dark:border-white/5">
+<div class="p-6 border-b border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-black/20">
+<div class="flex flex-col gap-3">
+<div class="size-16 overflow-hidden rounded-full border-2 border-primary">
+<img alt="Avatar do usuário" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_vKlJ7u4BPSQn6pYzWemn6cgJiCkZrAhwoKKWV278CKIn34tKIvrn0qwmImKV1zXCqqFCsqYEOAdXSWSyXprW2GAEbpIyUZGUgb_BMp5r9bDmyhPqu9VJGLujyxcDaD70Sw6J7-Jgd2mX1zhJgyTAzb-CdGMh45o-ywAyZ7tsJ0hE_7JZdsJfNJ3uKvjNwFAolAfIcWkgTsF0egCfYnryCq7gEqsjWCsyvAIxhYjOc5NDK4XCZj3QJvMA1oxcJ1eBOfUrrkOzsCOu"/>
+</div>
+<div>
+<h2 class="text-xl font-bold text-slate-900 dark:text-white">João Silva</h2>
+<p class="text-xs text-slate-500 dark:text-slate-400">joao.silva@email.com</p>
+<div class="flex items-center gap-1 mt-1 text-primary">
+<span class="material-symbols-outlined text-[16px] fill-1">star</span>
+<span class="text-xs font-semibold">4.8</span>
+</div>
+</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto py-4 px-3 no-scrollbar space-y-1">
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 group transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">person</span>
+<span class="font-medium text-sm">Perfil</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 group transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">directions_car</span>
+<span class="font-medium text-sm">Meus Veículos</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 group transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">credit_card</span>
+<span class="font-medium text-sm">Pagamentos</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 group transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">history</span>
+<span class="font-medium text-sm">Histórico</span>
+</a>
+<div class="my-2 border-y border-dashed border-slate-200 dark:border-white/10 py-2">
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg bg-primary/10 dark:bg-primary/20 text-slate-900 dark:text-white group border-l-4 border-primary" href="#">
+<span class="material-symbols-outlined text-primary">support_agent</span>
+<span class="font-bold text-sm">Ajuda e Suporte</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 group transition-colors mt-1" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">chat</span>
+<span class="font-medium text-sm">Falar com a Plataforma</span>
+</a>
+</div>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 group transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">settings</span>
+<span class="font-medium text-sm">Configurações</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-white/5">
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-medium text-sm">Sair</span>
+</a>
+<p class="text-[10px] text-center text-slate-400 mt-4">Versão 2.4.0</p>
+</div>
+</aside>
+<div class="flex-1 flex flex-col filter blur-[1px]">
+<header class="flex items-center justify-between p-4 sticky top-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md z-10 border-b border-slate-200 dark:border-white/10">
+<div class="flex items-center gap-3">
+<button class="p-1 -ml-1 rounded-full hover:bg-slate-100 dark:hover:bg-white/10">
+<span class="material-symbols-outlined text-slate-900 dark:text-white">menu</span>
+</button>
+<div>
+<p class="text-xs text-slate-500 dark:text-slate-400">Olá, João!</p>
+<h1 class="text-base font-bold text-slate-900 dark:text-white">Movvi Reboque</h1>
+</div>
+</div>
+<button class="relative p-2 rounded-full hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-200">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-primary rounded-full"></span>
+</button>
+</header>
+<main class="flex-1 overflow-y-auto px-4 py-6">
+<div class="mb-8">
+<h2 class="text-2xl font-bold mb-2">Qual serviço você precisa hoje?</h2>
+<p class="text-slate-500 dark:text-slate-400">Estamos prontos para te ajudar em qualquer emergência.</p>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-8">
+<button class="flex flex-col items-start gap-4 p-5 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 hover:border-primary transition-all group">
+<div class="p-3 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary group-hover:bg-primary group-hover:text-black transition-colors">
+<span class="material-symbols-outlined text-3xl">minor_crash</span>
+</div>
+<div class="text-left">
+<h3 class="font-bold text-slate-900 dark:text-white">Reboque no Cambão</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400">Transporte seguro</p>
+</div>
+</button>
+<button class="flex flex-col items-start gap-4 p-5 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 hover:border-primary transition-all group">
+<div class="p-3 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary group-hover:bg-primary group-hover:text-black transition-colors">
+<span class="material-symbols-outlined text-3xl">gas_meter</span>
+</div>
+<div class="text-left">
+<h3 class="font-bold text-slate-900 dark:text-white">Pane Seca</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400">Falta combustível</p>
+</div>
+</button>
+<button class="flex flex-col items-start gap-4 p-5 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 hover:border-primary transition-all group">
+<div class="p-3 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary group-hover:bg-primary group-hover:text-black transition-colors">
+<span class="material-symbols-outlined text-3xl">battery_charging_full</span>
+</div>
+<div class="text-left">
+<h3 class="font-bold text-slate-900 dark:text-white">Chupeta</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400">Carga de bateria</p>
+</div>
+</button>
+<button class="flex flex-col items-start gap-4 p-5 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 hover:border-primary transition-all group">
+<div class="p-3 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary group-hover:bg-primary group-hover:text-black transition-colors">
+<span class="material-symbols-outlined text-3xl">tire_repair</span>
+</div>
+<div class="text-left">
+<h3 class="font-bold text-slate-900 dark:text-white">Troca de Pneu</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400">Pneu furado ou murcho</p>
+</div>
+</button>
+</div>
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-lg">Serviços Recentes</h3>
+<a class="text-sm text-primary font-medium" href="#">Ver tudo</a>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-4 p-4 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10">
+<div class="size-12 rounded-lg bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">minor_crash</span>
+</div>
+<div class="flex-1">
+<h4 class="font-semibold text-sm">Reboque solicitado</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400">Avenida Paulista, 1000</p>
+</div>
+<div class="text-right">
+<p class="text-xs font-bold text-green-500">Concluído</p>
+<p class="text-[10px] text-slate-400">12 Out, 14:30</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 opacity-75">
+<div class="size-12 rounded-lg bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">gas_meter</span>
+</div>
+<div class="flex-1">
+<h4 class="font-semibold text-sm">Pane Seca</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400">Rodovia dos Bandeirantes</p>
+</div>
+<div class="text-right">
+<p class="text-xs font-bold text-slate-400">Cancelado</p>
+<p class="text-[10px] text-slate-400">05 Out, 09:15</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<nav class="bg-white dark:bg-background-dark border-t border-slate-200 dark:border-white/10 px-6 py-3 flex items-center justify-between sticky bottom-0">
+<a class="flex flex-col items-center gap-1 active-nav" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-bold">Início</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="text-[10px] font-medium">Histórico</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">Perfil</span>
+</a>
+</nav>
+</div>
+
+</body></html>

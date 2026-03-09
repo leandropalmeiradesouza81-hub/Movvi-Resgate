@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ffd900",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#23200f",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 z-20 shadow-md">
+<div class="text-slate-900 dark:text-slate-100 flex size-10 shrink-0 items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 text-center">Solicitar Guincho</h2>
+<div class="text-slate-900 dark:text-slate-100 flex size-10 shrink-0 items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined">menu</span>
+</div>
+</div>
+<div class="relative flex-1 @container">
+<div class="absolute inset-0 z-0 bg-cover bg-center" data-alt="Mapa urbano noturno com rotas em destaque" data-location="São Paulo, Brasil" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDaeKSfDyzrioqPfj3q--koFtmxcry0alCtNfz1C1rhPmzJy-AQzfq3V91sE12ftXj1abGErOCFtI8CxBjIb4TzhtWVR7YidbKLzMgi_II3bWwJE_Nvz5S3rCmzDA3CJw9D013I4089szarpvubi5alrMey5r2U97VxW2lTTh9eDuANDsDSRlcjkgxIBY0swE746ZmAPnoEOUB93_YhVPiyFdIyz-9Qabm11oxVAP2ooFmA8Lf-VocUNGq9kh9dXVRySKBPX77ovG_b');">
+</div>
+<div class="absolute inset-0 bg-background-dark/30 z-10 pointer-events-none"></div>
+<div class="relative z-20 flex flex-col h-full p-4 justify-between">
+<div class="flex flex-col gap-3 w-full max-w-md mx-auto">
+<div class="bg-background-dark/90 backdrop-blur-md p-4 rounded-xl border border-primary/20 shadow-xl">
+<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-xs font-semibold text-primary uppercase tracking-wider">Ponto de Retirada</label>
+<div class="flex items-center bg-white/5 rounded-lg border border-primary/10 px-3 h-12">
+<span class="material-symbols-outlined text-primary mr-2">location_on</span>
+<input class="bg-transparent border-none focus:ring-0 text-slate-100 w-full placeholder:text-slate-500" placeholder="Onde você está?" type="text" value="Minha Localização Atual"/>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-xs font-semibold text-primary uppercase tracking-wider">Destino</label>
+<div class="flex items-center bg-white/5 rounded-lg border border-primary/10 px-3 h-12">
+<span class="material-symbols-outlined text-slate-400 mr-2">flag</span>
+<input class="bg-transparent border-none focus:ring-0 text-slate-100 w-full placeholder:text-slate-500" placeholder="Para onde vamos?" type="text"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end gap-3 self-end mb-4">
+<button class="flex size-12 items-center justify-center rounded-xl bg-background-dark border border-primary/20 text-slate-100 shadow-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+<div class="flex flex-col bg-background-dark border border-primary/20 rounded-xl overflow-hidden shadow-lg">
+<button class="flex size-12 items-center justify-center text-slate-100 hover:bg-white/5 active:bg-white/10">
+<span class="material-symbols-outlined">add</span>
+</button>
+<div class="h-[1px] bg-primary/10 mx-2"></div>
+<button class="flex size-12 items-center justify-center text-slate-100 hover:bg-white/5 active:bg-white/10">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+</div>
+<div class="w-full max-w-md mx-auto bg-background-dark rounded-t-2xl shadow-[0_-10px_25px_rgba(0,0,0,0.5)] border-t border-primary/30 p-6 flex flex-col gap-6">
+<div class="w-12 h-1.5 bg-primary/20 rounded-full mx-auto -mt-2 mb-2"></div>
+<div class="text-center">
+<h3 class="text-slate-100 text-2xl font-bold leading-tight">As rodas estão travadas?</h3>
+<p class="text-slate-400 text-sm mt-2">Precisamos saber se o veículo pode rodar para enviar o equipamento correto.</p>
+</div>
+<div class="flex gap-4">
+<button class="flex-1 flex flex-col items-center justify-center gap-2 py-4 rounded-xl border-2 border-primary bg-primary/10 text-primary font-bold hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-3xl">lock</span>
+<span>Sim</span>
+</button>
+<button class="flex-1 flex flex-col items-center justify-center gap-2 py-4 rounded-xl border-2 border-primary/20 bg-white/5 text-slate-100 font-bold hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-3xl">lock_open</span>
+<span>Não</span>
+</button>
+</div>
+<button class="w-full bg-primary text-background-dark font-black text-lg py-4 rounded-xl shadow-lg shadow-primary/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+<span>SOLICITAR SOCORRO</span>
+<span class="material-symbols-outlined">bolt</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

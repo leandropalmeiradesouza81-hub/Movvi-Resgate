@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f3d112",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#221f10",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased font-display">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<header class="flex items-center bg-background-light dark:bg-background-dark p-4 border-b border-slate-200 dark:border-primary/20 sticky top-0 z-10">
+<div class="text-primary flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-primary/10 cursor-pointer">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<div class="flex-1 flex flex-col items-center">
+<img alt="Movvi Reboque Logo" class="h-8 mb-1" data-alt="Movvi Reboque official corporate logo yellow and black" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9pDJB7L70RMvlQfkD17myeuUgpB3PidadoqxaD2rSm7Ijn1lkx_7KPNuIN7iL1yknhuoa5Zcsz_zVRXNfa7mI8tvEL2O2XxmzO93QBh_YQz6YxFdIRw36bJoxhpbcl0mODksRHg_TmVGdspuhzRDJatfe_7Vx2i2TkZcL_zHPUu4EQVYu75luLfIirgItVqOLsIPgjg3YFM_4irualwWz9frETxDYaSbp-g9IBSzXXRbHaLB0xVvZwCMpTgrcfsgiGHz0Nanf13qN"/>
+<h1 class="text-slate-900 dark:text-slate-100 text-sm font-bold leading-tight tracking-tight uppercase">Cadastro de Parceiro</h1>
+</div>
+<div class="size-10"></div>
+</header>
+<main class="flex-1 pb-24">
+<div class="@container">
+<div class="@[480px]:px-4 @[480px]:py-6">
+<div class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden @[480px]:rounded-xl min-h-[200px] relative" data-alt="Professional photo of a white Chevrolet Onix Sedan" style="background-image: url('{{DATA:IMAGE:IMAGE_15}}');">
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark/90 to-transparent"></div>
+<div class="relative p-6">
+<h2 class="text-white text-2xl font-bold">Seja um herói das estradas</h2>
+<p class="text-primary text-sm font-medium">Complete seu perfil e adquira seu Kit Resgate</p>
+</div>
+</div>
+</div>
+</div>
+<section class="px-4 py-6 space-y-6">
+<div>
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">person</span>
+                        Dados Pessoais
+                    </h3>
+<div class="grid grid-cols-1 gap-4">
+<label class="flex flex-col">
+<span class="text-slate-700 dark:text-slate-300 text-sm font-medium pb-1.5">Nome Completo</span>
+<input class="form-input flex w-full rounded-lg text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-primary/30 bg-white dark:bg-primary/5 focus:ring-2 focus:ring-primary focus:border-primary h-12 p-3 text-base" placeholder="Seu nome completo" type="text"/>
+</label>
+<label class="flex flex-col">
+<span class="text-slate-700 dark:text-slate-300 text-sm font-medium pb-1.5">CPF / CNPJ</span>
+<input class="form-input flex w-full rounded-lg text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-primary/30 bg-white dark:bg-primary/5 focus:ring-2 focus:ring-primary focus:border-primary h-12 p-3 text-base" placeholder="000.000.000-00" type="text"/>
+</label>
+</div>
+</div>
+<div>
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">directions_car</span>
+                        Dados do Veículo
+                    </h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<label class="flex flex-col">
+<span class="text-slate-700 dark:text-slate-300 text-sm font-medium pb-1.5">Placa do Reboque</span>
+<input class="form-input flex w-full rounded-lg text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-primary/30 bg-white dark:bg-primary/5 focus:ring-2 focus:ring-primary focus:border-primary h-12 p-3 text-base" placeholder="ABC-1234" type="text"/>
+</label>
+<label class="flex flex-col">
+<span class="text-slate-700 dark:text-slate-300 text-sm font-medium pb-1.5">Modelo / Ano</span>
+<input class="form-input flex w-full rounded-lg text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-primary/30 bg-white dark:bg-primary/5 focus:ring-2 focus:ring-primary focus:border-primary h-12 p-3 text-base" placeholder="Ex: VW Delivery 2022" type="text"/>
+</label>
+</div>
+</div>
+<div class="bg-primary/10 border border-primary/20 rounded-xl p-6">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="bg-primary text-background-dark text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Obrigatório</span>
+<h3 class="text-slate-900 dark:text-slate-100 text-xl font-bold mt-1">Kit Resgate Profissional</h3>
+</div>
+<div class="text-right">
+<span class="text-slate-500 dark:text-slate-400 text-xs line-through block">R$ 399</span>
+<span class="text-primary text-2xl font-black">R$ 299</span>
+</div>
+</div>
+<ul class="space-y-3 mb-6">
+<li class="flex items-center gap-3 text-sm text-slate-700 dark:text-slate-200">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Barra de Reboque Rígida (Cambão)
+                        </li>
+<li class="flex items-center gap-3 text-sm text-slate-700 dark:text-slate-200">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Reparador Instantâneo de Pneus
+                        </li>
+<li class="flex items-center gap-3 text-sm text-slate-700 dark:text-slate-200">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Cabos Auxiliares de Partida (Chupeta)
+                        </li>
+</ul>
+<div class="bg-white dark:bg-background-dark rounded-lg p-6 flex flex-col items-center border border-slate-200 dark:border-primary/10">
+<p class="text-slate-900 dark:text-slate-100 text-sm font-semibold mb-4 text-center">Pagamento via PIX</p>
+<div class="bg-white p-3 rounded-lg shadow-inner mb-4">
+<img alt="QR Code PIX" class="w-32 h-32" data-alt="PIX QR Code for payment of 299 reais" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0sslI8SYWR5RJYtg3YALex-VcqEkZS4nKM4VoFQ0PfGvrBUM_Z4ZclR7hyLca-n_8evS5pw6eaC05WzHIioDQO9tkMM9NFUtjzeI6e9w2ydLHW-K_0j1AZ__swrZHMwZfN3p2K3zRZDV65-erFi8Pbl4OzmeJgSNmLNX8EPP6nSZtqL5d78GBy61INgixPTNy52g_RPFVnzxlw6p4wWHDbiCfa_LSZlBD2X0yXH-AwJVkta4o2li5Qq6vbaVMJbchGxBt0eGt8Aqs"/>
+</div>
+<button class="w-full bg-slate-100 dark:bg-primary/5 text-slate-900 dark:text-slate-100 py-3 rounded-lg text-sm font-bold flex items-center justify-center gap-2 border border-slate-200 dark:border-primary/20">
+<span class="material-symbols-outlined text-lg">content_copy</span>
+                            Copiar Código PIX
+                        </button>
+</div>
+<div class="mt-4 flex items-start gap-3 bg-primary/20 p-4 rounded-lg">
+<span class="material-symbols-outlined text-primary">local_shipping</span>
+<p class="text-xs text-slate-800 dark:text-slate-200 leading-relaxed">
+<strong>Entrega domiciliar:</strong> O kit será enviado para o endereço cadastrado em até 5 dias úteis após a confirmação do pagamento.
+                        </p>
+</div>
+</div>
+</section>
+<div class="px-4 py-2">
+<button class="w-full bg-primary text-background-dark font-bold py-4 rounded-xl shadow-lg shadow-primary/20 flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">how_to_reg</span>
+                    Finalizar Cadastro &amp; Pedido
+                </button>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 bg-background-light dark:bg-background-dark border-t border-slate-200 dark:border-primary/20 px-4 pb-4 pt-2 flex justify-around items-center z-20">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Histórico</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Perfil</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Ajustes</span>
+</a>
+</nav>
+</div>
+</body></html>

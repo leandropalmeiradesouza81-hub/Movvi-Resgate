@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ffd900",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#23200f",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased overflow-hidden">
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<div class="absolute inset-0 z-0 bg-background-dark/90" data-alt="Dark stylized city map with navigation routes" data-location="São Paulo, Brazil" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQW6_B_yJofsXxIipCHTSlqdgYc0jISS39T_YMIErWPfJXH8RLfS3b20wUWucfgS_usW02bH697oknJvKH-KKjhBFFOw64SR_GU6CkZ-dWH-NIx-4uGr6mzGsAnYoyF0sIXDkm-mdUmNYR94IBm6g0xf9eJk-7NZtAU7aKX_MqvDQiz9F9_oiarREDXmN_rfenE5qr3VMdDPi_L2jXrJgm-UOoiEifqo5XOIfS8RdIJKCjP6-i2fRTM21TuY4euLN761KFlC4l6Qet'); background-size: cover; background-position: center;">
+<div class="absolute inset-0 bg-background-dark/40 pointer-events-none"></div>
+</div>
+<header class="relative z-10 flex items-center justify-between p-4 bg-gradient-to-b from-background-dark/80 to-transparent">
+<div class="flex items-center gap-3">
+<div class="bg-background-dark/80 backdrop-blur-md p-2 rounded-xl border border-primary/20 flex items-center gap-3 shadow-lg">
+<span class="text-xs font-bold uppercase tracking-wider text-primary ml-1">Online</span>
+<button class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-primary">
+<span class="translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background-dark shadow ring-0 transition duration-200 ease-in-out"></span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="h-10 w-10 overflow-hidden rounded-lg bg-background-dark/80 backdrop-blur-md border border-primary/20 flex items-center justify-center">
+<img alt="Company Logo" class="h-6 w-6 object-contain" data-alt="Roadside assistance company circular logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCt7DlkEIlj1CzyKf-I_QP4TYakQpS2_FUKfhxPyZVS2Zolk4g-lSuNSosrn2TKRZbroch5v_WjVFvliLdymwtwylQazMJ9LjRZb5n_6pRQ_sGeZ4LFTbAvkO269LbFo4AwT0PTj2Yy8GYK62FWsYwac-peIHnOhKYTNBITWFfVmW9hyDfhJUysITTfnmlfGh3VlNfHrMdtrTx55Z-IwGrgyPgyi8wfqDX2ypKFHWi4Cu8zIyC5FeisBXhgRkRhxVayuu5C4Xo0_B1_"/>
+</div>
+<button class="flex h-10 w-10 items-center justify-center rounded-lg bg-background-dark/80 backdrop-blur-md border border-primary/20 text-primary shadow-lg">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<div class="relative z-10 flex-1 pointer-events-none flex items-center justify-center">
+<div class="relative flex items-center justify-center">
+<div class="absolute h-32 w-32 rounded-full bg-primary/20 animate-pulse"></div>
+<div class="h-6 w-6 rounded-full bg-primary border-4 border-background-dark shadow-[0_0_15px_rgba(255,217,0,0.5)]"></div>
+</div>
+</div>
+<div class="relative z-20 flex flex-col gap-3 px-4 pb-2">
+<div class="flex flex-col items-end gap-2">
+<button class="flex h-12 w-12 items-center justify-center rounded-xl bg-background-dark/90 backdrop-blur-md text-slate-100 border border-primary/20 shadow-xl">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="flex h-12 w-12 items-center justify-center rounded-xl bg-background-dark/90 backdrop-blur-md text-slate-100 border border-primary/20 shadow-xl">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="mt-2 flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-background-dark shadow-xl">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">navigation</span>
+</button>
+</div>
+</div>
+<section class="relative z-30 mt-4 bg-background-dark border-t border-primary/20 rounded-t-[2rem] shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+<div class="flex h-6 w-full items-center justify-center">
+<div class="h-1.5 w-12 rounded-full bg-slate-700"></div>
+</div>
+<div class="px-6 pb-6 pt-2">
+<div class="flex items-center justify-between mb-6">
+<div>
+<p class="text-slate-400 text-xs font-medium uppercase tracking-widest">Saldo Atual</p>
+<h2 class="text-3xl font-bold text-slate-100">R$ 0,00</h2>
+</div>
+<button class="bg-primary/10 text-primary px-4 py-2 rounded-lg text-sm font-semibold border border-primary/30">
+                        Detalhes
+                    </button>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-800/40 border border-slate-700/50">
+<div class="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">car_repair</span>
+</div>
+<div class="flex-1">
+<p class="text-slate-100 font-semibold">Sem chamados ativos</p>
+<p class="text-slate-400 text-xs">Aguardando novas solicitações...</p>
+</div>
+<div class="h-2 w-2 rounded-full bg-primary animate-pulse"></div>
+</div>
+</div>
+</div>
+<nav class="flex gap-2 border-t border-slate-800 bg-background-dark px-4 pb-8 pt-2">
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-primary" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">home</span>
+</div>
+<p class="text-[10px] font-bold uppercase tracking-tighter">Início</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 hover:text-primary transition-colors" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">history</span>
+</div>
+<p class="text-[10px] font-bold uppercase tracking-tighter">Histórico</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 hover:text-primary transition-colors" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+<p class="text-[10px] font-bold uppercase tracking-tighter">Carteira</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 hover:text-primary transition-colors" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">person</span>
+</div>
+<p class="text-[10px] font-bold uppercase tracking-tighter">Perfil</p>
+</a>
+</nav>
+</section>
+</div>
+</body></html>

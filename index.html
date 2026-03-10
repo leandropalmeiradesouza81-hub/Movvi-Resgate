@@ -11,7 +11,7 @@
     <meta name="keywords"
         content="reboque, resgate barato, reboque de carros, aplicativo de reboque, cambão, barra rígida, reboque barra rígida, pane seca, recarga de bateria, trocar pneu, guincho barato, movvi resgate" />
     <meta name="theme-color" content="#ffd900" />
-    <link rel="manifest" href="manifest_client.json">
+    <link id="manifest-link" rel="manifest" href="manifest_client.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Movvi Resgate">
@@ -208,15 +208,19 @@
 
         @media (max-width: 440px) {
             .nav-inner {
-                padding: 0 8px !important;
-            }
-            .nav-cta {
-                font-size: 10px !important;
-                padding: 8px 10px !important;
+                padding: 0 4px !important;
                 gap: 4px !important;
             }
+            .nav-cta {
+                font-size: 9px !important;
+                padding: 6px 8px !important;
+                gap: 4px !important;
+                white-space: nowrap !important;
+                flex: 1 !important;
+                justify-content: center !important;
+            }
             .nav-logo img {
-                height: 70px !important;
+                height: 50px !important;
                 margin-left: -5px !important;
             }
         }
@@ -1669,26 +1673,45 @@
             console.log('PWA prompt ready');
         });
 
-        const triggerInstall = (ev) => {
+        function updateManifest(type) {
+            const manifestLink = document.getElementById('manifest-link');
+            if (manifestLink) {
+                manifestLink.href = type === 'driver' ? 'manifest_driver.json' : 'manifest_client.json';
+            }
+        }
+
+        const handleInstall = (ev, type) => {
+            updateManifest(type);
             if (deferredPrompt) {
                 ev.preventDefault();
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
-                        console.log('App installed');
+                        console.log('App installed:', type);
                     }
                     deferredPrompt = null;
                 });
             }
         };
 
-        if (textBtn) textBtn.addEventListener('click', triggerInstall);
-        if (heroCta) heroCta.addEventListener('click', triggerInstall);
-        if (finalCta) finalCta.addEventListener('click', triggerInstall);
+        if (textBtn) {
+            textBtn.addEventListener('click', (e) => handleInstall(e, 'client'));
+            textBtn.addEventListener('mouseenter', () => updateManifest('client'));
+            textBtn.addEventListener('touchstart', () => updateManifest('client'));
+        }
+        if (heroCta) heroCta.addEventListener('click', (e) => handleInstall(e, 'client'));
+        if (finalCta) finalCta.addEventListener('click', (e) => handleInstall(e, 'client'));
         
-        // Botões de Motorista apontam para driver.html mas tentam instalar se o prompt estiver livre
-        if (driverBtn) driverBtn.addEventListener('click', triggerInstall);
-        if (recruitBtn) recruitBtn.addEventListener('click', triggerInstall);
+        if (driverBtn) {
+            driverBtn.addEventListener('click', (e) => handleInstall(e, 'driver'));
+            driverBtn.addEventListener('mouseenter', () => updateManifest('driver'));
+            driverBtn.addEventListener('touchstart', () => updateManifest('driver'));
+        }
+        if (recruitBtn) {
+            recruitBtn.addEventListener('click', (e) => handleInstall(e, 'driver'));
+            recruitBtn.addEventListener('mouseenter', () => updateManifest('driver'));
+            recruitBtn.addEventListener('touchstart', () => updateManifest('driver'));
+        }
 
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
             if (textBtn) textBtn.style.display = 'none';

@@ -9,7 +9,7 @@ const resend = new Resend('re_aEabgbLG_BFgMQHvJnp5DYjKEbcPawAtS'); // Resend API
 const buildEmailTemplate = (name, resetUrl) => `
 <div style="background-color: #0a0a0a; color: #ffffff; padding: 50px 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; border-radius: 0;">
   <div style="max-width: 500px; margin: 0 auto; background-color: #1a170e; padding: 40px; border: 1px solid #363117; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
-    <img src="https://movvi-resgate.onrender.com/assets/images/logo_movvi.png" width="200" alt="Movvi Resgate" style="margin-bottom: 30px;">
+    <img src="https://movviresgate.com/assets/images/logo_movvi.png" width="200" alt="Movvi Resgate" style="margin-bottom: 30px;">
     
     <h1 style="color: #ffd900; font-size: 24px; font-weight: 800; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Recuperação de Senha</h1>
     <p style="color: #a1a1aa; font-size: 15px; margin-bottom: 30px;">Olá, <b>${name}</b>! Recebemos uma solicitação para redefinir o acesso à sua conta Movvi.</p>
@@ -43,7 +43,7 @@ async function handleForgotPassword(req, res, collection) {
     user.resetExpires = Date.now() + 3600000; // 1 hour
     await req.db.write();
 
-    const baseUrl = process.env.RENDER_EXTERNAL_URL || 'https://movvi-resgate.onrender.com';
+    const baseUrl = 'https://movviresgate.com';
     const type = collection === 'clients' ? 'client' : 'driver';
     const resetUrl = `${baseUrl}/reset-password.html?token=${token}&type=${type}`;
 

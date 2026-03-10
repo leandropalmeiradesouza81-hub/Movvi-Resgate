@@ -6,19 +6,19 @@ const router = Router();
 const resend = new Resend('re_aEabgbLG_BFgMQHvJnp5DYjKEbcPawAtS'); // Resend API Key applied
 
 // Common Email Template Builder
-const buildEmailTemplate = (name, resetUrl) => `
+const buildEmailTemplate = (name, title, content, buttonText = null, buttonUrl = null) => `
 <div style="background-color: #0a0a0a; color: #ffffff; padding: 50px 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; border-radius: 0;">
   <div style="max-width: 500px; margin: 0 auto; background-color: #1a170e; padding: 40px; border: 1px solid #363117; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
     <img src="https://movviresgate.com/assets/images/logo_movvi.png" width="200" alt="Movvi Resgate" style="margin-bottom: 30px;">
     
-    <h1 style="color: #ffd900; font-size: 24px; font-weight: 800; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Recuperação de Senha</h1>
-    <p style="color: #a1a1aa; font-size: 15px; margin-bottom: 30px;">Olá, <b>${name}</b>! Recebemos uma solicitação para redefinir o acesso à sua conta Movvi.</p>
+    <h1 style="color: #ffd900; font-size: 24px; font-weight: 800; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">${title}</h1>
+    <p style="color: #ffffff; font-size: 16px; font-weight: 600; margin-bottom: 10px;">Olá, ${name}!</p>
+    <div style="color: #a1a1aa; font-size: 14px; line-height: 1.6; margin-bottom: 30px;">${content}</div>
     
+    ${buttonText && buttonUrl ? `
     <div style="margin: 40px 0;">
-      <a href="${resetUrl}" style="background-color: #ffd900; color: #1a1400; font-weight: 900; padding: 18px 35px; text-decoration: none; border-radius: 16px; font-size: 16px; display: inline-block; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(255,217,0,0.3); text-transform: uppercase; letter-spacing: 0.5px;">Redefinir Senha</a>
-    </div>
-    
-    <p style="color: #71717a; font-size: 12px; line-height: 1.6;">Este link expira em 1 hora. Se você não solicitou a redefinição, apenas ignore este email.</p>
+      <a href="${buttonUrl}" style="background-color: #ffd900; color: #1a1400; font-weight: 900; padding: 18px 35px; text-decoration: none; border-radius: 16px; font-size: 15px; display: inline-block; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(255,217,0,0.3); text-transform: uppercase; letter-spacing: 0.5px;">${buttonText}</a>
+    </div>` : ''}
     
     <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #2d2812;">
       <p style="font-size: 10px; color: #4b441d; letter-spacing: 2px; font-weight: bold; text-transform: uppercase;">Movvi Resgate &bull; Parceiro de Confiança</p>
@@ -49,16 +49,21 @@ async function handleForgotPassword(req, res, collection) {
 
     try {
         await resend.emails.send({
-            from: 'Movvi Resgate <noreply@movvi.com>',
+            from: 'Movvi Resgate <noreply@movviresgate.com>',
             to: [email],
             subject: 'Redefinição de Senha - Movvi Resgate',
-            html: buildEmailTemplate(user.name?.split(' ')[0] || 'Parceiro', resetUrl)
+            html: buildEmailTemplate(
+                user.name?.split(' ')[0] || 'Parceiro',
+                'Recuperação de Senha',
+                'Recebemos uma solicitação para redefinir o acesso à sua conta Movvi. Se não foi você, apenas ignore este email.',
+                'Redefinir Senha',
+                resetUrl
+            )
         });
-        console.log(`[AUTH] Reset email sent to ${email} (${type})`);
         res.json({ message: 'Se o email existir, um link de recuperação será enviado.' });
     } catch (error) {
-        console.error('[AUTH] Email error:', error);
-        res.status(500).json({ error: 'Erro ao enviar email. Tente novamente mais tarde.' });
+        console.error('[AUTH] Reset Email error:', error);
+        res.status(500).json({ error: 'Erro ao enviar email.' });
     }
 }
 
@@ -108,6 +113,25 @@ router.post('/register/client', async (req, res) => {
     };
     req.db.data.clients.push(client);
     await req.db.write();
+
+    // Send Welcome Email
+    try {
+        await resend.emails.send({
+            from: 'Movvi Resgate <welcome@movviresgate.com>',
+            to: [email],
+            subject: 'Bem-vindo à Movvi Resgate!',
+            html: buildEmailTemplate(
+                name.split(' ')[0], 
+                'Seja Bem-vindo!', 
+                'Sua conta foi criada com sucesso. Agora você tem acesso à rede de assistência veicular mais rápida do Brasil.',
+                'Acessar Minha Conta',
+                'https://movviresgate.com/client.html'
+            )
+        });
+    } catch (e) {
+        console.error('[AUTH] Welcome email error:', e);
+    }
+
     const { password: _, ...safe } = client;
     res.status(201).json(safe);
 });
@@ -146,6 +170,25 @@ router.post('/register/driver', async (req, res) => {
     };
     req.db.data.drivers.push(driver);
     await req.db.write();
+
+    // Send Welcome Email for Driver
+    try {
+        await resend.emails.send({
+            from: 'Movvi Resgate <welcome@movviresgate.com>',
+            to: [email],
+            subject: 'Seja um Motorista Parceiro Movvi!',
+            html: buildEmailTemplate(
+                name.split(' ')[0], 
+                'Bem-vindo, Parceiro!', 
+                'Seu cadastro foi recebido! O próximo passo é enviar seus documentos no aplicativo para começar a ganhar dinheiro com resgates.',
+                'Completar Cadastro',
+                'https://movviresgate.com/driver.html'
+            )
+        });
+    } catch (e) {
+        console.error('[AUTH] Welcome email error:', e);
+    }
+
     const { password: _, ...safe } = driver;
     res.status(201).json({ user: safe, token: `driver_${driver.id}` });
 });

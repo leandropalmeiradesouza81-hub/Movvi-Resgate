@@ -1578,103 +1578,6 @@ async function initApp() {
   }
 }
 
-// ═══ SPLASH SCREEN ═══
-function splashView() {
-  const d = document.createElement('div'); d.className = 'view active flex flex-col items-center justify-center overflow-hidden';
-  d.style.background = '#FFD900';
-  d.innerHTML = `
-    <canvas id="splash-canvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
-    <div id="splash-logo-container" class="flex flex-col items-center gap-8 relative z-10">
-      <div class="relative group">
-        <div class="absolute inset-0 bg-white rounded-full blur-[60px] opacity-0 aura-pulse" style="animation: auraShow 1.5s ease-out forwards"></div>
-        <div class="absolute inset-[-20%] border-4 border-white/30 rounded-full scale-0" style="animation: ringExpand 2s cubic-bezier(0.16, 1, 0.3, 1) infinite"></div>
-        <div id="logo-wrap" class="relative transition-all duration-700" style="animation: logoPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards">
-          <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="w-64 h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
-        </div>
-      </div>
-      <div class="flex flex-col items-center gap-3" style="animation: fadeIn 0.8s ease-out 0.6s forwards; opacity: 0">
-        <h1 class="text-[#1a1400] text-2xl font-black italic uppercase tracking-[0.3em]">Movvi Resgate</h1>
-        <div class="flex gap-2">
-          <div class="h-1 w-12 bg-[#1a1400]/10 rounded-full overflow-hidden">
-            <div class="h-full bg-[#1a1400] rounded-full animate-loader"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <style>
-      @keyframes auraShow { from { opacity: 0; transform: scale(0.5); } to { opacity: 0.5; transform: scale(1.2); } }
-      @keyframes ringExpand { 0% { opacity: 0.8; transform: scale(0.8); } 100% { opacity: 0; transform: scale(1.6); } }
-      @keyframes logoPop { from { opacity: 0; transform: scale(0.5) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-      @keyframes animate-loader { 0% { width: 0%; transform: translateX(-100%); } 50% { width: 40%; } 100% { width: 100%; transform: translateX(100%); } }
-      .animate-loader { animation: animate-loader 2s ease-in-out infinite; }
-      .aura-pulse { animation: auraShow 1.5s ease-out forwards, auraPulse 3s ease-in-out infinite 1.5s; }
-      @keyframes auraPulse { 0%, 100% { transform: scale(1.2); opacity: 0.5; } 50% { transform: scale(1.4); opacity: 0.7; } }
-    </style>
-  `;
-
-  const canvas = d.querySelector('#splash-canvas');
-  if (canvas) {
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-    window.addEventListener('resize', resize);
-    resize();
-
-    class Particle {
-      constructor(x, y, color) {
-        this.x = x; this.y = y;
-        this.size = Math.random() * 4 + 2;
-        this.speedX = (Math.random() - 0.5) * 15;
-        this.speedY = (Math.random() - 0.5) * 15;
-        this.color = color;
-        this.opacity = 1;
-      }
-      update() {
-        this.x += this.speedX; this.y += this.speedY;
-        this.opacity -= 0.02;
-        if (this.size > 0.1) this.size -= 0.05;
-      }
-      draw() {
-        ctx.globalAlpha = this.opacity; ctx.fillStyle = this.color; ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-      }
-    }
-
-    function explode() {
-      const container = d.querySelector('#logo-wrap');
-      const rect = container.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      container.style.opacity = '0'; container.style.transform = 'scale(1.5)'; container.style.filter = 'blur(20px)';
-      for (let i = 0; i < 150; i++) {
-        particles.push(new Particle(centerX, centerY, '#1a1400'));
-        particles.push(new Particle(centerX, centerY, '#FFFFFF'));
-      }
-      d.style.transition = 'all 0.8s ease-out'; d.style.background = '#000000';
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < particles.length; i++) {
-        particles[i].update(); particles[i].draw();
-        if (particles[i].opacity <= 0) { particles.splice(i, 1); i--; }
-      }
-      requestAnimationFrame(animate);
-    }
-    animate();
-
-    setTimeout(() => {
-      explode();
-      setTimeout(() => {
-        const saved = loadUser();
-        if (saved) { user = saved; initApp(); } else { nav(loginView); }
-      }, 800);
-    }, 3200);
-  }
-  return d;
-}
-
 function startApp() {
   console.log('[DEBUG] startApp executing');
   appContent = document.getElementById('app-content');
@@ -1687,7 +1590,13 @@ function startApp() {
   }
 
   sidebarOverlay.onclick = closeSidebar;
-  nav(splashView);
+  const saved = loadUser();
+  if (saved) {
+    user = saved;
+    initApp();
+  } else {
+    nav(loginView);
+  }
 }
 
 // ─── STARTUP ───

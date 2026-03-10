@@ -1435,10 +1435,6 @@
                     <span class="material-symbols-outlined">install_mobile</span>
                     Baixar App
                 </a>
-                <a href="driver.html" class="nav-cta" id="installDriverAppText" style="background: #000; color: #fff; border: 2px solid #ffd900; font-weight: 800; padding: 10px 20px;">
-                    <span class="material-symbols-outlined">drive_eta</span>
-                    App Parceiro
-                </a>
             </div>
         </div>
     </nav>
@@ -1662,7 +1658,6 @@
         // App Installation Logic (Pure and Direct)
         let deferredPrompt;
         const clientBtn = document.getElementById('installAppText');
-        const driverBtn = document.getElementById('installDriverAppText');
         const heroBtn = document.querySelector('.btn-hero-primary');
         const recruitBtn = document.querySelector('.btn-recruit');
 
@@ -1693,17 +1688,10 @@
 
         if (clientBtn) clientBtn.addEventListener('click', handleClientInstall);
         if (heroBtn) heroBtn.addEventListener('click', handleClientInstall);
-        if (driverBtn) driverBtn.addEventListener('click', handleDriverInstall);
         if (recruitBtn) recruitBtn.addEventListener('click', handleDriverInstall);
 
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
             if (clientBtn) clientBtn.style.display = 'none';
-            if (driverBtn) driverBtn.style.display = 'none';
-        }
-
-        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-            if (textBtn) textBtn.style.display = 'none';
-            if (driverBtn) driverBtn.style.display = 'none';
         }
         // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {

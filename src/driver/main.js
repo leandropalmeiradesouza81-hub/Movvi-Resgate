@@ -2297,7 +2297,13 @@ function startApp() {
   }
   
   sidebarOverlay.onclick = closeSidebar;
-  nav(splashView);
+  const saved = loadUser();
+  if (saved) {
+    user = saved;
+    initApp();
+  } else {
+    nav(loginView);
+  }
 }
 
 if (document.readyState === 'loading') {

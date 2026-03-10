@@ -11,7 +11,7 @@
     <meta name="keywords"
         content="reboque, resgate barato, reboque de carros, aplicativo de reboque, cambão, barra rígida, reboque barra rígida, pane seca, recarga de bateria, trocar pneu, guincho barato, movvi resgate" />
     <meta name="theme-color" content="#ffd900" />
-    <link id="manifest-link" rel="manifest" href="manifest_client.json">
+    <link rel="manifest" href="manifest_client.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Movvi Resgate">
@@ -1670,18 +1670,16 @@
         });
 
         const triggerInstall = (ev) => {
-            if (!deferredPrompt) {
-                // Se não houver prompt, apenas segue o fluxo normal
-                return;
+            if (deferredPrompt) {
+                ev.preventDefault();
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('App installed');
+                    }
+                    deferredPrompt = null;
+                });
             }
-            ev.preventDefault();
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('User installed the app');
-                }
-                deferredPrompt = null;
-            });
         };
 
         if (textBtn) textBtn.addEventListener('click', triggerInstall);

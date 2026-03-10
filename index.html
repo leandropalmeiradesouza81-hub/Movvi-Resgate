@@ -206,6 +206,21 @@
             }
         }
 
+        @media (max-width: 440px) {
+            .nav-inner {
+                padding: 0 8px !important;
+            }
+            .nav-cta {
+                font-size: 10px !important;
+                padding: 8px 10px !important;
+                gap: 4px !important;
+            }
+            .nav-logo img {
+                height: 70px !important;
+                margin-left: -5px !important;
+            }
+        }
+
         .nav-cta:hover {
             background: #fff;
             transform: translateY(-2px);
@@ -1411,10 +1426,16 @@
                 <img src="assets/images/logo_movvi.png" alt="Movvi Resgate"
                     style="height:160px;object-fit:contain;margin-top:-10px;margin-bottom:-10px; filter: grayscale(100%) brightness(0); position: relative; z-index: 5;">
             </div>
-            <a href="client.html" class="nav-cta" id="installAppText" style="gap: 8px; padding: 10px 16px;">
-                <span class="material-symbols-outlined">install_mobile</span>
-                Baixar O App
-            </a>
+            <div class="flex gap-2">
+                <a href="client.html" class="nav-cta" id="installAppText" style="gap: 8px; padding: 10px 16px;">
+                    <span class="material-symbols-outlined">install_mobile</span>
+                    Baixar O App
+                </a>
+                <a href="driver.html" class="nav-cta" id="installDriverAppText" style="gap: 8px; padding: 10px 16px; background: #111; color: #fff; border: 2px solid #ffd900;">
+                    <span class="material-symbols-outlined">drive_eta</span>
+                    App Parceiro
+                </a>
+            </div>
         </div>
     </nav>
 
@@ -1636,85 +1657,44 @@
 
         // App Installation
         let deferredPrompt;
-        const manifestLink = document.getElementById('manifest-link');
         const textBtn = document.getElementById('installAppText');
+        const driverBtn = document.getElementById('installDriverAppText');
         const recruitBtn = document.querySelector('.btn-recruit');
-
-        function updateManifest(type) {
-            if (type === 'driver') {
-                manifestLink.href = 'manifest_driver.json';
-            } else {
-                manifestLink.href = 'manifest_client.json';
-            }
-        }
+        const heroCta = document.querySelector('.btn-hero-primary');
+        const finalCta = document.querySelector('.btn-cta');
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            console.log('Installation prompt captured');
+            console.log('PWA prompt ready');
         });
 
-        const handleInstall = (ev, type) => {
+        const triggerInstall = (ev) => {
+            if (!deferredPrompt) {
+                // Se não houver prompt, apenas segue o fluxo normal
+                return;
+            }
             ev.preventDefault();
-            const btn = ev.currentTarget;
-            
-            // Visual feedback - Aura effect on click
-            btn.style.transition = 'all 0.5s ease';
-            btn.style.boxShadow = '0 0 50px rgba(255, 217, 0, 0.8)';
-            btn.style.transform = 'scale(0.95)';
-            const originalTitle = btn.innerText;
-            btn.innerText = 'Preparando...';
-
-            updateManifest(type);
-            
-            setTimeout(() => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then((choiceResult) => {
-                        btn.innerText = originalTitle;
-                        btn.style.transform = '';
-                        btn.style.boxShadow = '';
-                        if (choiceResult.outcome === 'accepted') {
-                            console.log('User installed ' + type + ' app');
-                        }
-                        deferredPrompt = null;
-                    });
-                } else {
-                    // Feedback visual se já estiver instalado ou indisponível
-                    btn.innerText = 'Abrindo App...';
-                    setTimeout(() => {
-                        window.location.href = type === 'driver' ? 'driver.html' : 'client.html';
-                    }, 800);
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User installed the app');
                 }
-            }, 600);
+                deferredPrompt = null;
+            });
         };
 
-        if (textBtn) {
-            textBtn.addEventListener('click', (e) => handleInstall(e, 'client'));
-            textBtn.addEventListener('mouseenter', () => updateManifest('client'));
-            textBtn.addEventListener('touchstart', () => updateManifest('client'));
-        }
-
-        if (recruitBtn) {
-            recruitBtn.addEventListener('click', (e) => handleInstall(e, 'driver'));
-            recruitBtn.addEventListener('mouseenter', () => updateManifest('driver'));
-            recruitBtn.addEventListener('touchstart', () => updateManifest('driver'));
-        }
+        if (textBtn) textBtn.addEventListener('click', triggerInstall);
+        if (heroCta) heroCta.addEventListener('click', triggerInstall);
+        if (finalCta) finalCta.addEventListener('click', triggerInstall);
         
-        // Adicionamos também o suporte para o botão do Hero (Chamar Resgate)
-        const heroCta = document.querySelector('.btn-hero-primary');
-        if (heroCta) {
-            heroCta.addEventListener('click', (e) => handleInstall(e, 'client'));
-        }
-        
-        // E para o botão do CTA final
-        const finalCta = document.querySelector('.btn-cta');
-        if (finalCta) {
-            finalCta.addEventListener('click', (e) => handleInstall(e, 'client'));
-        }
+        // Botões de Motorista apontam para driver.html mas tentam instalar se o prompt estiver livre
+        if (driverBtn) driverBtn.addEventListener('click', triggerInstall);
+        if (recruitBtn) recruitBtn.addEventListener('click', triggerInstall);
 
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
             if (textBtn) textBtn.style.display = 'none';
+            if (driverBtn) driverBtn.style.display = 'none';
         }
         // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {

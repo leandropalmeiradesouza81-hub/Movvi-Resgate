@@ -1,0 +1,24 @@
+{
+    "name": "Movvi - Motorista Parceiro",
+    "short_name": "Motorista Movvi",
+    "description": "Multiplique seus ganhos como motorista parceiro Movvi Resgate.",
+    "start_url": "/driver.html",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#ffd900",
+    "theme_color": "#ffd900",
+    "icons": [
+        {
+            "src": "assets/images/logo_movvi_icon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "assets/images/logo_movvi_icon.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

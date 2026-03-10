@@ -11,7 +11,7 @@
     <meta name="keywords"
         content="reboque, resgate barato, reboque de carros, aplicativo de reboque, cambão, barra rígida, reboque barra rígida, pane seca, recarga de bateria, trocar pneu, guincho barato, movvi resgate" />
     <meta name="theme-color" content="#ffd900" />
-    <link rel="manifest" href="manifest.json">
+    <link id="manifest-link" rel="manifest" href="manifest_client.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Movvi Resgate">
@@ -1636,30 +1636,54 @@
 
         // App Installation
         let deferredPrompt;
+        const manifestLink = document.getElementById('manifest-link');
+        const textBtn = document.getElementById('installAppText');
+        const recruitBtn = document.querySelector('.btn-recruit');
+
+        function updateManifest(type) {
+            if (type === 'driver') {
+                manifestLink.href = 'manifest_driver.json';
+            } else {
+                manifestLink.href = 'manifest_client.json';
+            }
+        }
+
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            const textBtn = document.getElementById('installAppText');
-            const recruitBtn = document.querySelector('.btn-recruit');
+            console.log('Installation prompt captured');
+        });
 
-            const install = (ev) => {
-                if (!deferredPrompt) return;
+        const handleInstall = (ev, type) => {
+            if (deferredPrompt) {
                 ev.preventDefault();
+                updateManifest(type);
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
+                        console.log('User installed ' + type + ' app');
                     }
                     deferredPrompt = null;
                 });
-            };
+            } else {
+                // If no prompt, just follow the link
+                // window.location.href = type === 'driver' ? 'driver.html' : 'client.html';
+            }
+        };
 
-            if (textBtn) textBtn.addEventListener('click', install);
-            if (recruitBtn) recruitBtn.addEventListener('click', install);
-        });
+        if (textBtn) {
+            textBtn.addEventListener('click', (e) => handleInstall(e, 'client'));
+            textBtn.addEventListener('mouseenter', () => updateManifest('client'));
+            textBtn.addEventListener('touchstart', () => updateManifest('client'));
+        }
+
+        if (recruitBtn) {
+            recruitBtn.addEventListener('click', (e) => handleInstall(e, 'driver'));
+            recruitBtn.addEventListener('mouseenter', () => updateManifest('driver'));
+            recruitBtn.addEventListener('touchstart', () => updateManifest('driver'));
+        }
 
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-            const textBtn = document.getElementById('installAppText');
             if (textBtn) textBtn.style.display = 'none';
         }
         // PWA Service Worker Registration

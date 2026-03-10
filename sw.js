@@ -4,6 +4,8 @@ const ASSETS = [
     '/index.html',
     '/client.html',
     '/driver.html',
+    '/manifest_client.json',
+    '/manifest_driver.json',
     '/assets/images/logo_movvi.png',
     '/assets/images/logo_movvi_icon.png',
     '/assets/images/hero_bg.png'

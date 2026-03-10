@@ -1655,20 +1655,38 @@
         });
 
         const handleInstall = (ev, type) => {
-            if (deferredPrompt) {
-                ev.preventDefault();
-                updateManifest(type);
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User installed ' + type + ' app');
-                    }
-                    deferredPrompt = null;
-                });
-            } else {
-                // If no prompt, just follow the link
-                // window.location.href = type === 'driver' ? 'driver.html' : 'client.html';
-            }
+            ev.preventDefault();
+            const btn = ev.currentTarget;
+            
+            // Visual feedback - Aura effect on click
+            btn.style.transition = 'all 0.5s ease';
+            btn.style.boxShadow = '0 0 50px rgba(255, 217, 0, 0.8)';
+            btn.style.transform = 'scale(0.95)';
+            const originalTitle = btn.innerText;
+            btn.innerText = 'Preparando...';
+
+            updateManifest(type);
+            
+            setTimeout(() => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        btn.innerText = originalTitle;
+                        btn.style.transform = '';
+                        btn.style.boxShadow = '';
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User installed ' + type + ' app');
+                        }
+                        deferredPrompt = null;
+                    });
+                } else {
+                    // Feedback visual se já estiver instalado ou indisponível
+                    btn.innerText = 'Abrindo App...';
+                    setTimeout(() => {
+                        window.location.href = type === 'driver' ? 'driver.html' : 'client.html';
+                    }, 800);
+                }
+            }, 600);
         };
 
         if (textBtn) {
@@ -1681,6 +1699,18 @@
             recruitBtn.addEventListener('click', (e) => handleInstall(e, 'driver'));
             recruitBtn.addEventListener('mouseenter', () => updateManifest('driver'));
             recruitBtn.addEventListener('touchstart', () => updateManifest('driver'));
+        }
+        
+        // Adicionamos também o suporte para o botão do Hero (Chamar Resgate)
+        const heroCta = document.querySelector('.btn-hero-primary');
+        if (heroCta) {
+            heroCta.addEventListener('click', (e) => handleInstall(e, 'client'));
+        }
+        
+        // E para o botão do CTA final
+        const finalCta = document.querySelector('.btn-cta');
+        if (finalCta) {
+            finalCta.addEventListener('click', (e) => handleInstall(e, 'client'));
         }
 
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {

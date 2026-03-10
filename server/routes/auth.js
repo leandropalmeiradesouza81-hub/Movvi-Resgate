@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { Resend } from 'resend';
 
 const router = Router();
-const resend = new Resend(process.env.RESEND_API_KEY || 're_placeholder_key'); // Set in Render ENV
+const resend = new Resend('re_aEabgbLG_BFgMQHvJnp5DYjKEbcPawAtS'); // Resend API Key applied
 
 // Common Email Template Builder
 const buildEmailTemplate = (name, resetUrl) => `

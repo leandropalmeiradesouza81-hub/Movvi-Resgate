@@ -404,6 +404,44 @@ async function checkActiveOrder() {
   } catch (e) { console.error('Erro checkActiveOrder:', e); }
 }
 
+// ═══ SPLASH SCREEN ═══
+function splashView() {
+  const d = document.createElement('div'); d.className = 'view active flex flex-col items-center justify-center p-10';
+  d.style.background = '#FFD900';
+  d.innerHTML = `
+    <div class="flex flex-col items-center gap-6" style="animation: scaleInBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards">
+      <div class="relative">
+        <div class="absolute inset-0 bg-white/20 rounded-full blur-2xl animate-pulse"></div>
+        <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="w-64 h-auto object-contain relative z-10 drop-shadow-2xl">
+      </div>
+      <div class="flex flex-col items-center gap-2" style="animation: fadeIn 0.5s ease-out 0.4s forwards; opacity: 0">
+        <h1 class="text-[#1a1400] text-xl font-black italic uppercase tracking-[0.2em]">Motorista Parceiro</h1>
+        <div class="flex gap-1.5">
+          <div class="size-2 rounded-full bg-[#1a1400]/20 animate-bounce" style="animation-delay:0s"></div>
+          <div class="size-2 rounded-full bg-[#1a1400]/20 animate-bounce" style="animation-delay:0.1s"></div>
+          <div class="size-2 rounded-full bg-[#1a1400]/20 animate-bounce" style="animation-delay:0.2s"></div>
+        </div>
+      </div>
+    </div>
+    <style>
+      @keyframes scaleInBounce { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+  `;
+
+  setTimeout(() => {
+    const saved = loadUser();
+    if (saved) {
+      user = saved;
+      // Re-initialize app or go to dashboard
+      initApp();
+    } else {
+      nav(loginView);
+    }
+  }, 2500); // 2.5s splash
+  return d;
+}
+
 // ═══ LOGIN ═══
 function loginView() {
   const d = document.createElement('div'); d.className = 'view active';
@@ -414,7 +452,8 @@ function loginView() {
   <div class="bg-[#FFD900] relative overflow-hidden px-6 pt-14 pb-12 flex flex-col items-center text-center" style="animation:fadeUpIn 0.5s ease-out forwards">
     <div class="absolute inset-0 pointer-events-none" style="background:linear-gradient(135deg,rgba(0,0,0,0.03) 0%,transparent 50%,rgba(255,255,255,0.06) 100%)"></div>
     <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="w-64 h-auto object-contain relative z-10 mb-2 drop-shadow-lg">
-    <p class="text-[#1a1400]/50 text-[13px] font-semibold mt-1 relative z-10">Motorista Parceiro</p>
+    <h1 class="text-[#1a1400] text-xl font-black italic uppercase tracking-[0.15em] relative z-10 mt-1">Motorista Parceiro</h1>
+    <p class="text-[#1a1400]/40 text-[11px] font-bold uppercase tracking-widest relative z-10 mt-1">Conectando você a novos resgates</p>
   </div>
 
   <!-- Form section -->
@@ -2160,30 +2199,21 @@ function clientChatView(data) {
   return d;
 }
 
+// ─── STARTUP ───
 function startApp() {
   appContent = document.getElementById('app-content');
   sidebar = document.getElementById('sidebar');
   sidebarOverlay = document.getElementById('sidebar-overlay');
-
+  
   if (!appContent || !sidebarOverlay) {
     console.error('CRITICAL: DOM elements not found.');
     return;
   }
-
+  
   sidebarOverlay.onclick = closeSidebar;
-
-  const saved = loadUser();
-  if (saved) {
-    user = saved;
-    connectSocket();
-    buildSidebar();
-    (!user.approved && user.onboardingStep !== 'approved') ? nav(onboardingView) : nav(dashboardView);
-  } else {
-    nav(loginView);
-  }
+  nav(splashView);
 }
 
-// ─── STARTUP ───
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', startApp);
 } else {

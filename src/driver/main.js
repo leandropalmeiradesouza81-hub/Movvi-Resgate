@@ -424,7 +424,7 @@ function loginView() {
         <label class="text-[#1a1400] dark:text-white/70 text-[12px] font-bold uppercase tracking-[0.08em] pl-1">Email</label>
         <div class="relative">
           <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-[#1a1400]/30 dark:text-white/25"><span class="material-symbols-outlined text-[18px]">mail</span></span>
-          <input class="form-input w-full bg-white dark:bg-white/[0.06] border-2 border-[#e8e4d9] dark:border-white/10 text-[#1a1400] dark:text-white placeholder-[#1a1400]/25 dark:placeholder-white/20 pl-11 py-3.5 text-[15px] font-semibold rounded-2xl focus:border-primary focus:ring-0 outline-none transition-all" id="le" type="email" placeholder="motorista@movvi.com" value="motorista@movvi.com"/>
+          <input class="form-input w-full bg-white dark:bg-white/[0.06] border-2 border-[#e8e4d9] dark:border-white/10 text-[#1a1400] dark:text-white placeholder-[#1a1400]/25 dark:placeholder-white/20 pl-11 py-3.5 text-[15px] font-semibold rounded-2xl focus:border-primary focus:ring-0 outline-none transition-all" id="le" type="email" placeholder="motorista@movvi.com" />
         </div>
       </div>
       <div class="flex flex-col gap-1.5">
@@ -434,7 +434,7 @@ function loginView() {
         </div>
         <div class="relative">
           <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-[#1a1400]/30 dark:text-white/25"><span class="material-symbols-outlined text-[18px]">lock</span></span>
-          <input class="form-input w-full bg-white dark:bg-white/[0.06] border-2 border-[#e8e4d9] dark:border-white/10 text-[#1a1400] dark:text-white placeholder-[#1a1400]/25 dark:placeholder-white/20 pl-11 py-3.5 text-[15px] font-semibold rounded-2xl focus:border-primary focus:ring-0 outline-none transition-all" id="lp" type="password" placeholder="••••••" value="123456"/>
+          <input class="form-input w-full bg-white dark:bg-white/[0.06] border-2 border-[#e8e4d9] dark:border-white/10 text-[#1a1400] dark:text-white placeholder-[#1a1400]/25 dark:placeholder-white/20 pl-11 py-3.5 text-[15px] font-semibold rounded-2xl focus:border-primary focus:ring-0 outline-none transition-all" id="lp" type="password" placeholder="••••••" />
         </div>
       </div>
       <div id="le-err" class="text-red-500 text-xs font-bold hidden"></div>

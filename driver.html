@@ -65,7 +65,7 @@
             #phone {
                 width: 390px;
                 box-shadow: 0 0 60px rgba(0, 0, 0, 0.2);
-                border: 1px solid #d1d5db;
+                border: none;
                 margin: 0 auto;
             }
         }
@@ -79,6 +79,65 @@
             html.dark #phone {
                 box-shadow: 0 0 60px rgba(0, 0, 0, 1);
             }
+        }
+
+        /* Invitation Banner */
+        #install-invitation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #FFD900;
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        #install-invitation img {
+            width: 120px;
+            margin-bottom: 2rem;
+        }
+
+        #install-invitation h2 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #1a1400;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        #install-invitation p {
+            color: #1a1400;
+            opacity: 0.7;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        #btn-install-driver {
+            background: #1a1400;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        #btn-skip-install {
+            margin-top: 1.5rem;
+            color: #1a1400;
+            opacity: 0.5;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.8rem;
         }
 
         /* Content area */
@@ -229,6 +288,15 @@
 </head>
 
 <body>
+    <!-- Invitation Banner (Only shows if PWA not installed) -->
+    <div id="install-invitation">
+        <img src="assets/images/logo_movvi.png" alt="Movvi Resgate">
+        <h2>Baixe o App Parceiro</h2>
+        <p>Aumente sua produtividade instalando nossa ferramenta oficial direto no seu celular.</p>
+        <button id="btn-install-driver">Instalar Agora</button>
+        <button id="btn-skip-install">Vou baixar depois</button>
+    </div>
+
     <div id="phone">
         <div id="sidebar-overlay"></div>
         <aside id="sidebar"></aside>
@@ -239,15 +307,42 @@
     <script>
         // PWA Installation Handler for Driver App
         let deferredPrompt;
+        const installBanner = document.getElementById('install-invitation');
+        const installBtn = document.getElementById('btn-install-driver');
+        const skipBtn = document.getElementById('btn-skip-install');
+
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
             console.log('Driver App install prompt captured');
             
-            // Optional: Show a custom install button or snackbar here if needed
-            // For now, it will rely on the browser's native capabilities 
-            // and the user interaction handled in index.html
+            // Show the invitation banner if not in standalone mode
+            if (installBanner && !window.matchMedia('(display-mode: standalone)').matches) {
+                installBanner.style.display = 'flex';
+            }
         });
+
+        if (installBtn) {
+            installBtn.onclick = () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            installBanner.style.display = 'none';
+                        }
+                        deferredPrompt = null;
+                    });
+                } else {
+                    alert('Para baixar o app, procure pela opção "Instalar App" ou "Adicionar à tela de início" no menu do seu navegador.');
+                }
+            };
+        }
+
+        if (skipBtn) {
+            skipBtn.onclick = () => {
+                installBanner.style.display = 'none';
+            };
+        }
 
         // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {

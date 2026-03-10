@@ -2319,9 +2319,9 @@ function startApp() {
   const saved = loadUser();
   if (saved) {
     user = saved;
-    initApp();
+    nav(splashView);
   } else {
-    nav(loginView);
+    nav(splashView);
   }
 }
 

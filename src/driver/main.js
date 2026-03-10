@@ -238,8 +238,8 @@ function showDebtModal() {
           <button id="modal-check" class="w-full bg-signal-green text-black font-black py-4 rounded-2xl shadow-lg active:scale-95 transition-all text-sm uppercase tracking-widest mb-1">
             Verificar Novamente
           </button>
-          <button id="modal-pay" class="w-full bg-slate-900 text-white font-black py-3 rounded-2xl shadow-md active:scale-95 transition-all text-xs uppercase tracking-widest border border-white/5">
-            Manual de Pagamento
+          <button id="modal-pay" class="w-full bg-slate-900 text-white font-black py-4 rounded-2xl shadow-lg active:scale-95 transition-all text-sm uppercase tracking-widest border border-white/5">
+            Pagar via PIX Agora
           </button>
           <button id="modal-close" class="w-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 font-bold py-3 rounded-2xl text-xs uppercase tracking-widest text-center">
             Fechar
@@ -1852,72 +1852,91 @@ function earningsView() {
   const showPixModal = (amount) => {
     const m = document.createElement('div');
     m.className = 'fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300';
-    const amountStr = amount.toFixed(2).replace('.', ',');
-    m.innerHTML = `
-            <div class="w-full max-w-sm bg-white dark:bg-background-dark rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl slide-in-from-bottom duration-500 animate-in relative overflow-hidden">
-      <div class="absolute -right-10 -top-10 size-32 bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
-      
-      <div class="flex items-center justify-between mb-8">
-        <h3 class="font-black text-slate-900 dark:text-white text-lg uppercase tracking-tight">Pagamento PIX</h3>
-        <button id="close-modal-pix" class="size-8 rounded-full bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500"><span class="material-symbols-outlined text-sm">close</span></button>
-      </div>
+    
+    // Official PIX Info
+    const PIX_PAYLOAD = "00020126800014br.gov.bcb.pix01365b8d0027-c2e5-4110-88a4-86830c98dd760218Pagamento de taxas27600016BR.COM.PAGSEGURO0136AB28099B-3336-4382-8291-2C15A645515A5204899953039865802BR5925LEANDRO PALMEIRA DE SOUZA6014RIO DE JANEIRO62290525PAGS0000000002603092327616304B7EE";
+    const amountToPay = amount > 0 ? amount : 20.00;
+    const amountStr = amountToPay.toFixed(2).replace('.', ',');
 
-      <div class="flex flex-col items-center gap-4 mb-6">
-        <div class="bg-white p-3 rounded-2xl shadow-inner border-4 border-slate-50 relative group">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020126480014br.gov.bcb.pix0111123456789010203Movvi5204000053039865404${amount.toFixed(2)}5802BR5913MovviServices6009SaoPaulo62070503***6304CA1E" class="w-40 h-40 rounded" />
-          <div class="absolute inset-0 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-             <span class="material-symbols-outlined text-primary text-4xl animate-pulse">qr_code_scanner</span>
+    m.innerHTML = `
+      <div class="w-full max-w-sm bg-white dark:bg-background-dark rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl slide-in-from-bottom duration-500 animate-in relative overflow-hidden">
+        <div class="absolute -right-10 -top-10 size-32 bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex flex-col">
+            <h3 class="font-black text-slate-900 dark:text-white text-lg uppercase tracking-tight">Pagamento das Taxas</h3>
+            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Regularização Instantânea</p>
           </div>
+          <button id="close-modal-pix" class="size-8 rounded-full bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500"><span class="material-symbols-outlined text-sm">close</span></button>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 rounded-2xl p-4 mb-6 text-center">
+            <p class="text-[10px] text-indigo-400 font-black uppercase tracking-widest mb-1">Beneficiário</p>
+            <p class="text-lg font-black text-indigo-900 dark:text-indigo-200 uppercase">Movvi Resgate</p>
+        </div>
+
+        <div class="flex flex-col items-center gap-4 mb-6">
+          <div class="bg-white p-4 rounded-3xl shadow-xl border-4 border-slate-50 relative">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(PIX_PAYLOAD)}" class="w-44 h-44 rounded-xl" />
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+               <div class="size-10 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-primary">
+                 <img src="/assets/images/logo_movvi.png" class="w-6 h-auto" />
+               </div>
+            </div>
+          </div>
+          
+          <div class="w-full mt-2">
+            <div class="flex items-center justify-between mb-1.5 px-1">
+              <label class="text-[10px] text-slate-400 uppercase font-black tracking-widest">Valor do Pagamento</label>
+              <div class="flex items-center gap-1"><span class="size-1.5 rounded-full bg-red-500"></span><span class="text-[9px] text-red-500 font-bold uppercase">Valor Fixo</span></div>
+            </div>
+            <div class="relative">
+              <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-black">R$</div>
+              <input id="pix-amount" type="text" value="${amountStr}" readonly class="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-white/10 rounded-2xl pl-12 pr-4 py-4 text-2xl font-black text-slate-900 dark:text-white outline-none" />
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <button id="btn-copy-pix" class="w-full bg-slate-900 text-white font-black py-4 rounded-2xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-3 text-sm uppercase tracking-wider">
+            Copiar Código PIX <span class="material-symbols-outlined text-base">content_copy</span>
+          </button>
+          <button id="btn-confirm-pay" class="w-full bg-emerald-500 text-white font-black py-4 rounded-2xl shadow-lg active:scale-95 transition-all text-sm uppercase tracking-widest flex items-center justify-center gap-2">
+            ENVIAR COMPROVANTE <span class="material-symbols-outlined text-base">chat</span>
+          </button>
         </div>
         
-        <div class="w-full mt-4">
-          <label class="text-[10px] text-slate-400 uppercase font-black tracking-widest mb-1.5 block">Valor da Recarga/Pagamento (R$)</label>
-          <div class="relative">
-            <input id="pix-amount" type="number" step="0.01" value="${(amount > 0 ? amount : 20).toFixed(2)}" class="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-lg font-black text-slate-900 dark:text-white outline-none focus:border-primary transition-colors text-center" />
-          </div>
-          ${amount > 0 ? `<p class="text-[10px] text-red-500 font-bold mt-2 text-center">* Sugestão Mínima para cobrir o saldo devedor.</p>` : ''}
-        </div>
-      </div>
-
-      <div class="space-y-3">
-        <button id="btn-copy-pix" class="w-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 font-bold py-3.5 rounded-xl border border-slate-200 dark:border-white/10 flex items-center justify-center gap-2 text-sm active:scale-95 transition-all">Copiar Chave PIX <span class="material-symbols-outlined text-sm">content_copy</span></button>
-        <button id="btn-confirm-pay" class="w-full bg-primary text-black font-black py-4 rounded-xl shadow-lg active:scale-95 transition-all text-sm uppercase tracking-widest">Já Realizei o Pagamento</button>
-      </div>
-      
-      <p class="text-[9px] text-center text-slate-400 mt-6 px-4">O saldo será atualizado automaticamente após a confirmação do pagamento pela nossa central.</p>
-    </div>`;
+        <p class="text-[9px] text-center text-slate-400 mt-6 px-4 leading-relaxed">Pague exatamente o valor informado. Após o pagamento, clique em <b>Enviar Comprovante</b> para que nossa equipe valide e libere seu saldo.</p>
+      </div>`;
 
     document.body.appendChild(m);
 
     const close = () => { m.classList.remove('animate-in'); m.classList.add('animate-out', 'fade-out', 'duration-300'); m.querySelector('div').classList.add('slide-out-to-bottom'); setTimeout(() => m.remove(), 300); };
     m.querySelector('#close-modal-pix').onclick = close;
 
+    m.querySelector('#btn-copy-pix').onclick = () => {
+      navigator.clipboard.writeText(PIX_PAYLOAD);
+      const btn = m.querySelector('#btn-copy-pix');
+      const original = btn.innerHTML;
+      btn.innerHTML = 'Código Copiado! <span class="material-symbols-outlined text-base">check_circle</span>';
+      btn.classList.replace('bg-slate-900', 'bg-emerald-600');
+      setTimeout(() => {
+        btn.innerHTML = original;
+        btn.classList.replace('bg-emerald-600', 'bg-slate-900');
+      }, 2000);
+    };
+
     const confirmBtn = m.querySelector('#btn-confirm-pay');
-    if (confirmBtn) confirmBtn.onclick = async () => {
-      confirmBtn.innerHTML = '<span class="material-symbols-outlined animate-spin align-middle mr-2">progress_activity</span> CONFIRMANDO...';
-      confirmBtn.disabled = true;
-
-      const inputVal = parseFloat(m.querySelector('#pix-amount').value);
-      if (isNaN(inputVal) || inputVal <= 0) {
-        alert('Por favor, informe um valor válido maior que zero.');
-        confirmBtn.innerHTML = 'Já Realizei o Pagamento';
-        confirmBtn.disabled = false;
-        return;
-      }
-
-      try {
-        await api('/drivers/' + user.id + '/pay', { method: 'POST', body: JSON.stringify({ amount: inputVal }) });
-        const uRes = await api('/drivers/' + user.id);
-        Object.assign(user, uRes);
-        saveUser(user);
-        close();
-        updateWalletUI();
-        alert('✅ Pagamento Confirmado!\nSeu saldo foi zerado e sua conta está regularizada.');
-      } catch (err) {
-        alert('Erro ao confirmar pagamento: ' + err.message);
-        confirmBtn.innerHTML = 'Já Realizei o Pagamento';
-        confirmBtn.disabled = false;
-      }
+    if (confirmBtn) confirmBtn.onclick = () => {
+      close();
+      nav(supportChatView);
+      setTimeout(() => {
+        const inp = document.getElementById('chat-input');
+        if (inp) {
+          inp.value = `Olá, acabei de realizar o pagamento de R$ ${amountStr} referente às minhas taxas. Segue o comprovante abaixo:`;
+          inp.focus();
+        }
+      }, 500);
     };
   };
 

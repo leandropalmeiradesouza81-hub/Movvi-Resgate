@@ -28,6 +28,7 @@ export const Auth = {
     registerDriver: (data) => api('/auth/register/driver', { method: 'POST', body: data }),
     forgotPasswordClient: (email) => api('/auth/forgot-password/client', { method: 'POST', body: { email } }),
     forgotPasswordDriver: (email) => api('/auth/forgot-password/driver', { method: 'POST', body: { email } }),
+    resetPassword: (token, type, password) => api('/auth/reset-password', { method: 'POST', body: { token, type, password } }),
 };
 
 export const Orders = {

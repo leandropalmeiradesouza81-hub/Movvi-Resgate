@@ -1,4 +1,4 @@
-const CACHE_NAME = 'movvi-v3';
+const CACHE_NAME = 'movvi-v4';
 const ASSETS = [
     '/',
     '/index.html',
@@ -8,6 +8,8 @@ const ASSETS = [
     '/manifest_driver.json',
     '/assets/images/logo_movvi.png',
     '/assets/images/logo_movvi_icon.png',
+    '/assets/images/movvi_icon_192.png',
+    '/assets/images/movvi_icon_512.png',
     '/assets/images/hero_bg.png'
 ];
 

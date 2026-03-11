@@ -1458,6 +1458,12 @@
                 <img src="assets/images/logo_movvi.png" alt="Movvi Resgate"
                     style="height:160px;object-fit:contain;margin-top:-10px;margin-bottom:-10px; filter: grayscale(100%) brightness(0); position: relative; z-index: 5;">
             </div>
+            <div style="margin-left: auto;">
+                <button class="nav-cta" id="btn-download-client" style="background: #ffd900; color: #000; border: none; font-weight: 900; padding: 10px 20px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem;">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">install_mobile</span>
+                    Baixar App
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -1678,10 +1684,20 @@
 
     <script>
         // ═══ LANDING PAGE LOGIC ═══
+        // Baixar App (topo) → Download do app cliente
         // Chamar Resgate → Vai direto para client.html (link natural do <a>)
-        // Cadastre-se para Parceiro → Redireciona para driver.html?download=1 (tela de download)
+        // Cadastre-se para Parceiro → Download do app motorista
 
+        const clientDownloadBtn = document.getElementById('btn-download-client');
         const driverDownloadBtn = document.getElementById('btn-download-driver');
+
+        // Botão TOPO → Download direto app CLIENTE
+        if (clientDownloadBtn) {
+            clientDownloadBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = 'client.html?download=1';
+            });
+        }
 
         // Botão CADASTRE-SE PARCEIRO → Download direto app MOTORISTA
         if (driverDownloadBtn) {

@@ -235,91 +235,10 @@
       border-color: #2563eb;
       background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23000' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
     }
-    /* Smart App Bar - Induction Only */
-    #smart-app-bar {
-      position: fixed;
-      bottom: 1.5rem;
-      left: 1rem;
-      right: 1rem;
-      background: rgba(26, 20, 0, 0.95);
-      backdrop-filter: blur(20px);
-      padding: 1rem 1.25rem;
-      border-radius: 1.5rem;
-      z-index: 10000;
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,217,0,0.2);
-      animation: barUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    @keyframes barUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-    .smart-bar-content { display: flex; align-items: center; gap: 0.75rem; }
-    .smart-bar-icon { width: 40px; height: 40px; background: #FFD900; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .smart-bar-icon img { width: 24px; height: auto; }
-    .smart-bar-text h4 { color: #FFD900; font-size: 0.85rem; font-weight: 900; margin: 0; text-transform: uppercase; letter-spacing: 0.05em; }
-    .smart-bar-text p { color: white; font-size: 0.75rem; font-weight: 500; margin: 0; opacity: 0.7; }
-    .btn-smart-install { background: #FFD900; color: #1a1400; padding: 0.6rem 1rem; border-radius: 0.75rem; font-weight: 900; font-size: 0.75rem; text-transform: uppercase; white-space: nowrap; transition: transform 0.2s; }
-    .btn-smart-install:active { transform: scale(0.95); }
-
-    /* iOS Instructions Overlay */
-    #ios-instructions {
-      display: none;
-      position: fixed;
-      bottom: 2rem;
-      left: 2rem;
-      right: 2rem;
-      background: white;
-      padding: 1.5rem;
-      border-radius: 2rem;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
-      z-index: 10001;
-      text-align: center;
-      animation: slideUpIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    @keyframes slideUpIn { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    #ios-instructions h3 { font-weight: 900; font-size: 1rem; margin-bottom: 1rem; color: #1a1400; text-transform: uppercase; }
-    .ios-step { display: flex; align-items: center; gap: 1rem; text-align: left; margin-bottom: 0.75rem; font-size: 0.85rem; font-weight: 600; color: #1a1400; }
-    .ios-step span { width: 24px; height: 24px; background: #FFD900; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 900; flex-shrink: 0; }
-    .ios-icon { font-size: 18px !important; color: #007aff; }
   </style>
 </head>
 
 <body>
-  <!-- Smart App Bar (Induction Only) -->
-  <div id="smart-app-bar">
-    <div class="smart-bar-content">
-      <div class="smart-bar-icon">
-        <img src="assets/images/logo_movvi_icon.png" alt="Movvi">
-      </div>
-      <div class="smart-bar-text">
-        <h4>Baixar App</h4>
-        <p>Use com mais rapidez</p>
-      </div>
-    </div>
-    <button class="btn-smart-install" id="btn-smart-action">Instalar</button>
-  </div>
-
-  <!-- iOS Instructions -->
-  <div id="ios-instructions">
-    <h3>Instalar no iPhone</h3>
-    <div class="ios-step">
-      <span>1</span>
-      <p>Toque no ícone de <strong>Compartilhar</strong> <span class="material-symbols-outlined ios-icon">ios_share</span> na barra inferior do Safari.</p>
-    </div>
-    <div class="ios-step">
-      <span>2</span>
-      <p>Role para baixo e toque em <strong>Adicionar à Tela de Início</strong> <span class="material-symbols-outlined ios-icon">add_box</span>.</p>
-    </div>
-    <div class="ios-step">
-      <span>3</span>
-      <p>Toque em <strong>Adicionar</strong> no canto superior direito.</p>
-    </div>
-    <button id="close-ios-tips" class="mt-4 text-[10px] font-black uppercase text-slate-400">Entendi</button>
-  </div>
-
   <div id="phone">
     <div id="sidebar-overlay"></div>
     <aside id="sidebar"></aside>
@@ -328,51 +247,13 @@
   <script src="/socket.io/socket.io.js"></script>
   <script type="module" src="/src/client/main.js"></script>
   <script>
-    // PWA Installation Handler for Client App
-    let deferredPrompt;
-    const smartBar = document.getElementById('smart-app-bar');
-    const smartBtn = document.getElementById('btn-smart-action');
-    const iosTips = document.getElementById('ios-instructions');
-
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-    // Show floating bar by default if not installed
-    if (!isStandalone && smartBar) {
-      smartBar.style.display = 'flex';
-    }
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-    });
-
-    if (smartBtn) {
-      smartBtn.onclick = () => {
-        if (deferredPrompt) {
-          deferredPrompt.prompt();
-          deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-              if (smartBar) smartBar.style.display = 'none';
-            }
-            deferredPrompt = null;
-          });
-        } else if (isIOS) {
-          iosTips.style.display = 'block';
-        } else {
-          smartBtn.innerText = 'Preprando...';
-          setTimeout(() => {
-            smartBtn.innerText = 'Instalar';
-            if (!deferredPrompt) {
-               alert('Para baixar o app, use o menu do seu navegador e selecione "Instalar App" ou "Adicionar à tela de início".');
-            }
-          }, 2000);
-        }
-      };
-    }
-
-    if (document.getElementById('close-ios-tips')) {
-      document.getElementById('close-ios-tips').onclick = () => iosTips.style.display = 'none';
+    // Service Worker only - no download prompts
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('SW Registered!', reg))
+          .catch(err => console.log('SW Error:', err));
+      });
     }
   </script>
 </body>

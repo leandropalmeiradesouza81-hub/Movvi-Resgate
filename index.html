@@ -1458,12 +1458,6 @@
                 <img src="assets/images/logo_movvi.png" alt="Movvi Resgate"
                     style="height:160px;object-fit:contain;margin-top:-10px;margin-bottom:-10px; filter: grayscale(100%) brightness(0); position: relative; z-index: 5;">
             </div>
-            <div style="margin-left: auto;">
-                <button class="nav-cta" id="btn-download-client" style="background: #ffd900; color: #000; border: none; font-weight: 900; padding: 10px 20px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem;">
-                    <span class="material-symbols-outlined" style="font-size: 18px;">install_mobile</span>
-                    Baixar App
-                </button>
-            </div>
         </div>
     </nav>
 
@@ -1682,96 +1676,19 @@
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
 
-    <!-- Smart App Bar -->
-    <div id="smart-app-bar">
-        <div class="smart-bar-content">
-            <div class="smart-bar-icon">
-                <img src="assets/images/logo_movvi_icon.png" alt="Movvi">
-            </div>
-            <div class="smart-bar-text">
-                <h4>Movvi Resgate</h4>
-                <p>Instale agora para usar offline</p>
-            </div>
-        </div>
-        <button class="btn-smart-install" id="btn-smart-action">Baixar</button>
-    </div>
-
     <script>
-        // ═══ APP INSTALLATION LOGIC ═══
-        // Comportamento dos botões:
-        // 1. Topo (Baixar App) → Download direto PWA Cliente
-        // 2. Chamar Resgate → Vai direto para client.html (web app)
-        // 3. Cadastre-se para Parceiro → Download direto PWA Motorista
-        // 4. Smart Bar flutuante → Download direto PWA Cliente
+        // ═══ LANDING PAGE LOGIC ═══
+        // Chamar Resgate → Vai direto para client.html (link natural do <a>)
+        // Cadastre-se para Parceiro → Redireciona para driver.html?download=1 (tela de download)
 
-        let deferredClientPrompt = null;
-
-        const smartBar = document.getElementById('smart-app-bar');
-        const smartBtn = document.getElementById('btn-smart-action');
-        const topDownloadBtn = document.getElementById('btn-download-client');
         const driverDownloadBtn = document.getElementById('btn-download-driver');
-
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-
-        // Captura o prompt de instalação do CLIENT PWA
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredClientPrompt = e;
-            // Mostra smart bar se não estiver instalado
-            if (!isStandalone && smartBar) {
-                smartBar.style.display = 'flex';
-            }
-        });
-
-        // === FUNÇÃO: Instalar PWA do Cliente ===
-        function triggerClientInstall(btn) {
-            if (deferredClientPrompt) {
-                deferredClientPrompt.prompt();
-                deferredClientPrompt.userChoice.then((result) => {
-                    if (result.outcome === 'accepted' && smartBar) {
-                        smartBar.style.display = 'none';
-                    }
-                    deferredClientPrompt = null;
-                });
-            } else {
-                // Redireciona para client.html que tem sua própria lógica de instalação
-                window.location.href = 'client.html';
-            }
-        }
-
-        // === FUNÇÃO: Instalar PWA do Motorista ===
-        function triggerDriverInstall(btn) {
-            // Redireciona para driver.html que tem sua própria lógica de instalação PWA
-            window.location.href = 'driver.html';
-        }
-
-        // Botão TOPO → Download direto app CLIENTE
-        if (topDownloadBtn) {
-            topDownloadBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                triggerClientInstall(topDownloadBtn);
-            });
-        }
-
-        // Smart Bar flutuante → Download direto app CLIENTE
-        if (smartBtn) {
-            smartBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                triggerClientInstall(smartBtn);
-            });
-        }
 
         // Botão CADASTRE-SE PARCEIRO → Download direto app MOTORISTA
         if (driverDownloadBtn) {
             driverDownloadBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                triggerDriverInstall(driverDownloadBtn);
+                window.location.href = 'driver.html?download=1';
             });
-        }
-
-        // Esconde smart bar se já instalado
-        if (isStandalone && smartBar) {
-            smartBar.style.display = 'none';
         }
 
         // Service Worker

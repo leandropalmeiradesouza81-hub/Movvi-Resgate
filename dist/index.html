@@ -11,7 +11,7 @@
     <meta name="keywords"
         content="reboque, resgate barato, reboque de carros, aplicativo de reboque, cambão, barra rígida, reboque barra rígida, pane seca, recarga de bateria, trocar pneu, guincho barato, movvi resgate" />
     <meta name="theme-color" content="#ffd900" />
-    <link id="manifest-link" rel="manifest" href="manifest_client.json">
+    <link id="manifest-link" rel="manifest" href="/assets/manifest_client-89yilBLH.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Movvi Resgate">
@@ -29,43 +29,44 @@
         #system-lockdown {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.7); 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 999999;
-            display: none; 
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            z-index: 9999;
+            display: none; /* Hidden by default, shown by JS */
             flex-direction: column;
             align-items: center;
             justify-content: center;
             color: #fff;
             padding: 40px 24px;
             text-align: center;
-            pointer-events: none;
+            overflow: hidden;
         }
 
         #system-lockdown.active {
             display: flex;
-            pointer-events: all; /* Blocks interaction with site elements */
         }
 
         .lock-banner {
-            position: relative;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-5deg);
             width: 150%;
             background: #ffd900;
             color: #000;
-            padding: 20px 0;
+            padding: 24px 0;
             font-family: 'Outfit', sans-serif;
             font-weight: 900;
-            font-size: clamp(14px, 3vw, 24px);
+            font-size: clamp(14px, 4vw, 24px);
             text-transform: uppercase;
             letter-spacing: 0.1em;
             white-space: nowrap;
             z-index: 10000;
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 50px 100px rgba(255, 217, 0, 0.3);
             display: flex;
             overflow: hidden;
-            transform: rotate(-2deg);
-            margin: 80px 0; /* 2cm exact distance top/bottom */
+            pointer-events: none;
         }
 
         .lock-banner-track {
@@ -84,25 +85,21 @@
             z-index: 10001;
             max-width: 800px;
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            pointer-events: none;
+            margin-top: 120px;
         }
 
         .lock-logo {
-            height: 100px;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 20px rgba(255, 217, 0, 0.2));
+            height: 120px;
+            margin-bottom: 40px;
+            filter: brightness(0) invert(1) drop-shadow(0 0 20px rgba(255, 217, 0, 0.2));
         }
 
         .lock-title {
             font-family: 'Outfit', sans-serif;
-            font-size: clamp(48px, 12vw, 90px); /* Increased size as requested */
+            font-size: clamp(32px, 8vw, 64px);
             font-weight: 950;
             margin-bottom: 20px;
             line-height: 0.9;
-            letter-spacing: -0.02em;
         }
 
         .lock-subtitle {
@@ -139,16 +136,17 @@
 
         .lt-chunk span:last-child {
             display: block;
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: #fff !important; /* Pure white for maximum visibility */
-            font-weight: 800;
+            color: #555;
             margin-top: 5px;
         }
 
         .lock-footer {
-            margin-top: 0; /* Distance managed by stripe margin-bottom */
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1599,11 +1597,19 @@
 <body>
     <!-- ═══ LOCKDOWN OVERLAY ═══ -->
     <div id="system-lockdown">
+        <div class="lock-banner">
+            <div class="lock-banner-track">
+                <span>Estamos chegando Rio dia 20 de Abril • Iniciamos nossas operações • </span>
+                <span>Estamos chegando Rio dia 20 de Abril • Iniciamos nossas operações • </span>
+                <span>Estamos chegando Rio dia 20 de Abril • Iniciamos nossas operações • </span>
+                <span>Estamos chegando Rio dia 20 de Abril • Iniciamos nossas operações • </span>
+            </div>
+        </div>
+
         <div class="lock-content">
             <img src="assets/images/logo_movvi.png" alt="Movvi" class="lock-logo">
-            
-            <!-- Título e Calendário ACIMA da faixa -->
-            <p class="lock-title" style="color: #fff; text-transform: none;">Estamos chegando no Rio!</p>
+            <h1 class="lock-title">O RIO ESTÁ SENDO <span>PROTEGIDO.</span></h1>
+            <p class="lock-subtitle">Estamos preparando a maior rede de resgate do Brasil. A plataforma estará disponível em breve.</p>
             
             <div class="lock-timer">
                 <div class="lt-chunk">
@@ -1624,18 +1630,9 @@
                 </div>
             </div>
 
-            <!-- Faixa Amarela -->
-            <div class="lock-banner">
-                <div class="lock-banner-track">
-                    <span>Estamos chegando Rio dia 20 de Abril • Iniciamos nossas operações • </span>
-                    <span>Estamos chegando Rio dia 20 de Abril • Iniciamos nossas operações • </span>
-                </div>
-            </div>
-
-            <!-- Frase Motoristas ABAIXO da faixa -->
             <div class="lock-footer">
-                <div class="support-msg">Estamos preparando nossa equipe de motoristas</div>
-                <p style="color: rgba(255,255,255,0.4); font-size: 11px; font-weight: 800; text-transform: uppercase;">© 2026 Movvi Technologies</p>
+                <div class="support-msg">Estamos preparando nossa equipe de suporte</div>
+                <p style="color: #444; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;">© 2026 Movvi Technologies</p>
             </div>
         </div>
     </div>
@@ -1913,7 +1910,10 @@
                 
                 if (settings.systemLockdown) {
                     document.getElementById('system-lockdown').classList.add('active');
-                    document.body.classList.add('is-locked');
+                    document.body.style.overflow = 'hidden';
+                    document.body.style.pointerEvents = 'none';
+                    // Allow lockdown script elements to work
+                    document.getElementById('system-lockdown').style.pointerEvents = 'auto';
                     
                     startLockCountdown(settings.launchDate || "2026-04-20");
                 }

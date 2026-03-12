@@ -1,0 +1,36 @@
+{
+    "name": "Movvi Resgate - Cliente",
+    "short_name": "Movvi Resgate",
+    "description": "Peça seu resgate veicular rápido e barato onde estiver.",
+    "start_url": "/client.html",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#ffd900",
+    "theme_color": "#ffd900",
+    "icons": [
+        {
+            "src": "assets/images/movvi_icon_192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "assets/images/movvi_icon_192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "assets/images/movvi_icon_512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "assets/images/movvi_icon_512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

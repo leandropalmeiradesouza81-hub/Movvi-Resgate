@@ -616,25 +616,54 @@ async function renderClients() {
 
 // ─── PLACEHOLDERS ────────────────────────────────────
 async function renderPricing() {
-  const pr = await fetch('/api/pricing').then(r => r.json());
+  const [pr, settings] = await Promise.all([
+    fetch('/api/pricing').then(r => r.json()),
+    fetch('/api/pricing/settings').then(r => r.json())
+  ]);
+
   let html = `<div class="p-6">
     <div class="flex items-center justify-between mb-8">
       <div>
-        <h1 class="text-3xl font-black text-white font-space tracking-tight">Gestão de Preços</h1>
-        <p class="text-text-dim text-sm uppercase tracking-widest mt-1">Configure os valores por serviço</p>
+        <h1 class="text-3xl font-black text-white font-space tracking-tight">Configurações Globais</h1>
+        <p class="text-text-dim text-sm uppercase tracking-widest mt-1">Configure o sistema e valores operacionais</p>
       </div>
       <button id="save-pricing" class="bg-primary hover:bg-primary/90 text-black font-black px-6 py-3 rounded-xl shadow-lg hover:-translate-y-1 transition-transform flex items-center gap-2">
         <span class="material-symbols-outlined shrink-0 text-black">save</span>
-        <span class="text-black">Salvar Alterações</span>
+        <span class="text-black">Salvar Todas as Alterações</span>
       </button>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl">`;
+
+    <!-- System Settings Section -->
+    <div class="saas-card p-8 mb-8 border-primary/20 bg-primary/5">
+      <div class="flex items-center gap-3 mb-8">
+        <span class="material-symbols-outlined text-primary text-3xl">settings_input_component</span>
+        <h2 class="text-xl font-bold text-white uppercase tracking-widest leading-none">Status do Sistema (Lockdown)</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <label class="text-xs font-bold text-text-dim uppercase tracking-widest mb-3 block">Modo Pré-Lançamento (Bloqueia o Site)</label>
+          <div class="flex items-center gap-4">
+            <button id="toggle-lockdown" class="px-6 py-3 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all ${settings.systemLockdown ? 'bg-signal-red text-white' : 'bg-slate-800 text-text-dim border border-white/5'}">
+              ${settings.systemLockdown ? 'ATIVADO (Site Bloqueado)' : 'DESATIVADO (Site Aberto)'}
+            </button>
+            <p class="text-[10px] text-text-dim/60 font-mono uppercase">Status: ${settings.systemLockdown ? 'BLOCKED' : 'LIVE'}</p>
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-bold text-text-dim uppercase tracking-widest mb-3 block">Data Oficial de Lançamento (Contador)</label>
+          <input type="date" id="launch-date" class="w-full bg-slate-950 border border-slate-700/50 rounded-xl px-5 py-3 text-white focus:border-primary outline-none transition-all" value="${settings.launchDate || '2026-04-20'}">
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">`;
 
   for (const [key, svc] of Object.entries(pr.services)) {
     html += `
       <div class="saas-card relative overflow-hidden group">
         <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <div class="relative z-10">
+        <div class="relative z-10 p-6">
           <div class="flex items-center gap-3 mb-6">
             <span class="material-symbols-outlined text-primary text-3xl">build_circle</span>
             <h2 class="text-xl font-bold text-white uppercase tracking-widest leading-none">${svc.name}</h2>
@@ -643,14 +672,14 @@ async function renderPricing() {
             <div>
               <label class="text-xs font-bold text-text-dim uppercase tracking-widest mb-1 block pl-1">Taxa Base (Deslocamento)</label>
               <div class="relative">
-                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-black font-black opacity-50">R$</span>
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-black font-black opacity-50 text-sm">R$</span>
                 <input type="number" step="0.01" id="base-${key}" class="w-full bg-slate-50 text-black font-black text-lg py-3 pl-12 pr-4 rounded-xl outline-none focus:ring-2 focus:ring-primary border-transparent transition-all" value="${svc.basePrice}">
               </div>
             </div>
             <div>
               <label class="text-xs font-bold text-text-dim uppercase tracking-widest mb-1 block pl-1">Valor por Km (Adicional)</label>
               <div class="relative">
-                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-black font-black opacity-50">R$</span>
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-black font-black opacity-50 text-sm">R$</span>
                 <input type="number" step="0.01" id="km-${key}" class="w-full bg-slate-50 text-black font-black text-lg py-3 pl-12 pr-4 rounded-xl outline-none focus:ring-2 focus:ring-primary border-transparent transition-all" value="${svc.pricePerKm}">
               </div>
             </div>
@@ -662,31 +691,56 @@ async function renderPricing() {
   html += `</div></div>`;
   pages.innerHTML = html;
 
+  let isLocked = settings.systemLockdown;
+  const btnLock = document.querySelector('#toggle-lockdown');
+  btnLock.onclick = () => {
+    isLocked = !isLocked;
+    btnLock.className = `px-6 py-3 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all ${isLocked ? 'bg-signal-red text-white' : 'bg-slate-800 text-text-dim border border-white/5'}`;
+    btnLock.innerText = isLocked ? 'ATIVADO (Site Bloqueado)' : 'DESATIVADO (Site Aberto)';
+  };
+
   const btnSave = document.querySelector('#save-pricing');
   btnSave.onclick = async () => {
     btnSave.innerHTML = '<span class="material-symbols-outlined shrink-0 text-black animate-spin">progress_activity</span> <span class="text-black">Salvando...</span>';
-    const payload = { services: {} };
+    
+    // Save Pricing
+    const pricingPayload = { services: {} };
     for (const key of Object.keys(pr.services)) {
-      payload.services[key] = {
+      pricingPayload.services[key] = {
         basePrice: parseFloat(document.querySelector(`#base-${key}`).value),
         pricePerKm: parseFloat(document.querySelector(`#km-${key}`).value)
       };
     }
+
+    // Save Settings
+    const settingsPayload = {
+      systemLockdown: isLocked,
+      launchDate: document.querySelector('#launch-date').value
+    };
+
     try {
-      await fetch('/api/pricing', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      btnSave.classList.replace('bg-primary', 'bg-green-500');
-      btnSave.innerHTML = '<span class="material-symbols-outlined shrink-0 text-white">check_circle</span> <span class="text-white">Salvo!</span>';
+      await Promise.all([
+        fetch('/api/pricing', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(pricingPayload)
+        }),
+        fetch('/api/pricing/settings', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(settingsPayload)
+        })
+      ]);
+
+      btnSave.classList.replace('bg-primary', 'bg-emerald-500');
+      btnSave.innerHTML = '<span class="material-symbols-outlined shrink-0 text-white">check_circle</span> <span class="text-white">Sincronizado!</span>';
       setTimeout(() => {
-        btnSave.classList.replace('bg-green-500', 'bg-primary');
-        btnSave.innerHTML = '<span class="material-symbols-outlined shrink-0 text-black">save</span> <span class="text-black">Salvar Alterações</span>';
+        btnSave.classList.replace('bg-emerald-500', 'bg-primary');
+        btnSave.innerHTML = '<span class="material-symbols-outlined shrink-0 text-black">save</span> <span class="text-black">Salvar Todas as Alterações</span>';
       }, 2000);
     } catch {
-      alert('Erro ao atualizar preços.');
-      btnSave.innerHTML = '<span class="material-symbols-outlined shrink-0 text-black">save</span> <span class="text-black">Salvar Alterações</span>';
+      alert('Erro ao sincronizar configurações.');
+      btnSave.innerHTML = '<span class="material-symbols-outlined shrink-0 text-black">save</span> <span class="text-black">Salvar Todas as Alterações</span>';
     }
   };
 }

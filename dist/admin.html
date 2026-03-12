@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Movvi Pro — Logística de Frota</title>
+    <title>Movvi Resgate — Painel Administrativo</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap"
         rel="stylesheet" />
@@ -143,58 +143,56 @@
 
         #login-overlay {
             background: #0b0f17;
-            z-index: 1000;
+            z-index: 2000;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        #login-overlay.hidden,
+        #diag-modal.hidden {
+            display: none !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            visibility: hidden !important;
+            z-index: -1 !important;
         }
     </style>
     <script>
         // ─── AUTHENTICATION ───────────────────────────────────
+        function hideLoginOverlay() {
+            const overlay = document.getElementById('login-overlay');
+            if (overlay) { overlay.remove(); }
+        }
+        window.hideLoginOverlay = hideLoginOverlay;
+
         function checkAdminAuth() {
-            const logged = sessionStorage.getItem('admin_logged') === 'true' || localStorage.getItem('movvi_admin_logged') === 'true';
-            if (logged) {
+            const isLogged = sessionStorage.getItem('admin_logged') === 'true' || localStorage.getItem('movvi_admin_logged') === 'true';
+            if (isLogged) {
+                hideLoginOverlay();
+            } else {
                 const overlay = document.getElementById('login-overlay');
                 if (overlay) {
-                    overlay.style.opacity = '0';
-                    overlay.style.pointerEvents = 'none';
-                    setTimeout(() => { overlay.style.display = 'none'; }, 500);
-                }
-                // Assuming initAdmin() is defined elsewhere, e.g., in main.js
-                // If initAdmin is not globally available, this call might need to be moved
-                // or initAdmin needs to be exposed globally.
-                // For now, keeping it as per instruction.
-                if (typeof initAdmin === 'function') {
-                    initAdmin();
+                    overlay.classList.remove('hidden');
+                    overlay.style.display = 'flex';
                 }
             }
         }
 
-        // O script main.js será o responsável pelo bind do form submit, 
-        // mas vamos garantir que o overlay responda a eventos globais se necessário.
-        window.hideLoginOverlay = function () {
-            const overlay = document.getElementById('login-overlay');
-            if (overlay) {
-                overlay.style.opacity = '0';
-                overlay.style.pointerEvents = 'none';
-                setTimeout(() => { overlay.style.display = 'none'; }, 500);
-            }
-        };
-
         // Call checkAdminAuth when the DOM is fully loaded
         document.addEventListener('DOMContentLoaded', checkAdminAuth);
     </script>
-  <script type="module" crossorigin src="/assets/admin-D9nDjOmI.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/api-ttBfcqYz.js">
+  <script type="module" crossorigin src="/assets/admin-BLOSR2YQ.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/api-H6lC6YHp.js">
 </head>
 
 <body>
     <!-- LOGIN GATEWAY -->
-    <div id="login-overlay" class="fixed inset-0 flex items-center justify-center p-6 transition-opacity duration-500">
+    <div id="login-overlay"
+        class="fixed inset-0 flex items-center justify-center p-6 transition-opacity duration-500 hidden">
         <div class="w-full max-w-md saas-card p-10 bg-slate-900 border-2 border-slate-800 shadow-2xl">
             <div class="flex flex-col items-center mb-10">
-                <div class="size-16 bg-primary rounded-2xl flex items-center justify-center text-black mb-6 shadow-xl">
-                    <span class="material-symbols-outlined text-4xl">local_shipping</span>
-                </div>
-                <h1 class="text-3xl font-black text-white tracking-tight mb-2">Movvi Pro</h1>
-                <p class="text-text-dim text-[10px] uppercase tracking-[0.3em] font-bold">Admin Authority v3.0</p>
+                <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="h-40 object-contain mb-4"
+                    style="filter: brightness(0) invert(86%) sepia(93%) saturate(1450%) hue-rotate(334deg) brightness(108%) contrast(106%) drop-shadow(0 10px 20px rgba(255, 219, 0, 0.2));">
+                <p class="text-text-dim text-[10px] uppercase tracking-[0.3em] font-bold">Painel de Controle</p>
             </div>
 
             <form id="admin-login-form" class="space-y-6">
@@ -203,7 +201,7 @@
                         class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2 ml-1">E-mail</label>
                     <input type="email" id="email" required
                         class="w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-5 py-4 text-white focus:border-primary outline-none transition-all"
-                        placeholder="admin@movvi.com">
+                        placeholder="seu@email.com">
                 </div>
                 <div>
                     <label
@@ -246,43 +244,50 @@
 
     <!-- MAIN SIDEBAR -->
     <aside class="sidebar" id="sidebar">
-        <div class="p-8 mb-4 border-b border-white/5">
-            <div class="flex items-center gap-4">
-                <div
-                    class="size-11 bg-primary rounded-xl flex items-center justify-center text-black shadow-lg shrink-0">
-                    <span class="material-symbols-outlined font-black">local_shipping</span>
-                </div>
-                <div>
-                    <h1 class="font-black text-lg tracking-tight leading-none">MOVVI PRO</h1>
-                    <p class="text-primary text-[9px] font-bold tracking-[0.2em] uppercase mt-1">Logistic OS</p>
-                </div>
-            </div>
+        <div class="p-8 mb-4 border-b border-white/5 flex flex-col items-center justify-center text-center">
+            <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="h-24 object-contain mb-2"
+                style="filter: brightness(0) invert(86%) sepia(93%) saturate(1450%) hue-rotate(334deg) brightness(108%) contrast(106%);">
+            <p class="text-primary text-[9px] font-bold tracking-[0.2em] uppercase">Painel de Administração</p>
         </div>
 
-        <nav class="flex-1 space-y-1 pt-4" id="nav">
+        <nav class="flex-1 space-y-1 pt-2 overflow-y-auto custom-scrollbar" id="nav">
+            <p class="text-[9px] text-text-dim/40 uppercase font-black tracking-[0.2em] px-7 mt-5 mb-2">Operação</p>
             <div class="nav-item active" data-page="dashboard">
                 <span class="material-symbols-outlined">grid_view</span>
                 <span>Visão Geral</span>
             </div>
             <div class="nav-item" data-page="live">
                 <span class="material-symbols-outlined">sensors</span>
-                <span>Mapa em Tempo Real</span>
+                <span>Mapa Global (Ao Vivo)</span>
             </div>
             <div class="nav-item" data-page="orders">
                 <span class="material-symbols-outlined">receipt_long</span>
                 <span>Monitor de Pedidos</span>
             </div>
-            <div class="nav-item" data-page="drivers">
-                <span class="material-symbols-outlined">local_shipping</span>
-                <span>Frota Parceria</span>
+
+            <p class="text-[9px] text-text-dim/40 uppercase font-black tracking-[0.2em] px-7 mt-8 mb-2">Usuários e
+                Aprovações</p>
+            <div class="nav-item" data-page="onboarding">
+                <span class="material-symbols-outlined">how_to_reg</span>
+                <span>Embarcando Parceiros</span>
+            </div>
+            <div class="nav-item flex items-center justify-between" data-page="drivers">
+                <div class="flex items-center gap-4">
+                    <span class="material-symbols-outlined">admin_panel_settings</span>
+                    <span>Liberações e Frota</span>
+                </div>
             </div>
             <div class="nav-item" data-page="clients">
                 <span class="material-symbols-outlined">group</span>
                 <span>Base de Clientes</span>
             </div>
+
+            <p class="text-[9px] text-text-dim/40 uppercase font-black tracking-[0.2em] px-7 mt-8 mb-2">
+                Administração
+            </p>
             <div class="nav-item" data-page="pricing">
-                <span class="material-symbols-outlined">payments</span>
-                <span>Gestão Financeira</span>
+                <span class="material-symbols-outlined">settings_suggest</span>
+                <span>Configuração Global</span>
             </div>
             <div class="nav-item" data-page="chat">
                 <span class="material-symbols-outlined">support_agent</span>
@@ -313,15 +318,9 @@
             <div>
                 <h2 id="page-title" class="text-2xl font-black text-white tracking-tight uppercase italic">— Painel de
                     Controle</h2>
-                <p id="system-time" class="text-[10px] font-mono text-text-dim uppercase tracking-widest mt-1">
-                    Sincronizando fuso logístico...</p>
             </div>
 
             <div class="flex items-center gap-8">
-                <div class="text-right border-r border-white/5 pr-8">
-                    <p class="text-[9px] text-text-dim font-black uppercase tracking-widest mb-1">Carga Operacional</p>
-                    <time id="real-time-clock" class="text-sm font-mono font-bold text-white">00:00:00</time>
-                </div>
                 <div class="flex items-center gap-3 bg-slate-900/5 px-4 py-2 rounded-xl border border-white/5">
                     <span class="size-2 rounded-full bg-signal-green shadow-[0_0_8px_#10b981]"></span>
                     <span class="text-[10px] uppercase font-black tracking-widest text-white">Rede Ativa</span>
@@ -335,19 +334,6 @@
     </main>
 
     <script src="/socket.io/socket.io.js"></script>
-
-    <script>
-        function updateClock() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('pt-BR', { hour12: false });
-            const clockEl = document.getElementById('real-time-clock');
-            if (clockEl) clockEl.textContent = timeStr;
-            const sysTime = document.getElementById('system-time');
-            if (sysTime) sysTime.textContent = 'LOG_STAMP: ' + now.toISOString().split('T')[0].split('-').reverse().join('/') + ' // ' + timeStr;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-    </script>
 </body>
 
 </html>

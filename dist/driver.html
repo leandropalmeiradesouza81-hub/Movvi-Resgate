@@ -4,8 +4,12 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
-    <title>Movvi Reboque — Motorista Parceiro</title>
+    <title>Movvi Resgate — Motorista Parceiro</title>
     <meta name="theme-color" content="#ffd900" />
+    <link rel="manifest" href="/assets/manifest_driver-DMcGg1tY.json" />
+    <link rel="apple-touch-icon" href="/assets/images/logo_movvi_icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700&display=swap"
         rel="stylesheet" />
@@ -18,16 +22,9 @@
         tailwind.config = { darkMode: "class", theme: { extend: { colors: { "primary": "#ffd900", "background-light": "#f8f8f5", "background-dark": "#23200f", "surface-dark": "#363117", "border-dark": "#6b622e" }, fontFamily: { "display": ["Inter", "sans-serif"], "mono": ["JetBrains Mono", "monospace"] }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" } } } }
     </script>
     <script>
-        function applyTheme() {
-            const manual = localStorage.getItem('movvi_theme');
-            if (manual === 'light') { document.documentElement.classList.remove('dark'); return; }
-            if (manual === 'dark') { document.documentElement.classList.add('dark'); return; }
-            const h = new Date().getHours();
-            if (h < 6 || h >= 18) document.documentElement.classList.add('dark');
-            else document.documentElement.classList.remove('dark');
-        }
-        applyTheme();
-        setInterval(applyTheme, 60000);
+        // Theme is forced to always be light for the driver app
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('movvi_theme', 'light');
     </script>
     <style>
         html,
@@ -54,21 +51,168 @@
 
         /* Phone shell */
         #phone {
-            width: 390px;
+            width: 100%;
             height: 100dvh;
             background: #ffffff;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 60px rgba(0, 0, 0, 0.2);
-            border: 1px solid #d1d5db;
+            box-shadow: none;
+            border: none;
             transition: background 0.3s, border 0.3s;
+        }
+
+        @media (min-width: 480px) {
+            #phone {
+                width: 390px;
+                box-shadow: 0 0 60px rgba(0, 0, 0, 0.2);
+                border: none;
+                margin: 0 auto;
+            }
         }
 
         html.dark #phone {
             background: #000000;
-            box-shadow: 0 0 60px rgba(0, 0, 0, 1);
             border-color: #1a1a1a;
         }
+
+        @media (min-width: 480px) {
+            html.dark #phone {
+                box-shadow: 0 0 60px rgba(0, 0, 0, 1);
+            }
+        }
+
+        /* Full-Screen Download Overlay (when accessed from Cadastre-se) */
+        #download-overlay {
+            position: fixed;
+            inset: 0;
+            background: #FFD900;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(255,255,255,0.4) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(0,0,0,0.05) 0%, transparent 50%);
+            z-index: 10010;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem;
+            text-align: center;
+        }
+        #download-overlay .dl-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            padding: 3rem 2rem;
+            border-radius: 2.5rem;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 340px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        #download-overlay .dl-icon {
+            width: 220px;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        #download-overlay .dl-icon img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+        #download-overlay h2 {
+            font-size: 1.8rem;
+            font-weight: 950;
+            color: #1a1400;
+            margin-bottom: 0.75rem;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        #download-overlay p {
+            color: #1a1400;
+            opacity: 0.6;
+            margin-bottom: 2.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        #btn-dl-install {
+            background: #1a1400;
+            color: #FFD900;
+            padding: 1.25rem 2rem;
+            border-radius: 1.25rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            width: 100%;
+            font-size: 0.9rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            border: none;
+            cursor: pointer;
+        }
+        #btn-dl-install:active { transform: scale(0.96); opacity: 0.9; }
+
+        /* Smart App Bar - for direct access only */
+        #smart-app-bar {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1rem;
+            right: 1rem;
+            background: rgba(26, 20, 0, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 1.25rem;
+            border-radius: 1.5rem;
+            z-index: 10002;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,217,0,0.2);
+            animation: barUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes barUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .smart-bar-content { display: flex; align-items: center; gap: 0.75rem; }
+        .smart-bar-icon { width: 40px; height: 40px; background: #FFD900; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .smart-bar-icon img { width: 24px; height: auto; }
+        .smart-bar-text h4 { color: #FFD900; font-size: 0.85rem; font-weight: 900; margin: 0; text-transform: uppercase; letter-spacing: 0.05em; }
+        .smart-bar-text p { color: white; font-size: 0.75rem; font-weight: 500; margin: 0; opacity: 0.7; }
+        .btn-smart-install { background: #FFD900; color: #1a1400; padding: 0.6rem 1rem; border-radius: 0.75rem; font-weight: 900; font-size: 0.75rem; text-transform: uppercase; white-space: nowrap; transition: transform 0.2s; border: none; cursor: pointer; }
+        .btn-smart-install:active { transform: scale(0.95); }
+
+        /* iOS & Android Instructions Overlay */
+        #ios-instructions, #android-instructions {
+            display: none;
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            right: 2rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 2rem;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            z-index: 10011;
+            text-align: center;
+            animation: slideUpIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUpIn { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        #ios-instructions h3, #android-instructions h3 { font-weight: 900; font-size: 1rem; margin-bottom: 1rem; color: #1a1400; text-transform: uppercase; }
+        .ios-step, .android-step { display: flex; align-items: center; gap: 1rem; text-align: left; margin-bottom: 0.75rem; font-size: 0.85rem; font-weight: 600; color: #1a1400; }
+        .ios-step span, .android-step span { width: 24px; height: 24px; background: #FFD900; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 900; flex-shrink: 0; }
+        .ios-icon, .android-icon { font-size: 18px !important; color: #007aff; }
 
         /* Content area */
         #app-content {
@@ -83,16 +227,11 @@
             display: none;
             flex-direction: column;
             min-height: 100%;
-            background: #ffffff;
             transition: background 0.3s;
         }
 
         .view.active {
             display: flex;
-        }
-
-        html.dark .view {
-            background: #000000;
         }
 
         /* Dark mode map tiles - invert to create dark look while keeping blue ocean */
@@ -135,7 +274,7 @@
             max-width: 310px;
             background: #f9fafb;
             border-right: 1px solid #e5e7eb;
-            z-index: 90;
+            z-index: 2000;
             transform: translateX(-100%);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s, border 0.3s;
             display: flex;
@@ -220,18 +359,131 @@
             background: #f2d00d
         }
     </style>
-  <script type="module" crossorigin src="/assets/driver-f8yhHHpM.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/api-ttBfcqYz.js">
+  <script type="module" crossorigin src="/assets/driver-DmqT2cZ0.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/api-H6lC6YHp.js">
   <link rel="modulepreload" crossorigin href="/assets/geo-Dl6lxGpH.js">
 </head>
 
 <body>
+    <!-- Full-Screen Download Overlay (shown when ?download=1) -->
+    <div id="download-overlay">
+        <div class="dl-card">
+            <div class="dl-icon">
+                <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate">
+            </div>
+            <h2>App do Parceiro</h2>
+            <p>Instale o app oficial e receba chamados de resgate em tempo real.</p>
+            <button id="btn-dl-install">
+                <span class="material-symbols-outlined">download</span>
+                Instalar App
+            </button>
+        </div>
+    </div>
+
+
+
+    <!-- iOS Instructions -->
+    <div id="ios-instructions">
+        <h3>Instalar no iPhone</h3>
+        <div class="ios-step">
+            <span>1</span>
+            <p>Toque no ícone de <strong>Compartilhar</strong> <span class="material-symbols-outlined ios-icon">ios_share</span> na barra inferior do Safari.</p>
+        </div>
+        <div class="ios-step">
+            <span>2</span>
+            <p>Role para baixo e toque em <strong>Adicionar à Tela de Início</strong> <span class="material-symbols-outlined ios-icon">add_box</span>.</p>
+        </div>
+        <div class="ios-step">
+            <span>3</span>
+            <p>Toque em <strong>Adicionar</strong> no canto superior direito.</p>
+        </div>
+        <button onclick="document.getElementById('ios-instructions').style.display='none'" class="mt-4 text-[10px] font-black uppercase text-slate-400">Entendi</button>
+    </div>
+
+    <!-- Android Instructions -->
+    <div id="android-instructions">
+        <h3>Instalar no Android</h3>
+        <div class="android-step">
+            <span>1</span>
+            <p>Toque nos <strong>três pontos</strong> <span class="material-symbols-outlined android-icon" style="color:#1a1400">more_vert</span> no canto superior direito do Chrome.</p>
+        </div>
+        <div class="android-step">
+            <span>2</span>
+            <p>Toque em <strong>Instalar Aplicativo</strong> ou <strong>Adicionar à tela inicial</strong>.</p>
+        </div>
+        <div class="android-step">
+            <span>3</span>
+            <p>Confirme a instalação para ter o app fixo no seu celular.</p>
+        </div>
+        <button onclick="document.getElementById('android-instructions').style.display='none'" class="mt-4 text-[10px] font-black uppercase text-slate-400">Entendi</button>
+    </div>
+
     <div id="phone">
         <div id="sidebar-overlay"></div>
         <aside id="sidebar"></aside>
         <div id="app-content"></div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // ═══ DRIVER APP - PWA INSTALLATION LOGIC ═══
+        let deferredPrompt;
+        const downloadOverlay = document.getElementById('download-overlay');
+        const dlInstallBtn = document.getElementById('btn-dl-install');
+        const smartBar = document.getElementById('smart-app-bar');
+        const smartBtn = document.getElementById('btn-smart-action');
+        const iosTips = document.getElementById('ios-instructions');
+
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isDownloadMode = new URLSearchParams(window.location.search).has('download');
+
+        // Captura o prompt de instalação
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        // Função universal de instalação
+        function doInstall(onSuccess) {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((result) => {
+                    if (result.outcome === 'accepted' && onSuccess) onSuccess();
+                    deferredPrompt = null;
+                });
+            } else if (isIOS) {
+                iosTips.style.display = 'block';
+            } else {
+                // Show Android tips if automatic prompt didn't fire
+                document.getElementById('android-instructions').style.display = 'block';
+            }
+        }
+
+        if (isDownloadMode && !isStandalone) {
+            // MODO DOWNLOAD: Veio do botão "Cadastre-se para Parceiro"
+            // Mostra tela cheia dedicada ao download
+            if (downloadOverlay) downloadOverlay.style.display = 'flex';
+
+            if (dlInstallBtn) {
+                dlInstallBtn.onclick = () => doInstall(() => {
+                    downloadOverlay.style.display = 'none';
+                });
+            }
+        }
+
+        if (document.getElementById('close-ios-tips')) {
+            document.getElementById('close-ios-tips').onclick = () => iosTips.style.display = 'none';
+        }
+
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('SW Registered for Driver App!', reg))
+                    .catch(err => console.log('SW Error:', err));
+            });
+        }
+    </script>
 </body>
 
 </html>

@@ -32,7 +32,9 @@
   "settings": {
     "matchTimeout": 15000,
     "maxSearchRadius": -1,
-    "platformFee": 15
+    "platformFee": 15,
+    "systemLockdown": true,
+    "launchDate": "2026-04-20"
   },
   "admins": [
     {

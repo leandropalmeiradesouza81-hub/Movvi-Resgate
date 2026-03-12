@@ -378,19 +378,7 @@
         </div>
     </div>
 
-    <!-- Smart App Bar (for direct access only) -->
-    <div id="smart-app-bar">
-        <div class="smart-bar-content">
-            <div class="smart-bar-icon">
-                <img src="assets/images/logo_movvi_icon.png" alt="Movvi">
-            </div>
-            <div class="smart-bar-text">
-                <h4>Baixar App</h4>
-                <p>Receba pedidos mais rápido</p>
-            </div>
-        </div>
-        <button class="btn-smart-install" id="btn-smart-action">Instalar</button>
-    </div>
+
 
     <!-- iOS Instructions -->
     <div id="ios-instructions">
@@ -459,16 +447,6 @@
             if (dlInstallBtn) {
                 dlInstallBtn.onclick = () => doInstall(() => {
                     downloadOverlay.style.display = 'none';
-                });
-            }
-        } else if (!isStandalone) {
-            // MODO NORMAL: Acesso direto ao driver.html
-            // Mostra Smart Bar discreta
-            if (smartBar) smartBar.style.display = 'flex';
-
-            if (smartBtn) {
-                smartBtn.onclick = () => doInstall(() => {
-                    smartBar.style.display = 'none';
                 });
             }
         }

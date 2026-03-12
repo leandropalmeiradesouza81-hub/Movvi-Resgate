@@ -192,8 +192,8 @@
         .btn-smart-install { background: #FFD900; color: #1a1400; padding: 0.6rem 1rem; border-radius: 0.75rem; font-weight: 900; font-size: 0.75rem; text-transform: uppercase; white-space: nowrap; transition: transform 0.2s; border: none; cursor: pointer; }
         .btn-smart-install:active { transform: scale(0.95); }
 
-        /* iOS Instructions Overlay */
-        #ios-instructions {
+        /* iOS & Android Instructions Overlay */
+        #ios-instructions, #android-instructions {
             display: none;
             position: fixed;
             bottom: 2rem;
@@ -210,10 +210,10 @@
 
         @keyframes slideUpIn { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        #ios-instructions h3 { font-weight: 900; font-size: 1rem; margin-bottom: 1rem; color: #1a1400; text-transform: uppercase; }
-        .ios-step { display: flex; align-items: center; gap: 1rem; text-align: left; margin-bottom: 0.75rem; font-size: 0.85rem; font-weight: 600; color: #1a1400; }
-        .ios-step span { width: 24px; height: 24px; background: #FFD900; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 900; flex-shrink: 0; }
-        .ios-icon { font-size: 18px !important; color: #007aff; }
+        #ios-instructions h3, #android-instructions h3 { font-weight: 900; font-size: 1rem; margin-bottom: 1rem; color: #1a1400; text-transform: uppercase; }
+        .ios-step, .android-step { display: flex; align-items: center; gap: 1rem; text-align: left; margin-bottom: 0.75rem; font-size: 0.85rem; font-weight: 600; color: #1a1400; }
+        .ios-step span, .android-step span { width: 24px; height: 24px; background: #FFD900; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 900; flex-shrink: 0; }
+        .ios-icon, .android-icon { font-size: 18px !important; color: #007aff; }
 
         /* Content area */
         #app-content {
@@ -395,7 +395,25 @@
             <span>3</span>
             <p>Toque em <strong>Adicionar</strong> no canto superior direito.</p>
         </div>
-        <button id="close-ios-tips" class="mt-4 text-[10px] font-black uppercase text-slate-400">Entendi</button>
+        <button onclick="document.getElementById('ios-instructions').style.display='none'" class="mt-4 text-[10px] font-black uppercase text-slate-400">Entendi</button>
+    </div>
+
+    <!-- Android Instructions -->
+    <div id="android-instructions">
+        <h3>Instalar no Android</h3>
+        <div class="android-step">
+            <span>1</span>
+            <p>Toque nos <strong>três pontos</strong> <span class="material-symbols-outlined android-icon" style="color:#1a1400">more_vert</span> no canto superior direito do Chrome.</p>
+        </div>
+        <div class="android-step">
+            <span>2</span>
+            <p>Toque em <strong>Instalar Aplicativo</strong> ou <strong>Adicionar à tela inicial</strong>.</p>
+        </div>
+        <div class="android-step">
+            <span>3</span>
+            <p>Confirme a instalação para ter o app fixo no seu celular.</p>
+        </div>
+        <button onclick="document.getElementById('android-instructions').style.display='none'" class="mt-4 text-[10px] font-black uppercase text-slate-400">Entendi</button>
     </div>
 
     <div id="phone">
@@ -435,7 +453,8 @@
             } else if (isIOS) {
                 iosTips.style.display = 'block';
             } else {
-                alert('Para instalar o app, use o menu do navegador (⋮) e selecione "Instalar App" ou "Adicionar à tela de início".');
+                // Show Android tips if automatic prompt didn't fire
+                document.getElementById('android-instructions').style.display = 'block';
             }
         }
 

@@ -406,6 +406,8 @@ async function checkActiveOrder() {
 
 // ═══ LOGIN ═══
 function loginView() {
+  const params = new URLSearchParams(window.location.search);
+  const isPioneer = params.get('invite') === 'pioneer';
   const d = document.createElement('div'); d.className = 'view active';
   d.style.background = '#FFD900';
   d.innerHTML = `
@@ -413,45 +415,46 @@ function loginView() {
   <!-- Yellow brand hero top -->
   <div class="bg-[#FFD900] relative overflow-hidden px-6 pt-14 pb-12 flex flex-col items-center text-center" style="animation:fadeUpIn 0.5s ease-out forwards">
     <div class="absolute inset-0 pointer-events-none" style="background:linear-gradient(135deg,rgba(0,0,0,0.03) 0%,transparent 50%,rgba(255,255,255,0.06) 100%)"></div>
+    ${isPioneer ? `<div class="bg-black/10 backdrop-blur-sm border border-black/20 rounded-full py-1.5 px-4 mb-6 text-[9px] font-black uppercase tracking-[0.2em] text-black">Fase 01: Parceiro Pioneiro</div>` : ''}
     <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="w-64 h-auto object-contain relative z-10 mb-2 drop-shadow-lg">
     <h1 class="text-[#1a1400] text-xl font-black italic uppercase tracking-[0.15em] relative z-10 mt-1">Motorista Parceiro</h1>
     <p class="text-[#1a1400]/40 text-[11px] font-bold uppercase tracking-widest relative z-10 mt-1">Conectando você a novos resgates</p>
   </div>
 
   <!-- Form section -->
-  <div class="flex-1 bg-[#fafaf7] dark:bg-[#1a1706] rounded-t-[32px] -mt-6 relative z-10 px-6 pt-10 pb-8 flex flex-col" style="animation:fadeUpIn 0.5s ease-out 0.1s forwards;opacity:0">
-    <form id="lf" class="flex flex-col gap-5 w-full max-w-sm mx-auto flex-1">
-      <div class="flex flex-col gap-1.5">
-        <label class="text-[#1a1400] dark:text-white/70 text-[12px] font-bold uppercase tracking-[0.08em] pl-1">Email</label>
-        <div class="relative">
-          <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-[#1a1400]/30 dark:text-white/25"><span class="material-symbols-outlined text-[18px]">mail</span></span>
-          <input class="form-input w-full bg-white dark:bg-white/[0.06] border-2 border-[#e8e4d9] dark:border-white/10 text-[#1a1400] dark:text-white placeholder-[#1a1400]/25 dark:placeholder-white/20 pl-11 py-3.5 text-[15px] font-semibold rounded-2xl focus:border-primary focus:ring-0 outline-none transition-all" id="le" type="email" placeholder="motorista@movvi.com" />
+  <div class="flex-1 bg-[#fafaf7] dark:bg-[#111] rounded-t-[40px] -mt-8 relative z-10 px-6 pt-12 pb-8 flex flex-col shadow-[0_-20px_50px_rgba(0,0,0,0.1)]" style="animation:fadeUpIn 0.5s ease-out 0.1s forwards;opacity:0">
+    <form id="lf" class="flex flex-col gap-6 w-full max-w-sm mx-auto flex-1">
+      <div class="flex flex-col gap-2">
+        <label class="text-[#1a1400] dark:text-white/70 text-[11px] font-black uppercase tracking-widest pl-1">Acesso à Plataforma</label>
+        <div class="relative group">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-[#1a1400]/30 dark:text-white/20 transition-colors group-focus-within:text-primary"><span class="material-symbols-outlined text-[20px]">mail</span></span>
+          <input class="form-input w-full bg-white dark:bg-white/[0.03] border-2 border-[#eee] dark:border-white/5 text-[#1a1400] dark:text-white placeholder-[#aaa] dark:placeholder-white/10 pl-12 py-4 text-[15px] font-semibold rounded-2xl focus:border-primary focus:ring-0 outline-none transition-all shadow-sm" id="le" type="email" placeholder="motorista@movvi.com" />
         </div>
       </div>
-      <div class="flex flex-col gap-1.5">
+      <div class="flex flex-col gap-2">
         <div class="flex justify-between items-center">
-          <label class="text-[#1a1400] dark:text-white/70 text-[12px] font-bold uppercase tracking-[0.08em] pl-1">Senha</label>
-          <a id="forgot-pw" class="text-[12px] text-primary font-bold cursor-pointer hover:text-[#1a1400] dark:hover:text-white transition-colors pr-1">Esqueceu?</a>
+          <label class="text-[#1a1400] dark:text-white/70 text-[11px] font-black uppercase tracking-widest pl-1">Sua Senha</label>
+          <a id="forgot-pw" class="text-[11px] text-primary font-black uppercase tracking-wider cursor-pointer hover:underline transition-all pr-1">Esqueceu?</a>
         </div>
-        <div class="relative">
-          <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-[#1a1400]/30 dark:text-white/25"><span class="material-symbols-outlined text-[18px]">lock</span></span>
-          <input class="form-input w-full bg-white dark:bg-white/[0.06] border-2 border-[#e8e4d9] dark:border-white/10 text-[#1a1400] dark:text-white placeholder-[#1a1400]/25 dark:placeholder-white/20 pl-11 py-3.5 text-[15px] font-semibold rounded-2xl focus:border-primary focus:ring-0 outline-none transition-all" id="lp" type="password" placeholder="••••••" />
+        <div class="relative group">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-[#1a1400]/30 dark:text-white/20 transition-colors group-focus-within:text-primary"><span class="material-symbols-outlined text-[20px]">lock</span></span>
+          <input class="form-input w-full bg-white dark:bg-white/[0.03] border-2 border-[#eee] dark:border-white/5 text-[#1a1400] dark:text-white placeholder-[#aaa] dark:placeholder-white/10 pl-12 py-4 text-[15px] font-semibold rounded-2xl focus:border-primary focus:ring-0 outline-none transition-all shadow-sm" id="lp" type="password" placeholder="••••••" />
         </div>
       </div>
-      <div id="le-err" class="text-red-500 text-xs font-bold hidden"></div>
-      <button type="submit" class="w-full bg-[#1a1400] dark:bg-primary text-white dark:text-[#1a1400] font-black py-4 text-[14px] uppercase tracking-[0.08em] rounded-2xl shadow-lg hover:shadow-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-2">
-        <span>Entrar</span>
-        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+      <div id="le-err" class="text-red-500 text-[11px] font-bold hidden bg-red-50 p-3 rounded-lg border border-red-100 italic"></div>
+      <button type="submit" class="w-full bg-[#1a1400] text-white font-black py-5 text-[14px] uppercase tracking-[0.1em] rounded-2xl shadow-xl hover:shadow-[#1a1400]/20 active:scale-[0.98] transition-all flex items-center justify-center gap-3 mt-2">
+        <span>Acessar Painel</span>
+        <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
       </button>
     </form>
 
-    <div class="text-center mt-8" style="animation:fadeUpIn 0.5s ease-out 0.25s forwards;opacity:0">
-      <p class="text-[#1a1400]/40 dark:text-white/30 text-[14px] font-semibold">Não tem conta? <a id="go-reg" class="text-primary font-bold cursor-pointer hover:text-[#1a1400] dark:hover:text-white transition-colors">Registrar</a></p>
+    <div class="text-center mt-10" style="animation:fadeUpIn 0.5s ease-out 0.25s forwards;opacity:0">
+      <p class="text-[#1a1400]/40 dark:text-white/20 text-[13px] font-bold uppercase tracking-wider">Ainda não é parceiro? <br><a id="go-reg" class="text-primary font-black text-base cursor-pointer hover:underline underline-offset-4 transition-all mt-2 block">Solicitar Cadastro</a></p>
     </div>
   </div>
 </div>
 <style>
-  @keyframes fadeUpIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUpIn { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
 </style>`;
 
 
@@ -478,29 +481,71 @@ function loginView() {
 
 // ═══ REGISTER ═══
 function registerView() {
-  const d = document.createElement('div'); d.className = 'view active bg-background-light dark:bg-background-dark';
+  const d = document.createElement('div'); d.className = 'view active bg-white dark:bg-[#111]';
   d.innerHTML = `
-<header class="flex items-center p-4 border-b border-slate-200 dark:border-white/10 sticky top-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md z-10">
-  <button id="bk" class="size-10 rounded-full bg-slate-100 dark:bg-white/10 flex items-center justify-center"><span class="material-symbols-outlined text-black font-bold dark:text-slate-200">arrow_back</span></button>
-  <h1 class="flex-1 text-center text-black font-bold dark:text-white text-base font-bold">Cadastro Motorista</h1><div class="size-10"></div>
-</header>
-<main class="flex-1 p-5 pb-24">
-  <form id="rf" class="flex flex-col gap-4 bg-white dark:bg-white/5 p-6 rounded-xl border border-slate-200 dark:border-white/10">
-    <div class="flex flex-col gap-1"><label class="text-black font-bold dark:text-slate-300 text-sm font-medium">Nome Completo</label><input id="rn" class="form-input w-full rounded-lg bg-slate-50 dark:bg-white/5 border-slate-300 dark:border-white/10 text-black font-bold dark:text-white py-3 px-3" required/></div>
-    <div class="flex flex-col gap-1"><label class="text-black font-bold dark:text-slate-300 text-sm font-medium">E-mail</label><input id="re" type="email" class="form-input w-full rounded-lg bg-slate-50 dark:bg-white/5 border-slate-300 dark:border-white/10 text-black font-bold dark:text-white py-3 px-3" required/></div>
-    <div class="grid grid-cols-2 gap-3">
-      <div class="flex flex-col gap-1"><label class="text-black font-bold dark:text-slate-300 text-sm font-medium">Telefone</label><input id="rph" class="form-input w-full rounded-lg bg-slate-50 dark:bg-white/5 border-slate-300 dark:border-white/10 text-black font-bold dark:text-white py-3 px-3"/></div>
-      <div class="flex flex-col gap-1"><label class="text-black font-bold dark:text-slate-300 text-sm font-medium">Chave PIX</label><input id="rpix" class="form-input w-full rounded-lg bg-slate-50 dark:bg-white/5 border-slate-300 dark:border-white/10 text-black font-bold dark:text-white py-3 px-3"/></div>
+<div class="flex flex-col relative overflow-hidden" style="min-height:100dvh;font-family:Outfit,Inter,sans-serif">
+  <header class="flex items-center p-6 border-b border-slate-100 dark:border-white/5 sticky top-0 bg-white/80 dark:bg-[#111]/80 backdrop-blur-md z-10">
+    <button id="bk" class="size-11 rounded-2xl bg-[#FFD900]/10 flex items-center justify-center text-primary active:scale-90 transition-all shadow-sm"><span class="material-symbols-outlined font-black">arrow_back</span></button>
+    <div class="flex-1 text-center">
+      <h1 class="text-[#1a1400] dark:text-white text-base font-black italic uppercase tracking-widest pl-4">Novo Parceiro</h1>
+      <p class="text-[9px] text-[#aaa] font-bold uppercase tracking-widest pl-4">Fase 01 Pionerismos</p>
     </div>
-    <div class="grid grid-cols-2 gap-3">
-      <div class="flex flex-col gap-1"><label class="text-black font-bold dark:text-slate-300 text-sm font-medium">Veículo</label><input id="rv" class="form-input w-full rounded-lg bg-slate-50 dark:bg-white/5 border-slate-300 dark:border-white/10 text-black font-bold dark:text-white py-3 px-3"/></div>
-      <div class="flex flex-col gap-1"><label class="text-black font-bold dark:text-slate-300 text-sm font-medium">Placa</label><input id="rpl" class="form-input w-full rounded-lg bg-slate-50 dark:bg-white/5 border-slate-300 dark:border-white/10 text-black font-bold dark:text-white py-3 px-3"/></div>
+    <div class="size-11"></div>
+  </header>
+  <main class="flex-1 p-6 pb-24 max-w-sm mx-auto w-full">
+    <div class="mb-8 p-5 bg-primary/5 border-2 border-primary/20 rounded-[2rem] relative overflow-hidden">
+      <div class="absolute top-0 right-0 p-4 opacity-10">
+        <span class="material-symbols-outlined text-4xl">trending_up</span>
+      </div>
+      <p class="text-[12px] text-[#1a1400]/80 dark:text-primary/80 font-bold leading-relaxed relative z-10">
+        Entre para o grupo de elite que vai atender <span class="text-primary dark:text-primary font-black">1.200 chamados diários</span> no Rio. 
+        <strong class="text-[#1a1400] dark:text-white block mt-2 text-[10px] uppercase tracking-widest bg-primary/20 py-1 px-3 rounded-full w-fit">Vagas Limitadas: 14/100</strong>
+      </p>
     </div>
-    <div class="flex flex-col gap-1"><label class="text-black font-bold dark:text-slate-300 text-sm font-medium">Senha</label><input id="rp" type="password" class="form-input w-full rounded-lg bg-slate-50 dark:bg-white/5 border-slate-300 dark:border-white/10 text-black font-bold dark:text-white py-3 px-3" required/></div>
-    <div id="re-err" class="text-red-500 text-xs font-medium hidden"></div>
-    <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-black font-bold py-3.5 rounded-lg shadow-md mt-2 active:scale-[0.98]">Registrar</button>
-  </form>
-</main>`;
+
+    <form id="rf" class="flex flex-col gap-5">
+      <div class="flex flex-col gap-1.5 focus-within:translate-x-1 transition-transform">
+        <label class="text-[#1a1400]/40 dark:text-white/30 text-[10px] font-black uppercase tracking-widest pl-1">Identificação Pessoal</label>
+        <div class="relative group">
+          <input id="rn" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="Nome Completo" required/>
+        </div>
+      </div>
+      
+      <div class="flex flex-col gap-1.5 focus-within:translate-x-1 transition-transform">
+        <label class="text-[#1a1400]/40 dark:text-white/30 text-[10px] font-black uppercase tracking-widest pl-1">Contato e Pagamento</label>
+        <div class="grid grid-cols-2 gap-3">
+          <input id="re" type="email" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="E-mail" required/>
+          <input id="rph" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="WhatsApp"/>
+        </div>
+        <input id="rpix" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm mt-1" placeholder="Chave PIX (Para Recebimentos)"/>
+      </div>
+
+      <div class="flex flex-col gap-1.5 focus-within:translate-x-1 transition-transform">
+        <label class="text-[#1a1400]/40 dark:text-white/30 text-[10px] font-black uppercase tracking-widest pl-1">Informações do Veículo</label>
+        <div class="grid grid-cols-2 gap-3">
+          <input id="rv" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="Modelo (Ex: Spin)" required/>
+          <input id="rpl" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="Placa" required/>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1.5 focus-within:translate-x-1 transition-transform">
+        <label class="text-[#1a1400]/40 dark:text-white/30 text-[10px] font-black uppercase tracking-widest pl-1">Segurança</label>
+        <input id="rp" type="password" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="Crie uma Senha Forte" required/>
+      </div>
+
+      <div id="re-err" class="text-red-500 text-[11px] font-bold hidden bg-red-50 p-3 rounded-xl border border-red-100 italic"></div>
+      
+      <button type="submit" class="w-full bg-[#1a1400] text-white font-black py-5 rounded-2xl shadow-xl shadow-[#1a1400]/10 mt-4 active:scale-[0.98] transition-all uppercase tracking-widest text-[14px] flex items-center justify-center gap-3">
+        <span>Criar Minha Conta</span>
+        <span class="material-symbols-outlined text-[20px]">how_to_reg</span>
+      </button>
+    </form>
+    
+    <p class="text-center text-[11px] text-[#aaa] font-semibold mt-10 px-4">
+      Ao se registrar, você concorda com nossos <a class="text-[#1a1400] dark:text-white underline">Termos de Uso</a> e <a class="text-[#1a1400] dark:text-white underline">Políticas</a> de parceiro pioneiro.
+    </p>
+  </main>
+</div>`;
   d.querySelector('#bk').onclick = () => nav(loginView);
   d.querySelector('#rf').onsubmit = async (e) => {
     e.preventDefault();
@@ -532,36 +577,83 @@ function onboardingView() {
   `;
 
   const renderKit = () => `
-    <h2 class="text-xl font-bold mb-3 text-[#1a1400] dark:text-white">Kit Resgate</h2>
-    <p class="text-sm text-[#1a1400]/60 dark:text-slate-400 font-medium mb-5">Para atuar, você precisa adquirir o kit obrigatório para realizar os serviços de assistência.</p>
-    <div class="bg-[#FFD900]/10 border-2 border-[#FFD900] p-5 rounded-2xl mb-8">
-       <h3 class="font-bold text-[#1a1400] dark:text-white mb-3">Itens Inclusos no Kit:</h3>
-       <ul class="flex flex-col gap-2 mb-6">
-         <li class="flex items-center gap-2 text-sm text-[#1a1400] dark:text-slate-200 font-semibold"><span class="material-symbols-outlined text-[#FFD900] text-[20px]">check_circle</span> 1 Cambão barra rígida</li>
-         <li class="flex items-center gap-2 text-sm text-[#1a1400] dark:text-slate-200 font-semibold"><span class="material-symbols-outlined text-[#FFD900] text-[20px]">check_circle</span> 1 Cabo de Chupeta Bateria Carro</li>
-         <li class="flex items-center gap-2 text-sm text-[#1a1400] dark:text-slate-200 font-semibold"><span class="material-symbols-outlined text-[#FFD900] text-[20px]">check_circle</span> 1 Bombona de Combustível</li>
-         <li class="flex items-center gap-2 text-sm text-[#1a1400] dark:text-slate-200 font-semibold"><span class="material-symbols-outlined text-[#FFD900] text-[20px]">check_circle</span> 1 Kit Reparador de Pneu</li>
-       </ul>
-       <div class="flex flex-col items-center justify-center p-4 bg-white dark:bg-[#1a1400] rounded-xl shadow-sm">
-         <span class="text-xs uppercase font-bold text-[#1a1400]/40 dark:text-white/40 mb-1">Valor do Kit</span>
-         <span class="text-3xl font-black text-[#1a1400] dark:text-white">R$ 399,00</span>
-       </div>
+    <div class="animate-fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="size-12 rounded-2xl bg-primary flex items-center justify-center text-black shadow-lg shadow-primary/20">
+          <span class="material-symbols-outlined font-black">inventory_2</span>
+        </div>
+        <div>
+          <h2 class="text-xl font-black text-[#1a1400] dark:text-white uppercase italic tracking-tighter">O Kit Oficial</h2>
+          <p class="text-[10px] text-primary font-black uppercase tracking-widest leading-none">Fase Pioneira 01</p>
+        </div>
+      </div>
+
+      <p class="text-sm text-[#1a1400]/60 dark:text-slate-400 font-bold mb-6 leading-relaxed">Para iniciar suas operações e garantir a segurança dos resgates, você precisa adquirir o <span class="text-[#1a1400] dark:text-white underline underline-offset-2">Kit Movvi Heavy Duty</span>.</p>
+      
+      <div class="bg-white dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 p-6 rounded-[2rem] mb-8 shadow-sm">
+         <h3 class="font-black text-[11px] uppercase tracking-widest text-[#1a1400]/40 dark:text-white/30 mb-4 border-b border-slate-50 dark:border-white/5 pb-3">Hardwares Inclusos:</h3>
+         <ul class="flex flex-col gap-4 mb-8">
+           <li class="flex items-start gap-3">
+              <div class="size-6 rounded-full bg-primary/10 flex items-center justify-center text-primary mt-0.5 shrink-0"><span class="material-symbols-outlined text-sm font-black">check</span></div>
+              <div>
+                <p class="text-[13px] font-black text-[#1a1400] dark:text-white leading-none mb-1">Cambão Articulado</p>
+                <p class="text-[10px] text-[#aaa] font-bold">Aço Carbono reforçado (padrão reboque)</p>
+              </div>
+           </li>
+           <li class="flex items-start gap-3">
+              <div class="size-6 rounded-full bg-primary/10 flex items-center justify-center text-primary mt-0.5 shrink-0"><span class="material-symbols-outlined text-sm font-black">check</span></div>
+              <div>
+                <p class="text-[13px] font-black text-[#1a1400] dark:text-white leading-none mb-1">Cabos Heavy Duty</p>
+                <p class="text-[10px] text-[#aaa] font-bold">Para transferência de carga entre baterias</p>
+              </div>
+           </li>
+           <li class="flex items-start gap-3">
+              <div class="size-6 rounded-full bg-primary/10 flex items-center justify-center text-primary mt-0.5 shrink-0"><span class="material-symbols-outlined text-sm font-black">check</span></div>
+              <div>
+                <p class="text-[13px] font-black text-[#1a1400] dark:text-white leading-none mb-1">Reparador & Galão</p>
+                <p class="text-[10px] text-[#aaa] font-bold">Spray para furos e bombona de combustível</p>
+              </div>
+           </li>
+         </ul>
+         
+         <div class="flex flex-col items-center justify-center p-6 bg-slate-50 dark:bg-black rounded-3xl border border-slate-100 dark:border-white/5">
+           <span class="text-[9px] uppercase font-black text-[#aaa] mb-2 tracking-[0.2em]">Investimento Vitalício</span>
+           <div class="flex items-baseline gap-1">
+             <span class="text-sm font-bold text-[#1a1400] dark:text-white opacity-40">R$</span>
+             <span class="text-4xl font-black text-[#1a1400] dark:text-white tracking-tighter">399,00</span>
+           </div>
+           <p class="text-[9px] text-primary font-black uppercase mt-3">Taxa Única • Sem Mensalidade</p>
+         </div>
+      </div>
+
+      <button id="btn-pay" class="w-full bg-[#1a1400] text-white font-black py-5 flex flex-col items-center justify-center rounded-2xl shadow-2xl shadow-[#1a1400]/20 active:scale-[0.98] transition-all group overflow-hidden relative">
+        <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+        <span class="uppercase tracking-widest text-[14px] mb-0.5 flex items-center gap-2 relative z-10"><span class="material-symbols-outlined text-[18px]">bolt</span> Adquirir via PIX</span>
+        <span class="text-[9px] opacity-50 font-bold uppercase tracking-widest relative z-10">Liberação imediata em sistema</span>
+      </button>
+      
+      <p class="text-center text-[10px] font-bold text-[#aaa] mt-6 px-4 uppercase tracking-tighter">
+        Ao adquirir, você também garante sua <span class="text-[#1a1400] dark:text-white">Homologação Vitalícia</span> como motorista de resgate.
+      </p>
     </div>
-    <button id="btn-pay" class="w-full bg-[#1a1400] dark:bg-white text-white dark:text-[#1a1400] font-black py-4 flex flex-col items-center justify-center rounded-xl shadow-lg active:scale-[0.98] transition-all">
-      <span class="uppercase tracking-wider text-sm mb-1">Adquirir via PIX</span>
-      <span class="text-[10px] opacity-70 font-medium">Após o pagamento, você será notificado para entrega do kit.</span>
-    </button>
     
     <!-- Modal do PIX -->
-    <div id="pix-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-6 transition-all duration-300">
-      <div id="pix-modal-content" class="bg-white dark:bg-[#1a1706] w-full max-w-sm rounded-[32px] p-8 flex flex-col items-center text-center scale-95 transition-transform duration-300">
-        <h3 class="font-black text-xl text-[#1a1400] dark:text-white mb-2">Pagamento via PIX</h3>
-        <p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-6 w-full max-w-[240px]">Escaneie o QR Code abaixo ou copie e cole a chave PIX no seu app do banco.</p>
-        <div class="bg-slate-100 dark:bg-white/5 p-4 rounded-2xl mb-6 flex justify-center w-full">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020126460014BR.GOV.BCB.PIX011112345678900209Kit%20Movvi5204000053039865406399.005802BR5913Movvi%20Resgate6009Sao%20Paulo62070503***6304" alt="QR Code PIX" class="w-48 h-48 mix-blend-multiply dark:mix-blend-normal rounded-xl">
+    <div id="pix-modal" class="hidden fixed inset-0 z-50 bg-[#1a1400]/95 backdrop-blur-xl flex items-center justify-center p-6 transition-all duration-300">
+      <div id="pix-modal-content" class="bg-white dark:bg-[#111] w-full max-w-sm rounded-[3rem] p-8 flex flex-col items-center text-center scale-95 transition-transform duration-300 shadow-2xl">
+        <div class="size-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6">
+          <span class="material-symbols-outlined text-3xl font-black">qr_code_2</span>
         </div>
-        <button id="btn-copy-pix" class="w-full bg-[#FFD900] text-[#1a1400] font-bold py-3.5 rounded-xl mb-4 border border-transparent active:scale-95 transition-all text-sm uppercase tracking-wider">Copiar Chave PIX</button>
-        <button id="btn-cancel-pix" class="w-full text-red-500 font-bold py-3 text-sm">Cancelar Pagamento</button>
+        <h3 class="font-black text-2xl text-[#1a1400] dark:text-white mb-2 uppercase italic tracking-tighter">Pagamento Seguro</h3>
+        <p class="text-xs font-bold text-slate-400 mb-8 max-w-[240px]">Escaneie o QR Code abaixo no app do seu banco ou use a chave Copia e Cola.</p>
+        
+        <div class="bg-white p-6 rounded-[2rem] mb-8 flex justify-center w-full shadow-inner border border-slate-50">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020126460014BR.GOV.BCB.PIX011112345678900209Kit%20Movvi5204000053039865406399.005802BR5913Movvi%20Resgate6009Sao%20Paulo62070503***6304" alt="QR Code PIX" class="w-48 h-48 rounded-2xl">
+        </div>
+
+        <div class="flex flex-col gap-3 w-full">
+          <button id="btn-copy-pix" class="w-full bg-primary text-black font-black py-4 rounded-2xl active:scale-95 transition-all text-xs uppercase tracking-[0.2em] shadow-lg shadow-primary/20">Copiar Código PIX</button>
+          <button id="btn-cancel-pix" class="w-full text-red-500 font-bold py-3 text-[10px] uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Cancelar Operação</button>
+        </div>
       </div>
     </div>
   `;
@@ -2191,6 +2283,9 @@ function startApp() {
     return;
   }
   
+  const params = new URLSearchParams(window.location.search);
+  const isInvite = params.get('invite') === 'pioneer';
+  
   sidebarOverlay.onclick = closeSidebar;
   const saved = loadUser();
   if (saved) {
@@ -2199,7 +2294,12 @@ function startApp() {
     buildSidebar();
     checkActiveOrder();
   } else {
-    nav(loginView);
+    // Se veio de convite, vai direto para registro
+    if (isInvite) {
+      nav(registerView);
+    } else {
+      nav(loginView);
+    }
   }
 }
 

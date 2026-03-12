@@ -307,10 +307,15 @@
             <div class="hero-badge">CONVITE EXCLUSIVO: FASE 01 PIONEIROS</div>
             <h1>SEJA O PRÓXIMO <span>PARCEIRO MOVVI.</span></h1>
             <p>Transforme seu carro de aplicativo em uma unidade de resgate. Ganhe até 4x mais por quilômetro rodado e ajude a revolucionar o socorro urbano.</p>
+            
+            <div style="color: #999; max-width: 700px; margin: -20px auto 40px; font-size: 0.95rem; line-height: 1.6; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                <strong style="color: var(--primary); display: block; margin-bottom: 5px; font-family: 'Outfit'; text-transform: uppercase; letter-spacing: 1px;">Estamos Chegando</strong>
+                Atuamos em conjunto com associações de proteção veicular, oficinas e seguradoras para cobrir o imenso vazio de assistência no Rio. Como parceiro Movvi, você fatura atendendo uma demanda que os guinchos tradicionais não conseguem suprir com agilidade.
+            </div>
 
             <div class="timer-container">
                 <div class="timer-card">
-                    <span class="num" id="d">30</span>
+                    <span class="num" id="d">29</span>
                     <span class="label">Dias</span>
                 </div>
                 <div class="timer-card">
@@ -337,8 +342,27 @@
         <div class="container">
             <div class="scarcity-inner">
                 <h2 style="font-size: 2.5rem; margin-bottom: 20px;">OPORTUNIDADE <span>LIMITADA.</span></h2>
-                <p style="color: var(--text-dim);">Para garantir a qualidade na primeira fase de 6 meses, liberamos apenas 100 vagas para parceiros pioneiros em todo o Rio de Janeiro.</p>
+                <p style="color: var(--text-dim); margin-bottom: 40px;">Para garantir a qualidade na primeira fase de 6 meses, liberamos apenas 100 vagas para parceiros pioneiros em todo o Rio de Janeiro.</p>
                 
+                <!-- MARKET REALITY SECTION -->
+                <div style="background: #111; border: 1px dashed rgba(255,217,0,0.3); padding: 30px; border-radius: 20px; text-align: left; margin-bottom: 40px;">
+                    <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 1.2rem; text-transform: uppercase;">A Realidade do Mercado</h3>
+                    <p style="font-size: 1.1rem; color: #fff; margin-bottom: 20px; font-weight: 600;">O Rio de Janeiro possui cerca de <span style="color: var(--primary);">1.7 milhões de veículos</span> circulando sem qualquer tipo de seguro ou assistência.</p>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">
+                            <span style="display: block; font-size: 1.8rem; font-weight: 900; color: var(--primary);">1.200</span>
+                            <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-dim);">Solicitações/Dia na Capital</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">
+                            <span style="display: block; font-size: 0.9rem; color: #fff; font-weight: 700;">Pane Seca & Bateria</span>
+                            <span style="font-size: 0.8rem; color: var(--text-dim);">Os chamados mais comuns e lucrativos.</span>
+                        </div>
+                    </div>
+                    
+                    <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-dim);">Trabalhamos em parceria direta com Associações, Oficinas e Seguradoras para garantir que você nunca fique sem chamados.</p>
+                </div>
+
                 <div class="vagas-box">
                     <div style="display: flex; justify-content: space-between; font-weight: 800; font-family: 'Outfit';">
                         <span>VAGAS PREENCHIDAS</span>
@@ -367,7 +391,7 @@
                     </ul>
                 </div>
                 <div class="kit-img-box">
-                    <img src="/assets/images/movvi_kit_official_set.png" alt="O Kit Oficial Movvi">
+                    <img src="/assets/images/kit_oficial_movvi_v2.png?v=2026" alt="O Kit Oficial Movvi">
                 </div>
             </div>
         </div>
@@ -405,13 +429,13 @@
     </footer>
 
     <div class="sticky-cta">
-        <a href="driver.html?download=1&invite=pioneer" class="btn-cta">GARANTIR MINHA VAGA</a>
+        <a href="/driver.html?download=1&invite=pioneer" class="btn-cta">GARANTIR MINHA VAGA</a>
     </div>
 
     <script>
         // --- REAL TIME TIMER ---
         const target = new Date();
-        target.setDate(target.getDate() + 30);
+        target.setDate(target.getDate() + 29);
 
         function tick() {
             const now = new Date();

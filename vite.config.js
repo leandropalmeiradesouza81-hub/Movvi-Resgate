@@ -13,7 +13,7 @@ export default defineConfig({
         driver: resolve(__dirname, 'driver.html'),
         admin: resolve(__dirname, 'admin.html'),
         invite: resolve(__dirname, 'driver-invite.html'),
-        convite: resolve(__dirname, 'convite.html'),
+        convite: resolve(__dirname, 'convite/index.html'),
       }
     }
   },

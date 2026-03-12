@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movvi Resgate | Oportunidade de Parceiro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Movvi Resgate | Seja um dos 100 Pioneiros</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,12 +11,11 @@
     <style>
         :root {
             --primary: #ffd900;
-            --primary-rgb: 255, 217, 0;
-            --bg: #0a0a0a;
+            --bg: #000000;
             --surface: #111111;
-            --border: rgba(255, 217, 0, 0.4);
+            --border: rgba(255, 217, 0, 0.3);
             --text: #ffffff;
-            --text-muted: #888888;
+            --text-muted: #999999;
             --accent: #ff0000;
         }
 
@@ -25,350 +24,315 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg);
             color: var(--text);
-            line-height: 1.4;
+            line-height: 1.5;
             overflow-x: hidden;
+            width: 100%;
         }
 
         h1, h2, h3 {
             font-family: 'Outfit', sans-serif;
             text-transform: uppercase;
-            letter-spacing: -0.02em;
+            line-height: 0.95;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+            width: 100%;
+            padding: 0 24px;
         }
 
-        /* --- BRUTALIST HEADER --- */
+        /* --- MOBILE OPTIMIZED HEADER --- */
         header {
-            padding: 30px 0;
-            border-bottom: 2px solid var(--primary);
-            background: var(--bg);
+            padding: 20px 0;
+            background: rgba(0,0,0,0.9);
+            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
         }
 
-        .logo-wrap {
+        .logo-row {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
         }
 
-        .logo { height: 45px; }
-
-        .btn-header {
-            border: 2px solid var(--primary);
-            padding: 10px 20px;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 800;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            transition: 0.2s;
+        .logo { 
+            height: 35px; 
+            filter: drop-shadow(0 0 5px rgba(255, 217, 0, 0.2));
         }
 
-        .btn-header:hover {
+        /* --- HERO SECTION: MOBILE FIRST --- */
+        .hero {
+            padding: 40px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .phase-badge {
             background: var(--primary);
             color: #000;
-        }
-
-        /* --- HERO: TYPOGRAPHIC FOCUS --- */
-        .hero {
-            padding: 80px 0 60px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Watermark */
-        .hero::before {
-            content: "MOVVI";
-            position: absolute;
-            top: -10%;
-            left: -5%;
-            font-size: 25vw;
-            font-weight: 900;
-            color: rgba(255, 217, 0, 0.03);
-            z-index: -1;
-            line-height: 1;
-        }
-
-        .hero-inner {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .badge {
-            background: var(--accent);
-            color: #fff;
-            padding: 6px 14px;
+            padding: 8px 16px;
             font-weight: 900;
             font-size: 0.75rem;
-            display: inline-block;
-            align-self: flex-start;
             text-transform: uppercase;
-            animation: blink 1s step-end infinite;
-        }
-
-        @keyframes blink {
-            50% { opacity: 0; }
+            display: inline-block;
+            margin-bottom: 24px;
+            box-shadow: 6px 6px 0px #000;
+            border: 1px solid #000;
         }
 
         .hero h1 {
-            font-size: clamp(2.8rem, 12vw, 6rem);
-            line-height: 0.9;
+            font-size: clamp(3.2rem, 15vw, 5rem);
             font-weight: 900;
+            margin-bottom: 16px;
             color: var(--primary);
+            letter-spacing: -2px;
         }
 
         .hero h1 span {
             display: block;
             color: #fff;
-            font-size: 0.5em;
-            margin-top: 10px;
+            font-size: 0.55em;
+            letter-spacing: 0;
+            margin-top: 4px;
         }
 
         .hero p {
-            font-size: 1.25rem;
-            max-width: 600px;
+            font-size: 1.15rem;
             color: var(--text-muted);
-            border-left: 2px solid var(--primary);
-            padding-left: 20px;
-            margin-top: 20px;
+            margin: 24px 0;
+            padding: 0 10px;
         }
 
-        /* --- TIMER: MODERN DARK --- */
-        .timer-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin: 40px 0;
-            max-width: 400px;
+        /* --- TIMER: TICKING SECONDS --- */
+        .timer-wrap {
+            margin: 32px 0 48px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .timer-box {
+        .t-box {
             background: var(--surface);
             border: 1px solid var(--border);
-            padding: 20px 10px;
+            width: 75px;
+            padding: 12px 0;
             text-align: center;
         }
 
-        .timer-val {
-            font-size: 2.5rem;
+        .t-num {
+            display: block;
+            font-size: 2rem;
+            font-family: 'Outfit';
             font-weight: 900;
             color: var(--primary);
-            display: block;
+            line-height: 1;
         }
 
-        .timer-label {
-            font-size: 0.7rem;
+        .t-label {
+            font-size: 0.6rem;
             text-transform: uppercase;
             color: var(--text-muted);
-            letter-spacing: 0.1em;
-        }
-
-        /* --- SPIN SECTION --- */
-        .car-reveal {
-            margin-top: 40px;
-            border: 1px solid var(--border);
-            position: relative;
-        }
-
-        .car-reveal img {
-            width: 100%;
-            height: auto;
-            filter: grayscale(0.2) contrast(1.2);
+            letter-spacing: 1px;
+            margin-top: 4px;
             display: block;
         }
 
-        .car-info {
+        /* --- DYNAMIC CAR IMAGE --- */
+        .car-display {
+            width: 100%;
+            margin: 40px 0;
+            position: relative;
+            border: 2px solid var(--primary);
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 217, 0, 0.1);
+        }
+
+        .car-display img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            display: block;
+            filter: brightness(0.9);
+        }
+
+        .car-tag {
             position: absolute;
-            bottom: -20px;
+            top: 20px;
             right: 20px;
-            background: var(--primary);
-            color: #000;
-            padding: 15px 25px;
+            background: rgba(0,0,0,0.8);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 6px 12px;
+            font-size: 0.7rem;
             font-weight: 900;
-            font-size: 1.2rem;
-            box-shadow: 10px 10px 0px #000;
+            text-transform: uppercase;
         }
 
-        /* --- PAIN & STORY --- */
-        .story {
-            padding: 100px 0;
-            background: #0e0e0e;
+        /* --- SCARCITY CONTENT --- */
+        .scarcity-box {
+            background: #111;
+            padding: 30px 20px;
+            text-align: left;
+            border-left: 4px solid var(--primary);
+            margin: 40px 0;
         }
 
-        .story-header { margin-bottom: 60px; }
-        .story-header h2 { font-size: 3rem; color: #fff; margin-bottom: 20px;}
-        .story-header h2 span { color: var(--primary); }
-
-        .story-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 40px;
+        .scarcity-box h2 {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
         }
 
-        @media (min-width: 768px) {
-            .story-grid { grid-template-columns: 1fr 1fr; }
-        }
+        .scarcity-box h2 span { color: var(--primary); }
 
-        .pain-box {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 40px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .pain-box i { font-size: 3rem; color: var(--accent); margin-bottom: 20px; }
-        .pain-box h3 { font-size: 1.5rem; margin-bottom: 15px; }
-        .pain-box p { color: var(--text-muted); }
-
-        /* --- THE KIT: PREMIUM --- */
-        .kit-section {
-            padding: 100px 0;
-            background: #000;
-        }
-
-        .kit-display {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 50px;
+        .vagas-count {
+            display: flex;
             align-items: center;
+            gap: 12px;
+            margin-top: 20px;
         }
 
-        @media (min-width: 992px) {
-            .kit-display { grid-template-columns: 1.2fr 1fr; }
+        .vagas-bar {
+            height: 8px;
+            flex-grow: 1;
+            background: #222;
+            border-radius: 4px;
+            overflow: hidden;
         }
 
-        .kit-image { border: 2px solid var(--primary); }
-        .kit-image img { width: 100%; display: block; filter: brightness(0.8); }
+        .vagas-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 4%; /* 4/100 remaining */
+            box-shadow: 0 0 10px var(--primary);
+        }
 
-        .kit-info h2 { font-size: 4rem; line-height: 0.9; margin-bottom: 30px; }
-        .kit-info .price {
-            font-size: 3rem;
+        /* --- THE KIT: MOBILE PREMIUM --- */
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .kit-card {
+            background: var(--surface);
+            border: 1px solid #333;
+            margin-bottom: 24px;
+            padding: 24px;
+        }
+
+        .kit-price {
+            font-size: 3.5rem;
             font-weight: 900;
             color: var(--primary);
-            margin-bottom: 10px;
             display: block;
+            margin-bottom: 8px;
         }
-        .kit-info .sub { color: var(--text-muted); margin-bottom: 30px; display: block; }
 
         .kit-list {
             list-style: none;
-            display: grid;
-            gap: 15px;
+            margin: 24px 0;
         }
 
         .kit-list li {
             display: flex;
             align-items: center;
-            gap: 15px;
-            font-size: 1.1rem;
+            gap: 12px;
+            margin-bottom: 12px;
             font-weight: 700;
+            font-size: 0.95rem;
         }
 
-        .kit-list li i { color: var(--primary); }
+        .kit-list li i { color: var(--primary); font-size: 0.8rem; }
 
-        /* --- FAQ: ACCORDION BRUTAL --- */
-        .faq { padding: 100px 0; }
-        .faq h2 { font-size: 3rem; margin-bottom: 50px; text-align: center; }
-
+        /* --- FAQ: MOBILE CLICKABLE --- */
         .faq-item {
             border-bottom: 1px solid #222;
         }
 
-        .faq-trigger {
+        .faq-btn {
             width: 100%;
-            padding: 25px 0;
+            padding: 24px 0;
             background: none;
             border: none;
             color: #fff;
-            text-align: left;
-            font-size: 1.1rem;
-            font-weight: 800;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: pointer;
+            font-weight: 800;
+            text-align: left;
             text-transform: uppercase;
+            font-size: 0.9rem;
         }
 
-        .faq-content {
+        .faq-ans {
             max-height: 0;
             overflow: hidden;
-            transition: 0.3s ease-out;
+            transition: 0.4s ease;
             color: var(--text-muted);
-            padding-bottom: 0;
+            font-size: 0.95rem;
         }
 
-        .faq-item.active .faq-content {
-            max-height: 300px;
-            padding-bottom: 25px;
+        .faq-item.open .faq-ans {
+            max-height: 200px;
+            padding-bottom: 24px;
         }
 
-        .faq-item.active .faq-trigger i { transform: rotate(45deg); }
-        .faq-trigger i { transition: 0.3s; color: var(--primary); }
-
-        /* --- CTA: MASSIVE --- */
-        .cta {
-            padding: 120px 0;
-            background: var(--primary);
-            color: #000;
-            text-align: center;
-        }
-
-        .cta h2 { font-size: clamp(3rem, 15vw, 8rem); line-height: 0.8; margin-bottom: 40px; }
-        .cta p { font-size: 1.5rem; font-weight: 800; text-transform: uppercase; margin-bottom: 50px; }
-
-        .btn-massive {
-            background: #000;
-            color: var(--primary);
-            padding: 30px 60px;
-            font-size: 1.5rem;
-            font-weight: 900;
-            text-decoration: none;
-            display: inline-block;
-            text-transform: uppercase;
-            box-shadow: 15px 15px 0px rgba(0,0,0,0.2);
-            transition: 0.3s;
-        }
-
-        .btn-massive:hover {
-            transform: translate(-5px, -5px);
-            box-shadow: 20px 20px 0px rgba(0,0,0,0.3);
-        }
-
-        /* --- SCARCITY BAR --- */
-        .scarcity-bar {
+        /* --- STICKY CTA --- */
+        .sticky-footer {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: var(--accent);
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-            font-weight: 900;
-            text-transform: uppercase;
-            font-size: 0.8rem;
+            padding: 16px 20px;
+            background: rgba(0,0,0,0.95);
+            border-top: 1px solid var(--border);
             z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        /* --- FOOTER --- */
-        footer {
-            padding: 60px 0 100px;
+        .btn-main {
+            background: var(--primary);
+            color: #000;
+            width: 100%;
+            padding: 18px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 900;
+            text-transform: uppercase;
             text-align: center;
-            color: var(--text-muted);
-            font-size: 0.8rem;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(255, 217, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .urgency-text {
+            color: var(--accent);
+            font-size: 0.7rem;
+            font-weight: 900;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        /* --- RESPONSIVE ADJUSTMENTS --- */
+        @media (min-width: 600px) {
+            .hero h1 { font-size: 5rem; }
+            .car-display img { height: 600px; }
         }
     </style>
 </head>
@@ -376,182 +340,133 @@
 
     <header>
         <div class="container">
-            <div class="logo-wrap">
-                <img src="assets/images/logo_movvi.png" alt="MOVVI" class="logo">
-                <a href="#join" class="btn-header">Garantir Vaga</a>
+            <div class="logo-row">
+                <img src="/assets/images/logo_movvi.png" alt="MOVVI RESGATE" class="logo">
             </div>
         </div>
     </header>
 
     <section class="hero">
         <div class="container">
-            <div class="hero-inner">
-                <div class="badge">Atenção: Apenas para Motoristas de App</div>
-                <h1>DINHEIRO <span>NO SEU PORTA-MALAS.</span></h1>
-                <p>Transforme seu carro de passeio em uma unidade de resgate e ganhe 4x mais que em uma corrida comum.</p>
-                
-                <div class="timer-grid">
-                    <div class="timer-box">
-                        <span class="timer-val" id="days">30</span>
-                        <span class="timer-label">Dias</span>
-                    </div>
-                    <div class="timer-box">
-                        <span class="timer-val" id="hours">00</span>
-                        <span class="timer-label">Horas</span>
-                    </div>
-                    <div class="timer-box">
-                        <span class="timer-val" id="minutes">00</span>
-                        <span class="timer-label">Min</span>
-                    </div>
-                </div>
-
-                <div class="car-reveal">
-                    <!-- Chevrolet Spin 2020 Branded -->
-                    <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=1200" alt="Spin 2020" id="carImg">
-                    <div class="car-info">MOVVI | SPIN 2020</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="story">
-        <div class="container">
-            <div class="story-header">
-                <h2>O <span>PROBLEMA:</span> O REBOQUE É UMA MÁFIA.</h2>
-                <p>Já tentou conseguir um reboque num feriado? Ou em Itaguaí às 2 da manhã?</p>
-            </div>
+            <div class="phase-badge">Fase 01: Pioneiros</div>
+            <h1>ESTAMOS<br><span>CHEGANDO!</span></h1>
             
-            <div class="story-grid">
-                <div class="pain-box">
-                    <i class="fas fa-skull-crossbones"></i>
-                    <h3>Exploração Total</h3>
-                    <p>Cobram R$ 700 para rodar 60km. O cliente está desesperado e paga o que pedirem. A Movvi acabou com isso.</p>
+            <p>Seja um dos primeiros 100 parceiros e domine o mercado de resgate na sua região.</p>
+
+            <div class="timer-wrap">
+                <div class="t-box">
+                    <span class="t-num" id="d">30</span>
+                    <span class="t-label">Dias</span>
                 </div>
-                <div class="pain-box">
-                    <i class="fas fa-gas-pump"></i>
-                    <h3>Ganhos Mixuruca</h3>
-                    <p>Rodar o dia todo na Uber por R$ 15? No Movvi, um único resgate de 25km te paga R$ 80 líquidos na mão.</p>
+                <div class="t-box">
+                    <span class="t-num" id="h">00</span>
+                    <span class="t-label">Hrs</span>
+                </div>
+                <div class="t-box">
+                    <span class="t-num" id="m">00</span>
+                    <span class="t-label">Min</span>
+                </div>
+                <div class="t-box">
+                    <span class="t-num" id="s">00</span>
+                    <span class="t-label">Seg</span>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section class="kit-section" id="join">
-        <div class="container">
-            <div class="kit-display">
-                <div class="kit-info">
-                    <h2>O KIT<br>RESGATE.</h2>
-                    <span class="price">R$ 399</span>
-                    <span class="sub">Investimento único. Retorno na primeira semana.</span>
-                    <ul class="kit-list">
-                        <li><i class="fas fa-check-square"></i> Cambão Articulado (Aço Carbono)</li>
-                        <li><i class="fas fa-check-square"></i> Cabos de Transferência Heavy Duty</li>
-                        <li><i class="fas fa-check-square"></i> 2 Sprays Reparadores de Pneu</li>
-                        <li><i class="fas fa-check-square"></i> Bombona de Combustível Oficial</li>
-                        <li><i class="fas fa-check-square"></i> Acesso Prioritário à Plataforma</li>
-                    </ul>
-                </div>
-                <div class="kit-image">
-                    <!-- Kit Tactical Image -->
-                    <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800" alt="O Kit" id="kitImg">
+            <div class="car-display">
+                <img src="/assets/images/movvi_portrait_spin.png" alt="Spin 2020 Movvi">
+                <div class="car-tag">Unidade Homologada: Spin 2020</div>
+            </div>
+
+            <div class="scarcity-box">
+                <h2>CUIDADO:<br>O REBOQUE É <span>UMA MÁFIA.</span></h2>
+                <p>Nesta primeira fase de 6 meses, liberamos apenas 100 vagas exclusivas. Garanta seu lucro de reboque sem sair do seu carro de app.</p>
+                <div class="vagas-count">
+                    <div class="vagas-bar"><div class="vagas-fill"></div></div>
+                    <span style="font-weight: 900; color: var(--primary);">04/100 VAGAS</span>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section class="faq">
-        <div class="container">
-            <h2>DÚVIDAS <span>CRUENTAIS</span></h2>
+            <h2 class="section-title">O SEU<br><span>KIT RESGATE</span></h2>
             
-            <div class="faq-list">
+            <div class="kit-card">
+                <span style="font-size: 1.2rem; font-weight: 900; color: var(--primary);">INVESTIMENTO</span>
+                <span class="kit-price">R$ 399</span>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Pagamento único. Lucro vitalício.</p>
+                <ul class="kit-list">
+                    <li><i class="fas fa-bolt"></i> Cambão Articulado (Aço)</li>
+                    <li><i class="fas fa-bolt"></i> Cabos de Força Heavy Duty</li>
+                    <li><i class="fas fa-bolt"></i> Sprays Reparadores de Pneu</li>
+                    <li><i class="fas fa-bolt"></i> Bombona de Gasolina Tática</li>
+                    <li><i class="fas fa-bolt"></i> Homologação na Plataforma</li>
+                </ul>
+                <img src="/assets/images/movvi_kit_tactical.png" style="width: 100%; margin-top: 10px; border: 1px solid #333;">
+            </div>
+
+            <h2 class="section-title">PERGUNTAS<br><span>RÁPIDAS</span></h2>
+
+            <div class="faq-list" style="text-align: left;">
                 <div class="faq-item">
-                    <button class="faq-trigger">Como o kit cabe no porta-malas? <i class="fas fa-plus"></i></button>
-                    <div class="faq-content">
-                        <p>O cambão é articulado e dobra ao meio. Todo o kit ocupa menos de 15% de um porta-malas de Spin ou Sedan. Seus passageiros nem verão que está lá.</p>
-                    </div>
+                    <button class="faq-btn">Cabe em carro sedan ou hatchback? <i class="fas fa-chevron-down"></i></button>
+                    <div class="faq-ans"><p>Sim! O cambão é articulado e dobra-se ao meio. Ocupa o espaço de um guarda-chuva grande no porta-malas.</p></div>
                 </div>
                 <div class="faq-item">
-                    <button class="faq-trigger">O kit é meu ou da Movvi? <i class="fas fa-plus"></i></button>
-                    <div class="faq-content">
-                        <p>O kit é SEU. Você paga o valor de R$ 399 e ele se torna sua ferramenta de trabalho vitalícia. É o seu negócio próprio.</p>
-                    </div>
+                    <button class="faq-btn">Preciso sair dos meus apps? <i class="fas fa-chevron-down"></i></button>
+                    <div class="faq-ans"><p>De jeito nenhum. O Movvi entra como um complemento de alta renda. O Resgate paga 4x mais que uma corrida comum.</p></div>
                 </div>
                 <div class="faq-item">
-                    <button class="faq-trigger">Posso puxar qualquer carro? <i class="fas fa-plus"></i></button>
-                    <div class="faq-content">
-                        <p>Sim, carros de passeio e utilitários leves. Nosso treinamento ensina a técnica correta para não forçar seu câmbio ou suspensão.</p>
-                    </div>
+                    <button class="faq-btn">Como serei pago? <i class="fas fa-chevron-down"></i></button>
+                    <div class="faq-ans"><p>Pagamento via PIX instantâneo direto na carteira do motorista assim que finalizar o serviço.</p></div>
                 </div>
                 <div class="faq-item">
-                    <button class="faq-trigger">E se eu não quiser fazer o resgate? <i class="fas fa-plus"></i></button>
-                    <div class="faq-content">
-                        <p>Você é livre. O app apita, você vê o valor e a distância. Se não puder, recuse. Sem punição, igual aos outros apps.</p>
-                    </div>
-                </div>
-                <!-- Add more as needed, but keeping it concise for mobile flow -->
-                 <div class="faq-item">
-                    <button class="faq-trigger">Como recebo o pagamento? <i class="fas fa-plus"></i></button>
-                    <div class="faq-content">
-                        <p>Pagamento instantâneo. Finalizou? O valor vai para sua carteira digital Movvi e você saca via PIX na hora.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-trigger">Qualquer carro serve? <i class="fas fa-plus"></i></button>
-                    <div class="faq-content">
-                        <p>Sim, desde que tenha um engate traseiro de qualidade. Recomendamos carros como Spin, Duster, Logan ou qualquer Sedan com bom torque.</p>
-                    </div>
+                    <button class="faq-btn">Qualquer carro pode rebocar? <i class="fas fa-chevron-down"></i></button>
+                    <div class="faq-ans"><p>Quase todos. Basta ter o engate homologado e o nosso kit de segurança.</p></div>
                 </div>
             </div>
+
+            <div style="padding: 100px 0;">
+                <p style="color: #444; font-size: 0.7rem;">&copy; 2026 MOVVI RESGATE - TODOS OS DIREITOS RESERVADOS.</p>
+            </div>
+
         </div>
     </section>
 
-    <section class="cta">
-        <div class="container">
-            <h2>VAI FICAR<br>RECLAMANDO?</h2>
-            <p>Apenas 50 vagas para o primeiro lote de convidados.</p>
-            <a href="driver.html?download=1" class="btn-massive">EU QUERO ESSA VAGA</a>
-        </div>
-    </section>
-
-    <div class="scarcity-bar">
-        ÚLTIMAS 4 VAGAS DISPONÍVEIS PARA ITAGUAÍ/RJ
+    <div class="sticky-footer">
+        <div class="urgency-text">Apenas 04 vagas disponíveis em ITAGUAÍ/RJ</div>
+        <a href="driver.html?register=pioneer" class="btn-main">EU QUERO SER UM PIONEIRO</a>
     </div>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 MOVVI RESGATE. A REVOLUÇÃO DO SOCORRO URBANO.</p>
-        </div>
-    </footer>
-
     <script>
-        // Update images with generated ones
-        document.getElementById('carImg').src = '/assets/images/movvi_spin_2020.png';
-        document.getElementById('kitImg').src = '/assets/images/movvi_kit_tactical.png';
+        // --- REAL TIME TIMER (S, M, H, D) ---
+        const target = new Date();
+        target.setDate(target.getDate() + 30);
 
-        // Timer Logic
-        const targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() + 30);
+        function tick() {
+            const now = new Date();
+            const diff = target - now;
 
-        function updateTimer() {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
-            document.getElementById("days").innerText = days;
-            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
-            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('d').innerText = d;
+            document.getElementById('h').innerText = h.toString().padStart(2, '0');
+            document.getElementById('m').innerText = m.toString().padStart(2, '0');
+            document.getElementById('s').innerText = s.toString().padStart(2, '0');
         }
-        setInterval(updateTimer, 60000);
-        updateTimer();
+        setInterval(tick, 1000);
+        tick();
 
-        // FAQ Logic
-        document.querySelectorAll('.faq-trigger').forEach(trigger => {
-            trigger.addEventListener('click', () => {
-                const item = trigger.parentElement;
-                item.classList.toggle('active');
+        // --- MOBILE ACCORDION ---
+        document.querySelectorAll('.faq-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.parentElement;
+                const isOpen = item.classList.contains('open');
+                
+                // Close others
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                
+                if (!isOpen) item.classList.add('open');
             });
         });
     </script>

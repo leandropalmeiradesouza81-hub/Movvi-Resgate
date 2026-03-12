@@ -15,12 +15,10 @@
         :root {
             --primary: #ffd900;
             --primary-dark: #e0be00;
-            --bg-light: #fafaf7;
-            --bg-white: #ffffff;
-            --bg-dark: #0a0906;
-            --surface-dark: #161308;
-            --text-main: #111;
-            --text-dim: #666;
+            --bg-body: #000000; /* Prezado conforme solicitado */
+            --bg-surface: #111111;
+            --text-main: #ffffff;
+            --text-dim: #999999;
             --accent-red: #ff3b30;
         }
 
@@ -33,7 +31,7 @@
         }
 
         body {
-            background-color: var(--bg-light);
+            background-color: var(--bg-body);
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
@@ -55,10 +53,11 @@
         nav {
             position: fixed;
             top: 0; left: 0; right: 0;
-            background: white;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
             z-index: 1000;
             padding: 12px 0;
-            box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(255,217,0,0.2);
         }
 
         .nav-inner {
@@ -69,15 +68,16 @@
         }
 
         .nav-logo img {
-            height: 120px;
+            height: 100px;
             object-fit: contain;
-            filter: grayscale(100%) brightness(0);
+            /* Logo Amarelo conforme identidade Movvi */
+            filter: invert(86%) sepia(93%) saturate(1450%) hue-rotate(334deg) brightness(108%) contrast(106%);
         }
 
         /* --- HERO --- */
         .hero {
             padding: 160px 0 80px;
-            background: var(--bg-light);
+            background: var(--bg-body);
             position: relative;
             overflow: hidden;
             text-align: center;
@@ -87,7 +87,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 217, 0, 0.15);
+            background: rgba(255, 217, 0, 0.1);
             border: 1px solid rgba(255, 217, 0, 0.3);
             padding: 8px 18px;
             border-radius: 999px;
@@ -96,7 +96,7 @@
             font-size: 11px;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: var(--primary-dark);
+            color: var(--primary);
             margin-bottom: 24px;
         }
 
@@ -104,11 +104,11 @@
             font-size: clamp(2.5rem, 8vw, 4.5rem);
             font-weight: 800;
             margin-bottom: 20px;
-            color: var(--text-main);
+            color: #fff;
         }
 
         .hero h1 span {
-            color: var(--primary-dark);
+            color: var(--primary);
         }
 
         .hero p {
@@ -127,12 +127,12 @@
         }
 
         .timer-card {
-            background: white;
-            border: 1px solid rgba(0,0,0,0.06);
+            background: #111;
+            border: 1px solid rgba(255,217,0,0.2);
             padding: 15px;
             min-width: 80px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
         .timer-card .num {
@@ -140,7 +140,7 @@
             font-size: 2rem;
             font-weight: 900;
             font-family: 'Outfit';
-            color: var(--text-main);
+            color: var(--primary);
             line-height: 1;
         }
 
@@ -161,33 +161,21 @@
             position: relative;
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,217,0,0.3);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
 
         .car-wrap img {
             width: 100%;
             height: auto;
             display: block;
-        }
-
-        .car-label {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: var(--primary);
-            color: #000;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-weight: 900;
-            font-family: 'Outfit';
-            font-size: 0.9rem;
-            text-transform: uppercase;
+            filter: brightness(0.8);
         }
 
         /* --- PHASES & VAGAS --- */
         .scarcity {
             padding: 80px 0;
-            background: var(--bg-white);
+            background: #080808;
             text-align: center;
         }
 
@@ -197,8 +185,8 @@
         }
 
         .vagas-box {
-            background: #fdfdfd;
-            border: 1px solid #ebebeb;
+            background: #111;
+            border: 1px solid #222;
             padding: 40px;
             border-radius: 24px;
             margin-top: 40px;
@@ -206,7 +194,7 @@
 
         .vagas-bar-bg {
             height: 12px;
-            background: #eee;
+            background: #222;
             border-radius: 10px;
             overflow: hidden;
             margin: 20px 0;
@@ -224,7 +212,7 @@
         /* --- KIT SECTION --- */
         .kit {
             padding: 80px 0;
-            background: var(--bg-dark);
+            background: #000;
             color: white;
         }
 
@@ -251,27 +239,28 @@
         .kit-img-box img { width: 100%; display: block; filter: brightness(0.9); }
 
         /* --- FAQ --- */
-        .faq { padding: 100px 0; background: var(--bg-light); }
-        .faq h2 { text-align: center; font-size: 2.5rem; margin-bottom: 60px; }
+        .faq { padding: 100px 0; background: #080808; }
+        .faq h2 { text-align: center; font-size: 2.5rem; margin-bottom: 60px; color: white; }
 
-        .faq-item { background: white; border: 1px solid #ebebeb; border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
-        .faq-btn { width: 100%; padding: 24px; border: none; background: none; text-align: left; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 1rem; font-weight: 700; color: var(--text-main); }
+        .faq-item { background: #111; border: 1px solid #222; border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
+        .faq-btn { width: 100%; padding: 24px; border: none; background: none; text-align: left; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 1rem; font-weight: 700; color: #fff; }
         .faq-ans { max-height: 0; overflow: hidden; transition: 0.3s ease; padding: 0 24px; color: var(--text-dim); }
         .faq-item.open .faq-ans { max-height: 300px; padding-bottom: 24px; }
         .faq-item.open .faq-btn i { transform: rotate(180deg); }
-        .faq-btn i { transition: 0.3s; color: var(--primary-dark); }
+        .faq-btn i { transition: 0.3s; color: var(--primary); }
 
         /* --- STICKY FOOTER --- */
         .sticky-cta {
             position: fixed;
             bottom: 0; left: 0; right: 0;
-            background: white;
+            background: rgba(0,0,0,0.95);
             padding: 16px 20px;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
             z-index: 2000;
+            border-top: 1px solid rgba(255,217,0,0.2);
         }
 
         .btn-cta {
@@ -290,8 +279,6 @@
         }
 
         .btn-cta:active { transform: scale(0.98); }
-
-        .urgency { text-align: center; font-size: 0.75rem; font-weight: 800; color: var(--accent-red); text-transform: uppercase; }
 
         /* --- FOOTER --- */
         footer { padding: 100px 0 160px; text-align: center; opacity: 0.4; font-size: 0.8rem; }
@@ -342,7 +329,6 @@
 
             <div class="car-wrap">
                 <img src="/assets/images/movvi_portrait_spin.png" alt="Movvi Spin 2020">
-                <div class="car-label">UNIDADE HOMOLOGADA: SPIN 2020</div>
             </div>
         </div>
     </section>
@@ -356,9 +342,9 @@
                 <div class="vagas-box">
                     <div style="display: flex; justify-content: space-between; font-weight: 800; font-family: 'Outfit';">
                         <span>VAGAS PREENCHIDAS</span>
-                        <span style="color: var(--primary-dark);">04 / 100</span>
+                        <span style="color: var(--primary);">14 / 100</span>
                     </div>
-                    <div class="vagas-bar-bg"><div class="vagas-bar-fill"></div></div>
+                    <div class="vagas-bar-bg"><div class="vagas-bar-fill" style="width: 14%;"></div></div>
                     <p style="font-size: 0.85rem; color: var(--text-dim); text-align: left;">*O número de vagas é atualizado em tempo real conforme as homologações são concluídas.</p>
                 </div>
             </div>
@@ -419,7 +405,6 @@
     </footer>
 
     <div class="sticky-cta">
-        <div class="urgency">APENAS 4 VAGAS DISPONÍVEIS PARA ITAGUAÍ/RJ</div>
         <a href="driver.html?invite=pioneer" class="btn-cta">GARANTIR MINHA VAGA</a>
     </div>
 

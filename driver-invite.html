@@ -437,7 +437,15 @@
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-            document.getElementById('d').innerText = d;
+            if (diff < 0) {
+                 document.getElementById('d').innerText = "00";
+                 document.getElementById('h').innerText = "00";
+                 document.getElementById('m').innerText = "00";
+                 document.getElementById('s').innerText = "00";
+                 return;
+            }
+
+            document.getElementById('d').innerText = d.toString().padStart(2, '0');
             document.getElementById('h').innerText = h.toString().padStart(2, '0');
             document.getElementById('m').innerText = m.toString().padStart(2, '0');
             document.getElementById('s').innerText = s.toString().padStart(2, '0');

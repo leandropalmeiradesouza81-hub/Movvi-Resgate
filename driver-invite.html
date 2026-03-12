@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movvi Resgate | Convite Exclusivo para Parceiros</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ffd900;
+            --primary-dark: #e6c200;
+            --dark: #121212;
+            --dark-surface: #1a1a1a;
+            --text-light: #ffffff;
+            --text-muted: #a0a0a0;
+            --accent: #ff4d4d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .logo {
+            height: 60px;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 60px 0 40px;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(255, 217, 0, 0.05) 0%, transparent 70%);
+        }
+
+        .badge-exclusive {
+            background: var(--primary);
+            color: var(--dark);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 10vw, 3.5rem);
+            line-height: 1.1;
+            margin-bottom: 20px;
+            padding: 0 10px;
+            color: var(--text-light);
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            padding: 0 15px;
+        }
+
+        /* --- Countdown --- */
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: nowrap;
+        }
+
+        .countdown-item {
+            background: var(--dark-surface);
+            padding: 15px 10px;
+            border-radius: 12px;
+            flex: 1;
+            max-width: 80px;
+            border: 1px solid rgba(255, 217, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .countdown-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* --- Vagas Section --- */
+        .vagas-count {
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        /* --- A História (Storytelling) --- */
+        .story-section {
+            padding: 60px 0;
+            background: var(--dark-surface);
+        }
+
+        .story-content {
+            display: flex;
+            flex-direction: column-reverse; /* Imagem no topo no mobile */
+            gap: 40px;
+        }
+
+        @media (min-width: 769px) {
+            .story-content { 
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                flex-direction: row;
+            }
+        }
+
+        .story-text h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            padding: 0 5px;
+        }
+
+        .story-text p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            padding: 0 5px;
+        }
+
+        .quote-card {
+            background: #252525;
+            padding: 20px;
+            margin: 20px 5px;
+            border-left: 4px solid var(--primary);
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        /* --- Benefícios / Kit --- */
+        .kit-section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .kit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .kit-card {
+            background: var(--dark-surface);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .kit-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .kit-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .kit-card h3 {
+            margin-bottom: 15px;
+        }
+
+        /* --- Call to Action --- */
+        .cta-section {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(to bottom, var(--dark), #000);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--dark);
+            width: 100%;
+            max-width: 400px;
+            padding: 22px 30px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(255, 217, 0, 0.3);
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 217, 0, 0.4);
+            background: #fff;
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-muted);
+        }
+
+        /* --- FAQ Section --- */
+        .faq-section {
+            padding: 80px 0;
+            background: var(--dark);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .faq-item {
+            background: var(--dark-surface);
+            margin-bottom: 10px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 217, 0, 0.05);
+        }
+
+        .faq-question {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--primary);
+            transition: background 0.3s;
+        }
+
+        .faq-question:hover {
+            background: rgba(255, 217, 0, 0.05);
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease-out;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 20px 20px;
+            max-height: 500px;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-question i {
+            transition: transform 0.3s;
+            font-size: 0.8rem;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* --- ProgressBar para Vagas --- */
+        .progress-container {
+            width: 300px;
+            height: 10px;
+            background: #333;
+            border-radius: 50px;
+            margin: 10px auto 40px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            width: 8%; /* Simulação de 4/50 vagas */
+            height: 100%;
+            background: var(--accent);
+            border-radius: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="assets/images/logo_movvi.png" alt="Movvi Resgate" class="logo">
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <span class="badge-exclusive">Convite Privado para Pioneiros</span>
+            <h1>Uma Nova Era na <span>Assistência Veicular</span> Chegou.</h1>
+            <p>Seja um dos primeiros 50 motoristas parceiros a transformar o cenário de resgate urbano na sua cidade.</p>
+            
+            <div class="countdown-container">
+                <div class="countdown-item">
+                    <span class="countdown-value" id="days">30</span>
+                    <span class="countdown-label">Dias</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="hours">00</span>
+                    <span class="countdown-label">Horas</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="minutes">00</span>
+                    <span class="countdown-label">Min</span>
+                </div>
+            </div>
+
+            <span class="vagas-count">APENAS 46 VAGAS RESTANTES</span>
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+
+            <a href="driver.html?download=1" class="btn-primary">QUERO MINHA VAGA AGORA <i class="fas fa-chevron-right"></i></a>
+        </div>
+    </section>
+
+    <section class="story-section">
+        <div class="container">
+            <div class="story-content">
+                <div class="story-text">
+                    <h2>De R$ 700 para uma Solução Justa.</h2>
+                    <p>Imagine o cenário: Rio de Janeiro, Carnaval. Você em Itaguaí e precisa levar o carro até Guadalupe (60km).</p>
+                    <p>Os poucos reboques cobram <strong>R$ 700</strong>. Um preço abusivo pela falta de opções.</p>
+                    <div class="quote-card">
+                        "A Movvi une o motorista de app ao cliente que precisa de ajuda rápida por um preço honesto."
+                    </div>
+                </div>
+                <div class="story-image">
+                    <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&q=80&w=800" alt="Resgate" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NOVA SEÇÃO: COMO FUNCIONA (PARA ENTENDIMENTO RÁPIDO) -->
+    <section class="kit-section" style="background: #151515; padding: 60px 0;">
+        <div class="container">
+            <div class="section-header">
+                <h2>Como Funciona?</h2>
+                <p>Simples, lucrativo e sem atrapalhar seu dia a dia.</p>
+            </div>
+            
+            <div class="kit-grid">
+                <div class="kit-card" style="padding: 30px 20px;">
+                    <div class="kit-icon"><i class="fas fa-box-open"></i></div>
+                    <h3>1. Kit no Porta-malas</h3>
+                    <p>Nosso cambão articulado e ferramentas cabem num cantinho. Continue na Uber/99 normalmente.</p>
+                </div>
+                <div class="kit-card" style="padding: 30px 20px;">
+                    <div class="kit-icon"><i class="fas fa-bell"></i></div>
+                    <h3>2. O App Apitou?</h3>
+                    <p>Aceite o resgate se estiver por perto. O ganho médio é de <strong>R$ 80 por apenas 25km</strong> (4x mais que uma corrida comum).</p>
+                </div>
+                <div class="kit-card" style="padding: 30px 20px;">
+                    <div class="kit-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                    <h3>3. Dinheiro na Hora</h3>
+                    <p>Finalizou? O saldo cai na sua carteira Movvi imediatamente. Sem esperas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </section>
+    
+    <!-- SEÇÃO FAQ (30 PERGUNTAS) -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Perguntas <span>Frequentes</span></h2>
+                <p>Tudo o que você precisa saber para começar hoje mesmo.</p>
+            </div>
+
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">O que é exatamente a Movvi Resgate? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">É uma plataforma que conecta motoristas comuns que possuem o Kit Resgate a clientes que precisam de socorro básico (guincho leve, bateria, pneu furado ou pane seca).</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Preciso ter um caminhão guincho? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Não! Nosso sistema utiliza o "Cambão Articulado", que permite que qualquer carro com engate puxe outro veículo de passeio de forma segura.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Posso continuar fazendo Uber e 99? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Sim! A Movvi é o complemento perfeito. Você faz suas corridas e, quando o app Movvi apitar, você decide se quer fazer o resgate que paga muito mais.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Cabe tudo no porta-malas? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Sim, o kit foi desenhado para ser compacto. O cambão é dobrável e as ferramentas ocupam menos de 15% de um porta-malas comum.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Quanto eu ganho por serviço? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">A média é de R$ 80 por chamados de até 25km. Comparado aos apps de transporte, o ganho por km rodado é até 4 vezes superior.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">O Kit é realmente gratuito para os 50 primeiros? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Sim, estamos investindo nos nossos 50 pioneiros para dominar a região de Itaguaí. Você recebe o cambão, cabos e suprimentos sem custo na primeira fase.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Como recebo meus pagamentos? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">O valor cai na sua carteira dentro do app Movvi assim que você finaliza o serviço. O saque é via PIX para sua conta bancária.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Tem muita demanda na região? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Sim! Além do público direto, temos parcerias com oficinas e cooperativas de assistência que direcionam chamados para nossos parceiros.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">O reboque com cambão é permitido por lei? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Sim, o uso de dispositivo rígido (cambão) é a forma legalizada de realizar reboques emergenciais por veículos não-especializados, conforme o CTB.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Meu carro precisa de engate? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Sim, o engate de boa qualidade é essencial para conectar o cambão e realizar o reboque com segurança.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">E se o carro do cliente for automático? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Carros automáticos possuem regras específicas para reboque. Nosso treinamento dentro do app explica como proceder em cada caso.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">O que vem na bombona de gasolina? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">A bombona vai vazia, você a utiliza para buscar combustível para o cliente em caso de "pane seca". O valor do combustível é pago pelo cliente na hora.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Como funciona o spray reparador de pneu? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">É um spray que veda o furo e infla o pneu ao mesmo tempo, permitindo que o cliente chegue até uma borracharia sem precisar trocar o estepe.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Preciso ter conta em banco? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Sim, você precisa de uma chave PIX vinculada a uma conta bancária para receber seus repasses.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Tenho que pagar alguma mensalidade? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Não. Não cobramos taxas fixas. Você só paga uma pequena comissão sobre o serviço que efetivamente realizar e ganhar dinheiro.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">O app está disponível para iPhone e Android? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Sim, nossa ferramenta funciona via navegador em qualquer smartphone e pode ser instalada na tela inicial como um aplicativo.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Qual a idade mínima para ser parceiro? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">21 anos e possuir CNH definitiva e válida.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">O seguro cobre o reboque? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Estamos estruturando apólices específicas que garantem a segurança do veículo rebocado durante todo o trajeto oficial pelo app.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Quanto tempo leva cada resgate? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">A maioria dos resgates urbanos (25km) leva de 40 a 60 minutos do aceite até a finalização.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Como sou avisado de um chamado? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">O celular emite um alerta sonoro exclusivo, diferente de outros apps, para que você saiba que é uma oportunidade Movvi.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Posso levar o cliente no meu carro? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Sim, é recomendável por segurança que o cliente vá no carro do parceiro enquanto o outro veículo é rebocado.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">E se o cliente cancelar? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Caso você já tenha se deslocado, existe uma taxa de cancelamento que é revertida para cobrir seus custos de tempo e combustível.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Posso trabalhar à noite? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Sim, o app funciona 24h. E resgates noturnos costumam ter uma procura ainda maior e menor trânsito.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Quais documentos preciso enviar? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">CNH, Documento do Veículo (CRLV) e uma foto do carro com o engate visível.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Como vejo meu histórico de ganhos? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Dentro da aba "Carteira" no app, você tem o extrato detalhado de cada quilômetro e cada real ganho.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">A Movvi atende motos também? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Nesta primeira fase focamos em veículos de passeio. O reboque de motos exige um suporte específico que será lançado em breve.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">O que acontece se o kit for roubado? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Você deve registrar o BO e entrar em contato com nosso suporte para verificarmos a reposição a preço de custo.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Como o cliente paga o serviço? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Direto pelo app do cliente via Cartão de Crédito ou PIX. Você não precisa se preocupar em cobrar o cliente.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Posso indicar outros motoristas? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Sim! Temos um sistema de indicação onde você ganha bônus por cada novo parceiro ativo que trouxer para a rede.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Ainda tenho dúvidas, como falo com vocês? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Nossa central de atendimento ao parceiro está disponível via WhatsApp e chat dentro do app 24 horas por dia.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Vagas Limitadas. História Infinita.</h2>
+            <p style="margin-bottom: 40px;">Não deixe para depois. O Kit de pioneiro e a prioridade de chamados serão apenas para os primeiros 50.</p>
+            <a href="driver.html?download=1" class="btn-primary">BAIXAR APP E GARANTIR VAGA</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Movvi Resgate. Todos os direitos reservados.</p>
+            <p style="font-size: 0.8rem; margin-top: 10px;">A primeira fase encerra ao atingir 50 motoristas ativos em Itaguai/Rio de Janeiro.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- FAQ Accordion Logic ---
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                
+                // Fecha outros abertos (opcional, melhora UX no mobile)
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if (item !== faqItem) item.classList.remove('active');
+                });
+
+                faqItem.classList.toggle('active');
+            });
+        });
+
+        // --- Timer Logic ---
+        const targetDate = new Date();
+        targetDate.setDate(targetDate.getDate() + 30);
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+            document.getElementById("days").innerText = days;
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+        }
+
+        setInterval(updateTimer, 60000);
+        updateTimer();
+    </script>
+</body>
+</html>

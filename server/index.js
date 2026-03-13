@@ -12,7 +12,7 @@ import pricingRoutes from './routes/pricing.js';
 import adminRoutes from './routes/admin.js';
 import newsRoutes from './routes/news.js';
 import webhookRoutes from './routes/webhooks.js';
-import seoRoutes from './routes/seo.js';
+import seoRoutes, { generateSitemapXML } from './routes/seo.js';
 
 const app = express();
 const server = createServer(app);
@@ -41,7 +41,10 @@ app.use('/api/webhooks', webhookRoutes);
 app.use('/local', seoRoutes);
 
 // SEO Root Routes
-app.get('/sitemap.xml', (req, res) => res.redirect('/local/sitemap.xml'));
+app.get('/sitemap.xml', (req, res) => {
+    res.header('Content-Type', 'application/xml');
+    res.send(generateSitemapXML());
+});
 app.get('/robots.txt', (req, res) => {
     res.type('text/plain');
     res.send('User-agent: *\nAllow: /\nAllow: /local/\n\nSitemap: https://movviresgate.com.br/sitemap.xml');

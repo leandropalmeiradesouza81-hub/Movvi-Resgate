@@ -3,7 +3,7 @@ import { getTrafficNews } from '../services/newsService.js';
 
 const router = Router();
 
-const locations = {
+export const locations = {
     'nilopolis': { name: 'Nilópolis', slug: 'nilopolis', description: 'Atendimento ultrarrápido em Nilópolis. Guinchos em pontos estratégicos da Getúlio de Moura e arredores.' },
     'sao-joao-de-meriti': { name: 'São João de Meriti', slug: 'sao-joao-de-meriti', description: 'Socorro 24h em São João de Meriti. Reboque barato próximo à Rodovia Presidente Dutra e Vilar dos Teles.' },
     'nova-iguacu': { name: 'Nova Iguaçu', slug: 'nova-iguacu', description: 'Líder em reboque em Nova Iguaçu. Atendimento no Centro, Posse, Austin e Via Light.' },
@@ -15,21 +15,31 @@ const locations = {
     'zona-norte': { name: 'Zona Norte', slug: 'zona-norte', description: 'Reboque 24h na Zona Norte do Rio. Atendimento no Méier, Tijuca, Madureira e Pavuna.' }
 };
 
-router.get('/sitemap.xml', (req, res) => {
+export function generateSitemapXML() {
     const baseUrl = 'https://movviresgate.com.br';
     const staticPages = ['', '/convite.html', '/client.html', '/driver.html'];
     const localPages = Object.keys(locations).map(slug => `/local/${slug}`);
+    const today = new Date().toISOString().split('T')[0];
     
     let xml = '<?xml version="1.0" encoding="UTF-8"?>';
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
     
     [...staticPages, ...localPages].forEach(page => {
-        xml += `<url><loc>${baseUrl}${page}</loc><changefreq>daily</changefreq><priority>${page === '' ? '1.0' : '0.8'}</priority></url>`;
+        xml += `<url>
+            <loc>${baseUrl}${page}</loc>
+            <lastmod>${today}</lastmod>
+            <changefreq>daily</changefreq>
+            <priority>${page === '' ? '1.0' : '0.8'}</priority>
+        </url>`;
     });
     
     xml += '</urlset>';
+    return xml;
+}
+
+router.get('/sitemap.xml', (req, res) => {
     res.header('Content-Type', 'application/xml');
-    res.send(xml);
+    res.send(generateSitemapXML());
 });
 
 router.get('/:slug', async (req, res) => {

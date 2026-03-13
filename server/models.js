@@ -22,7 +22,10 @@ const driverSchema = new mongoose.Schema({
     totalOrders: { type: Number, default: 0 },
     totalEarnings: { type: Number, default: 0 },
     kitAcquired: { type: Boolean, default: false },
-    onboardingStep: { type: String, default: 'documents' }, // documents, kit, pending_approval, approved
+    onboardingStep: { type: String, default: 'pre_cadastro' }, // pre_cadastro, documents, pending_approval, approved_pending_kit, active
+    referralCode: { type: String, unique: true }, // Own code to share
+    referredBy: { type: String, default: null }, // Who referred this driver
+    kitPaymentDeadline: { type: Date, default: null }, // 7-day window to pay kit after approval
     cnhStatus: { type: String, default: 'pending' },
     crlvStatus: { type: String, default: 'pending' },
     approved: { type: Boolean, default: false },

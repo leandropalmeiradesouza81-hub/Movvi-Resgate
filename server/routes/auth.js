@@ -133,6 +133,8 @@ router.post('/register/driver', async (req, res) => {
     const existing = await Driver.findOne({ email });
     if (existing) return res.status(409).json({ error: 'Email já cadastrado' });
 
+    const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    
     const driver = await Driver.create({
         id: uuid(),
         name, email, phone,
@@ -140,7 +142,9 @@ router.post('/register/driver', async (req, res) => {
         vehicle: vehicle || '', plate: plate || '',
         password: password || '123456',
         pixKey: pixKey || cpf || phone || '',
-        onboardingStep: 'documents',
+        referralCode,
+        referredBy: req.body.referredBy || null,
+        onboardingStep: 'documents', // Start at documents after pre-registration info
         approved: false
     });
 

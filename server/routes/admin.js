@@ -89,6 +89,13 @@ router.put('/drivers/:id/approve', async (req, res) => {
     if (!driver) return res.status(404).json({ error: 'Motorista não encontrado' });
 
     driver.approved = true;
+    driver.onboardingStep = 'approved_pending_kit';
+    
+    // Set 7-day deadline for kit payment
+    const deadline = new Date();
+    deadline.setDate(deadline.getDate() + 7);
+    driver.kitPaymentDeadline = deadline;
+    
     await driver.save();
 
     if (req.io) {

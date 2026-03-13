@@ -75,3 +75,8 @@ export const Admin = {
     syncDriver: (id) => api(`/admin/drivers/${id}/sync`, { method: 'POST' }),
 };
 
+export const Leads = {
+    list: () => api('/leads'),
+    create: (data) => api('/leads', { method: 'POST', body: data }),
+};
+

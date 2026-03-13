@@ -13,6 +13,7 @@ import adminRoutes from './routes/admin.js';
 import newsRoutes from './routes/news.js';
 import webhookRoutes from './routes/webhooks.js';
 import seoRoutes, { generateSitemapXML } from './routes/seo.js';
+import leadsRoutes from './routes/leads.js';
 
 const app = express();
 const server = createServer(app);
@@ -39,6 +40,7 @@ app.use('/api/pricing', pricingRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/webhooks', webhookRoutes);
+app.use('/api/leads', leadsRoutes);
 app.use('/local', seoRoutes);
 
 // SEO Root Routes

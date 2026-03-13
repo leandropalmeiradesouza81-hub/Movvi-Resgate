@@ -138,3 +138,16 @@ const settingSchema = new mongoose.Schema({
 });
 
 export const Setting = mongoose.model('Setting', settingSchema);
+
+const leadSchema = new mongoose.Schema({
+    type: { type: String, default: 'contact' }, // b2b, contact
+    name: { type: String, required: true },
+    company: { type: String, default: '' },
+    email: { type: String, required: true },
+    phone: { type: String, required: true },
+    message: { type: String, default: '' },
+    status: { type: String, default: 'new' }, // new, contacted, closed
+    createdAt: { type: Date, default: Date.now }
+});
+
+export const Lead = mongoose.model('Lead', leadSchema);

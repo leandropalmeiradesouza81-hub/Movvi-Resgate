@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <title>Parceria B2B Movvi Resgate | Eficiência para Associações e Seguradoras</title>
+
+    <meta name="description" content="Reduza em até 80% o custo de assistência veicular da sua associação ou seguradora com a micro-logística de resgate da Movvi." />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,1&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --primary: #ffd900;
+            --primary-dark: #e0be00;
+            --bg: #050505;
+            --surface: #0a0a0a;
+            --text: #ffffff;
+            --text-dim: #888888;
+            --acid: #bef264;
+            --radius-sharp: 2px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* --- TECH NAV --- */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(5,5,5,0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 20px 0;
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            font-size: 20px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .nav-logo img {
+            height: 32px;
+            filter: grayscale(1) brightness(2);
+        }
+
+        /* --- RADICAL HERO --- */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr;
+            align-items: center;
+            padding: 180px 0 100px;
+            position: relative;
+        }
+
+        @media (min-width: 992px) {
+            .hero { grid-template-columns: 60% 40%; text-align: left; }
+        }
+
+        .hero-content {
+            z-index: 2;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            background: var(--primary);
+            color: #000;
+            padding: 4px 12px;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            margin-bottom: 30px;
+            border-radius: var(--radius-sharp);
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 120px);
+            line-height: 0.85;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 span {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+        }
+
+        .hero p {
+            font-size: clamp(18px, 2vw, 24px);
+            color: var(--text-dim);
+            max-width: 600px;
+            margin-bottom: 60px;
+        }
+
+        .asymmetry-box {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(to left, rgba(255,217,0,0.05), transparent);
+            border-left: 1px solid rgba(255,255,255,0.1);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (min-width: 992px) {
+            .asymmetry-box { display: flex; }
+        }
+
+        /* --- DATA STRIP --- */
+        .data-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 60px;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .data-item .val {
+            font-family: 'Outfit';
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--primary);
+            display: block;
+        }
+
+        .data-item .lbl {
+            font-size: 10px;
+            font-weight: 900;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        /* --- PROBLEM/SOLUTION (STAGGERED) --- */
+        .staggered-narrative {
+            padding: 150px 0;
+        }
+
+        .narrative-item {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 100px;
+            margin-bottom: 200px;
+            align-items: center;
+        }
+
+        @media (min-width: 992px) {
+            .narrative-item:nth-child(even) { direction: rtl; }
+            .narrative-item:nth-child(even) > div { direction: ltr; }
+            .narrative-item { grid-template-columns: 1fr 1fr; }
+        }
+
+        .n-media {
+            background: #111;
+            aspect-ratio: 16/10;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+        }
+
+        .n-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            filter: grayscale(1);
+            transition: 0.5s;
+        }
+
+        .n-media:hover img { opacity: 0.9; filter: grayscale(0.5); }
+
+        .n-text h2 {
+            font-size: 64px;
+            margin-bottom: 30px;
+        }
+
+        .n-text p {
+            color: var(--text-dim);
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        /* --- ROI CALCULATOR CARD --- */
+        .roi-card {
+            background: #111;
+            padding: 80px;
+            border: 1px solid var(--primary);
+            margin: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .roi-card::after {
+            content: 'SAVING';
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            font-size: 150px;
+            font-family: 'Outfit';
+            font-weight: 950;
+            color: rgba(255,217,0,0.03);
+            pointer-events: none;
+        }
+
+        .roi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .roi-item .title { font-size: 12px; font-weight: 900; color: var(--text-dim); margin-bottom: 10px; display: block; }
+        .roi-item .value { font-size: 40px; font-weight: 900; font-family: 'Outfit'; }
+        .roi-item.highlight .value { color: var(--acid); }
+
+        /* --- CONTACT FORM --- */
+        .contact-section {
+            padding: 150px 0;
+            background: var(--surface);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 80px;
+        }
+
+        @media (min-width: 992px) {
+            .form-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .form-input-group {
+            margin-bottom: 40px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 900;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding: 15px 0;
+            color: #fff;
+            font-family: 'Inter';
+            font-size: 18px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-submit {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 25px 60px;
+            font-family: 'Outfit';
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-submit:hover {
+            background: #fff;
+            transform: translateY(-5px);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* --- REVEAL --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        footer {
+            padding: 100px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-inner">
+                <a href="/" class="nav-logo">
+                    <img src="assets/images/logo_movvi.png" alt="Movvi">
+                    MOVVICORP_PARTNERS
+                </a>
+                <a href="#contact" class="btn-submit" style="padding: 12px 24px; font-size: 12px;">Seja um Parceiro</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content reveal">
+                    <span class="hero-tag">MICRO-LOGISTICS // B2B EVOLUTION</span>
+                    <h1>REDUZA SUA <span>SINISTRALIDADE</span> EM ATÉ 80%.</h1>
+                    <p>A Movvi conecta associações, seguradoras e oficinas à maior rede de socorro tático do Brasil. Rapidez de micro-logística com custo operacional disruptivo.</p>
+                    <a href="#contact" class="btn-submit">Solicitar Apresentação</a>
+                </div>
+            </div>
+            <div class="asymmetry-box reveal">
+                <div style="transform: rotate(90deg); font-family: 'Outfit'; font-weight: 900; font-size: 80px; opacity: 0.05; letter-spacing: 0.2em;">PARTNERSHIP</div>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="data-strip reveal">
+                <div class="data-item">
+                    <span class="val">20min</span>
+                    <span class="lbl">SLA Médio</span>
+                </div>
+                <div class="data-item">
+                    <span class="val">-80%</span>
+                    <span class="lbl">Custo vs Plataforma</span>
+                </div>
+                <div class="data-item">
+                    <span class="val">100%</span>
+                    <span class="lbl">Tracking Geo</span>
+                </div>
+                <div class="data-item">
+                    <span class="val">+500</span>
+                    <span class="lbl">Unidades Habilitadas</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="staggered-narrative container">
+            <div class="narrative-item reveal">
+                <div class="n-media">
+                    <img src="https://images.unsplash.com/photo-1544006659-f0b21f04cb1d?w=800" alt="Pane Seca">
+                </div>
+                <div class="n-text">
+                    <h2>70% DOS SEUS CHAMADOS SÃO <span>BAIXA COMPLEXIDADE.</span></h2>
+                    <p>Pneu furado, bateria descarregada e pane seca não exigem um guincho plataforma de R$ 350. Nossas unidades táticas resolvem 7 a cada 10 ocorrências por uma fração do preço.</p>
+                </div>
+            </div>
+
+            <div class="narrative-item reveal">
+                <div class="n-media">
+                    <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800" alt="Tech Dashboard">
+                </div>
+                <div class="n-text">
+                    <h2>INTEGRAÇÃO <span>VIA API</span> COM SEU SISTEMA.</h2>
+                    <p>Sem processos manuais. O pedido cai no seu sistema e dispara via API para a rede Movvi. Controle total de faturamento, tempo de resposta e satisfação do seu associado em um dashboard dedicado.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="roi-card reveal">
+                <h3 style="font-size: 32px; margin-bottom: 50px;">PROJEÇÃO DE ECONOMIA ANUAL</h3>
+                <div class="roi-grid">
+                    <div class="roi-item">
+                        <span class="title">Custo Médio Guincho</span>
+                        <span class="value">R$ 380,00</span>
+                    </div>
+                    <div class="roi-item">
+                        <span class="title">Custo Médio Movvi</span>
+                        <span class="value" style="color: var(--primary);">R$ 80,00</span>
+                    </div>
+                    <div class="roi-item highlight">
+                        <span class="title">Saving Estimado</span>
+                        <span class="value">R$ 300 / Chamado</span>
+                    </div>
+                </div>
+                <p style="margin-top: 40px; color: var(--text-dim); font-size: 14px;">* Baseado em ocorrências de micro-assistência em perímetros urbanos capitais.</p>
+            </div>
+        </section>
+
+        <section class="contact-section" id="contact">
+            <div class="container">
+                <div class="form-grid">
+                    <div class="reveal">
+                        <span class="hero-tag">GET STARTED</span>
+                        <h2>VAMOS ESCALAR <span>SUA OPERAÇÃO.</span></h2>
+                        <p style="margin-top: 30px; color: var(--text-dim);">Preencha os dados e um dos nossos consultores de expansão entrará em contato para uma demonstração técnica da plataforma.</p>
+                    </div>
+                    <div class="reveal">
+                        <form id="lead-form">
+                            <input type="hidden" name="type" value="b2b">
+                            <div class="form-grid-inner" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="form-input-group">
+                                    <label class="form-label">Nome Completo</label>
+                                    <input type="text" name="name" class="form-control" placeholder="João Silva" required>
+                                </div>
+                                <div class="form-input-group">
+                                    <label class="form-label">Instituição / Empresa</label>
+                                    <input type="text" name="company" class="form-control" placeholder="Associação X" required>
+                                </div>
+                            </div>
+                            <div class="form-grid-inner" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="form-input-group">
+                                    <label class="form-label">E-mail Corporativo</label>
+                                    <input type="email" name="email" class="form-control" placeholder="contato@empresa.com" required>
+                                </div>
+                                <div class="form-input-group">
+                                    <label class="form-label">Telefone / WhatsApp</label>
+                                    <input type="tel" name="phone" class="form-control" placeholder="(21) 99999-9999" required>
+                                </div>
+                            </div>
+                            <div class="form-input-group">
+                                <label class="form-label">Mensagem (Opcional)</label>
+                                <textarea name="message" class="form-control" rows="3" placeholder="Tenho interesse em homologar minha frota de oficinas..."></textarea>
+                            </div>
+                            <button type="submit" id="submit-btn" class="btn-submit" style="width: 100%;">Enviar Proposta</button>
+                            <div id="form-status" style="margin-top: 20px; font-weight: 800; font-size: 14px; text-align: center;"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <img src="assets/images/logo_movvi.png" alt="Movvi" style="height: 40px; opacity: 0.2; margin-bottom: 30px;">
+            <p style="font-size: 11px; opacity: 0.3; text-transform: uppercase; letter-spacing: 0.1em;">© 2026 MOVVI TECHNOLOGIES // ROAD TO 2027</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Form Handling
+        const form = document.getElementById('lead-form');
+        const status = document.getElementById('form-status');
+        const btn = document.getElementById('submit-btn');
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            btn.disabled = true;
+            btn.innerText = 'ENVIANDO...';
+            status.innerText = '';
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const res = await fetch('/api/leads', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (res.ok) {
+                    status.style.color = 'var(--acid)';
+                    status.innerText = 'PROPOSTA ENVIADA COM SUCESSO. AGUARDE NOSSO CONTATO.';
+                    form.reset();
+                } else {
+                    throw new Error();
+                }
+            } catch (err) {
+                status.style.color = '#ff4b4b';
+                status.innerText = 'ERRO AO ENVIAR. POR FAVOR, TENTE NOVAMENTE.';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'ENVIAR PROPOSTA';
+            }
+        };
+    </script>
+</body>
+
+</html>

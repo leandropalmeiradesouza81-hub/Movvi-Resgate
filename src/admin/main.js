@@ -272,7 +272,8 @@ async function loadPage(page, isUpdate = false) {
     drivers: '— Gestão de Frota Parceira',
     clients: '— Gestão de Base de Clientes',
     pricing: '— Gestão Financeira',
-    chat: '— Central de Suporte SAC'
+    chat: '— Central de Suporte SAC',
+    partners: '— Expansão e Parcerias B2B'
   };
   $('#page-title').textContent = titleMap[page] || '— Movvi Dashboard';
 
@@ -295,7 +296,8 @@ async function loadPage(page, isUpdate = false) {
     drivers: renderDrivers,
     clients: renderClients,
     pricing: renderPricing,
-    chat: renderChat
+    chat: renderChat,
+    partners: renderPartners
   };
 
   try {
@@ -911,6 +913,114 @@ async function renderPricing() {
       btnSave.innerHTML = '<span class="material-symbols-outlined shrink-0 text-black">save</span> <span class="text-black">Salvar Todas as Alterações</span>';
     }
   };
+}
+
+async function renderPartners() {
+  const leads = await Leads.list().catch(() => []);
+  
+  pages.innerHTML = `
+    <div class="space-y-8 fade-up">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-black text-white uppercase tracking-tight">Expansão e Parcerias</h2>
+          <p class="text-[10px] text-text-dim uppercase tracking-[0.2em] mt-1">Links estratégicos e leads B2B</p>
+        </div>
+      </div>
+
+      <!-- Links Estratégicos -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="saas-card p-6 bg-slate-900/40 border border-white/5">
+          <div class="flex items-center gap-4 mb-6">
+             <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary">analytics</span>
+             </div>
+             <div>
+                <h3 class="text-sm font-black text-white uppercase">Modelo de Negócio</h3>
+                <p class="text-[10px] text-text-dim">Para investidores e equipe interna</p>
+             </div>
+          </div>
+          <div class="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/5 mb-4">
+             <input readonly value="${window.location.origin}/modelo-de-negocio.html" class="flex-1 bg-transparent border-none text-[11px] text-text-dim font-mono outline-none">
+             <button onclick="navigator.clipboard.writeText('${window.location.origin}/modelo-de-negocio.html'); alert('Link copiado!')" class="text-primary hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-sm">content_copy</span>
+             </button>
+          </div>
+          <a href="/modelo-de-negocio.html" target="_blank" class="text-[10px] font-black text-primary uppercase tracking-widest flex items-center gap-2 hover:gap-3 transition-all">
+             Visualizar Página <span class="material-symbols-outlined text-sm">open_in_new</span>
+          </a>
+        </div>
+
+        <div class="saas-card p-6 bg-slate-900/40 border border-white/5">
+          <div class="flex items-center gap-4 mb-6">
+             <div class="size-12 rounded-xl bg-acid/10 flex items-center justify-center">
+                <span class="material-symbols-outlined text-acid" style="color:#bef264">handshake</span>
+             </div>
+             <div>
+                <h3 class="text-sm font-black text-white uppercase">Página de Parcerias</h3>
+                <p class="text-[10px] text-text-dim">Landing page para Seguradoras e Associações</p>
+             </div>
+          </div>
+          <div class="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/5 mb-4">
+             <input readonly value="${window.location.origin}/parcerias.html" class="flex-1 bg-transparent border-none text-[11px] text-text-dim font-mono outline-none">
+             <button onclick="navigator.clipboard.writeText('${window.location.origin}/parcerias.html'); alert('Link copiado!')" class="text-primary hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-sm">content_copy</span>
+             </button>
+          </div>
+          <a href="/parcerias.html" target="_blank" class="text-[10px] font-black text-acid uppercase tracking-widest flex items-center gap-2 hover:gap-3 transition-all" style="color:#bef264">
+             Visualizar Página <span class="material-symbols-outlined text-sm">open_in_new</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Tabela de Leads -->
+      <div class="saas-card overflow-hidden">
+        <div class="p-6 border-b border-white/5 flex items-center justify-between">
+           <h3 class="text-xs font-black text-white uppercase tracking-widest">Leads de Negócio Recebidos</h3>
+           <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-[9px] font-black uppercase">${leads.length} Contatos</span>
+        </div>
+        <div class="overflow-x-auto">
+           <table class="w-full text-left">
+              <thead>
+                 <tr class="bg-white/2 border-b border-white/5">
+                    <th class="p-6 text-[10px] font-black text-text-dim uppercase tracking-widest">Origem / Empresa</th>
+                    <th class="p-6 text-[10px] font-black text-text-dim uppercase tracking-widest">Contato</th>
+                    <th class="p-6 text-[10px] font-black text-text-dim uppercase tracking-widest">Mensagem</th>
+                    <th class="p-6 text-[10px] font-black text-text-dim uppercase tracking-widest">Data</th>
+                 </tr>
+              </thead>
+              <tbody class="divide-y divide-white/5">
+                 ${leads.length ? leads.map(l => `
+                    <tr class="hover:bg-white/2 transition-colors">
+                       <td class="p-6">
+                          <p class="text-xs font-bold text-white uppercase">${l.company || 'Pessoa Física'}</p>
+                          <span class="text-[9px] font-black ${l.type === 'b2b' ? 'text-acid' : 'text-primary'} uppercase">PLATAFORMA_${l.type.toUpperCase()}</span>
+                       </td>
+                       <td class="p-6">
+                          <p class="text-xs font-bold text-white">${l.name}</p>
+                          <p class="text-[10px] text-text-dim">${l.email}</p>
+                          <p class="text-[10px] text-text-dim">${l.phone}</p>
+                       </td>
+                       <td class="p-6">
+                          <p class="text-xs text-text-dim line-clamp-2">${l.message || 'Sem mensagem adicional'}</p>
+                       </td>
+                       <td class="p-6">
+                          <p class="text-[10px] font-mono text-text-dim uppercase">${new Date(l.createdAt).toLocaleDateString('pt-BR')} ${new Date(l.createdAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</p>
+                       </td>
+                    </tr>
+                 `).join('') : `
+                    <tr>
+                       <td colspan="4" class="p-20 text-center">
+                          <span class="material-symbols-outlined text-4xl text-text-dim/20 mb-4">move_to_inbox</span>
+                          <p class="text-[10px] font-black text-text-dim uppercase tracking-widest">Nenhum lead recebido até o momento</p>
+                       </td>
+                    </tr>
+                 `}
+              </tbody>
+           </table>
+        </div>
+      </div>
+    </div>
+  `;
 }
 async function renderChat() {
   const drivers = await Drivers.list().catch(() => []);

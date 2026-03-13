@@ -480,6 +480,22 @@ function loginView() {
 }
 
 // ═══ REGISTER ═══
+const compressImage = (base64, maxWidth = 1280) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = base64;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let w = img.width, h = img.height;
+      if (w > maxWidth) { h = (maxWidth * h) / w; w = maxWidth; }
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL('image/jpeg', 0.7));
+    };
+  });
+};
+
 function registerView() {
   const d = document.createElement('div'); d.className = 'view active bg-black text-white';
   d.innerHTML = `
@@ -590,8 +606,8 @@ function registerView() {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (re) => {
-        photoBase64 = re.target.result;
+      reader.onload = async (re) => {
+        photoBase64 = await compressImage(re.target.result, 800);
         photoImg.src = photoBase64;
         photoImg.classList.remove('hidden');
         photoPlaceholder.classList.add('hidden');
@@ -613,8 +629,8 @@ function registerView() {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (re) => {
-        cnhBase64 = re.target.result;
+      reader.onload = async (re) => {
+        cnhBase64 = await compressImage(re.target.result, 1280);
         d.querySelector('#cnh-img').src = cnhBase64;
         d.querySelector('#cnh-img').classList.remove('hidden');
         d.querySelector('#cnh-placeholder').classList.add('hidden');
@@ -628,8 +644,8 @@ function registerView() {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (re) => {
-        crlvBase64 = re.target.result;
+      reader.onload = async (re) => {
+        crlvBase64 = await compressImage(re.target.result, 1280);
         d.querySelector('#crlv-img').src = crlvBase64;
         d.querySelector('#crlv-img').classList.remove('hidden');
         d.querySelector('#crlv-placeholder').classList.add('hidden');

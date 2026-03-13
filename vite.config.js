@@ -14,6 +14,7 @@ export default defineConfig({
         admin: resolve(__dirname, 'admin.html'),
         invite: resolve(__dirname, 'driver-invite.html'),
         convite: resolve(__dirname, 'convite/index.html'),
+        negocios: resolve(__dirname, 'modelo-de-negocio.html'),
       }
     }
   },

@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <title>Modelo de Negócio Movvi Resgate | B2B & Expansão 2026</title>
+
+    <meta name="description" content="Estrutura operacional e plano estratégico de crescimento da Movvi Resgate. Abordagem para associações de proteção veicular e seguradoras." />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,1&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --primary: #ffd900;
+            --primary-dark: #e0be00;
+            --bg-dark: #070707;
+            --surface-dark: #121212;
+            --surface-light: #1a1a1a;
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --accent-green: #22c55e;
+            --accent-blue: #3b82f6;
+            --accent-red: #ef4444;
+            --radius-lg: 24px;
+            --radius-md: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* --- GLASS EFFECT --- */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 32px;
+            border-radius: var(--radius-md);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 10px 30px rgba(255, 217, 0, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 217, 0, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #fff;
+        }
+
+        /* --- NAVBAR --- */
+        .nav {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 48px);
+            max-width: 1100px;
+            z-index: 1000;
+            padding: 12px 24px;
+            border-radius: 99px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-logo img {
+            height: 32px;
+            filter: brightness(0) invert(1) grayscale(1);
+        }
+
+        .nav-links {
+            display: none;
+            gap: 32px;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links { display: flex; }
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dim);
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* --- HERO --- */
+        .hero {
+            padding: 200px 0 100px;
+            position: relative;
+            text-align: center;
+            background: radial-gradient(circle at top, rgba(255, 217, 0, 0.1) 0%, transparent 50%);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            padding: 8px 16px;
+            background: rgba(255, 217, 0, 0.1);
+            color: var(--primary);
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 217, 0, 0.2);
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 10vw, 84px);
+            font-weight: 900;
+            margin-bottom: 24px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: clamp(18px, 2.5vw, 22px);
+            color: var(--text-dim);
+            max-width: 650px;
+            margin: 0 auto 48px;
+            font-weight: 400;
+        }
+
+        /* --- GRID SECTIONS --- */
+        .section-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(32px, 5vw, 48px);
+            margin-bottom: 48px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-8px);
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 217, 0, 0.1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+            margin-bottom: 24px;
+        }
+
+        .card-icon .material-symbols-outlined {
+            font-size: 28px;
+        }
+
+        .card h3 {
+            font-size: 22px;
+            margin-bottom: 16px;
+        }
+
+        .card p {
+            color: var(--text-dim);
+            font-size: 15px;
+        }
+
+        /* --- STATS --- */
+        .stats-banner {
+            margin: 100px 0;
+            padding: 80px 40px;
+            border-radius: var(--radius-lg);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 48px;
+            text-align: center;
+        }
+
+        .stat-item .num {
+            display: block;
+            font-family: 'Outfit', sans-serif;
+            font-size: 56px;
+            font-weight: 950;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .stat-item .label {
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+        }
+
+        /* --- ACTUATION MODEL --- */
+        .actuation-section {
+            padding: 100px 0;
+            background: #0a0a0a;
+        }
+
+        .split-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        @media (min-width: 992px) {
+            .split-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 32px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .feature-list .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+        .feature-list h4 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .feature-list p {
+            font-size: 14px;
+            color: var(--text-dim);
+        }
+
+        /* --- B2B STRATEGY --- */
+        .strategy-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+            padding: 48px;
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--primary);
+        }
+
+        .strategy-steps {
+            margin-top: 32px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        @media (min-width: 768px) {
+            .strategy-steps { grid-template-columns: 1fr 1fr; }
+        }
+
+        .step-box {
+            background: rgba(0,0,0,0.3);
+            padding: 24px;
+            border-radius: var(--radius-md);
+        }
+
+        .step-num {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            color: #000;
+            text-align: center;
+            line-height: 28px;
+            border-radius: 50%;
+            font-weight: 900;
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+
+        /* --- REVEAL ANIMATIONS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- TICKER --- */
+        .ticker {
+            background: var(--primary);
+            padding: 16px 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ticker-track {
+            display: inline-block;
+            animation: marquee 30s linear infinite;
+        }
+
+        .ticker-item {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #000;
+            margin-right: 60px;
+        }
+
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        footer {
+            padding: 80px 0 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- --- NAVBAR --- -->
+    <nav class="nav glass">
+        <div class="nav-logo">
+            <img src="assets/images/logo_movvi.png" alt="Movvi Resgate">
+            <span style="font-family: 'Outfit'; font-weight: 800; font-size: 18px;">MOVVI <span>CORP</span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#modelo">Modelo Operacional</a>
+            <a href="#leads">B2B Strategy</a>
+            <a href="#growth">Expansão</a>
+        </div>
+        <a href="mailto:contato@movviresgate.com.br" class="btn btn-primary" style="padding: 10px 20px; font-size: 12px;">Contato</a>
+    </nav>
+
+    <!-- --- HERO --- -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">Business Model Intelligence // 2026 Vision</div>
+            <h1>A Revolução na <span>Assistência Veicular</span> do Brasil</h1>
+            <p>O "Uber do Resgate": Transformando carros de passeio em unidades de socorro tático com tecnologia de ponta e custo imbatível.</p>
+            <div class="hero-actions">
+                <a href="#modelo" class="btn btn-primary">Conhecer Modelo</a>
+                <a href="#leads" class="btn btn-outline">Abordagem B2B</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- DATA --- -->
+    <div class="container revelation">
+        <div class="stats-banner glass reveal">
+            <div class="stat-item">
+                <span class="num">1.7M</span>
+                <span class="label">Veículos sem Proteção (RJ)</span>
+            </div>
+            <div class="stat-item">
+                <span class="num">R$ 80</span>
+                <span class="label">Ticket de Entrada (80% < Guincho)</span>
+            </div>
+            <div class="stat-item">
+                <span class="num">20min</span>
+                <span class="label">SLA Médio de Chegada</span>
+            </div>
+            <div class="stat-item">
+                <span class="num">15%</span>
+                <span class="label">Taxa de Margem Líquida</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- --- BUSINESS PILLARS --- -->
+    <section class="container" id="modelo" style="padding: 100px 0;">
+        <span class="section-label reveal">Pilares Estratégicos</span>
+        <h2 class="section-title reveal">Como atuamos no mercado</h2>
+
+        <div class="grid-3">
+            <div class="card glass reveal">
+                <div class="card-icon"><span class="material-symbols-outlined">rocket_launch</span></div>
+                <h3>Logística de Capilaridade</h3>
+                <p>Uso de carros comuns equipados com o Kit Movvi (Cambão, Booster, Galão). Isso permite uma densidade de parceiros 10x maior que frotas de guinchos rígidos.</p>
+            </div>
+            <div class="card glass reveal">
+                <div class="card-icon"><span class="material-symbols-outlined">savings</span></div>
+                <h3>Disrupção de Preço</h3>
+                <p>Eliminamos o custo fixo de caminhões pesados. Onde um guincho plataforma cobra R$ 350, a Movvi entrega o socorro por R$ 80 + KM, capturando a massa desatendida.</p>
+            </div>
+            <div class="card glass reveal">
+                <div class="card-icon"><span class="material-symbols-outlined">payments</span></div>
+                <h3>Faturamento Inteligente</h3>
+                <p>Split de pagamento automático. O cliente paga, a plataforma retém sua comissão (15-20%) e o parceiro recebe instantaneamente.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- ACTUATION DETAILS --- -->
+    <section class="actuation-section">
+        <div class="container">
+            <div class="split-grid">
+                <div class="reveal">
+                    <span class="section-label">Operação Real-Time</span>
+                    <h2 class="section-title">Tecnologia no Core do Negócio</h2>
+                    <p style="color: var(--text-dim); margin-bottom: 24px;">Nossa plataforma não é apenas um app, é um motor de matching geo-espacial que otimiza rotas e ativa parceiros em ociosidade (motoristas de app durante pausas).</p>
+                    
+                    <ul class="feature-list">
+                        <li>
+                            <div class="dot"></div>
+                            <div>
+                                <h4>Captação de Parceiros</h4>
+                                <p>Onboarding automatizado via aplicativo. Verificação de antecedentes, documentos do veículo e aquisição obrigatória do Kit de Resgate.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="dot"></div>
+                            <div>
+                                <h4>Gestão de Performance</h4>
+                                <p>Sistema de rating e bloqueio automático para parceiros com alta taxa de recusa ou baixo saldo em carteira (threshold de R$ -50).</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="dot"></div>
+                            <div>
+                                <h4>Faturamento B2B</h4>
+                                <p>Dashboard específico para frotistas e seguradoras acompanharem o custo por resgate em tempo real.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="reveal" style="position: relative;">
+                    <div class="glass" style="padding: 20px; border-radius: var(--radius-lg); position: relative; z-index: 2;">
+                        <img src="https://images.unsplash.com/photo-1556155092-490a1ba16284?w=800&q=80" alt="Dashboard Preview" style="width: 100%; border-radius: var(--radius-md); opacity: 0.8;">
+                    </div>
+                    <div style="position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; background: var(--primary); border-radius: 50%; filter: blur(100px); opacity: 0.1;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- B2B APPROACH --- -->
+    <section class="container" id="leads" style="padding: 100px 0;">
+        <span class="section-label reveal">Target: Resgate-Empresas</span>
+        <h2 class="section-title reveal">Venda Consultiva: Associações & Seguradoras</h2>
+
+        <div class="strategy-card reveal">
+            <h3 style="font-size: 28px; margin-bottom: 12px;">Como converter Grandes Contas?</h3>
+            <p style="color: var(--text-dim); max-width: 800px;">Associações de proteção veicular sofrem com o "Churn" devido à demora do guincho tradicional e o alto custo que encarece a mensalidade do associado. Nosso pitch é eficiência de custo.</p>
+            
+            <div class="strategy-steps">
+                <div class="step-box">
+                    <span class="step-num">01</span>
+                    <h4>Apresentação do Gap</h4>
+                    <p style="font-size: 13px; color: var(--text-dim); margin-top: 8px;">Mostrar que 70% dos chamados são de baixa complexidade (Pneu, Bateria, Pane Seca) e que não precisam de um caminhão de 5 toneladas.</p>
+                </div>
+                <div class="step-box">
+                    <span class="step-num">02</span>
+                    <h4>Análise de Saving</h4>
+                    <p style="font-size: 13px; color: var(--text-dim); margin-top: 8px;">Comparar o custo Movvi (R$ 80) vs Guincho Tradicional (R$ 400). Economia direta de até 80% na sinistralidade da associação.</p>
+                </div>
+                <div class="step-box">
+                    <span class="step-num">03</span>
+                    <h4>Homologação de Frota</h4>
+                    <p style="font-size: 13px; color: var(--text-dim); margin-top: 8px;">Oferecer a Movvi como "Backup Premium" para dias de chuva ou picos de demanda, onde o guincho plataforma demora 3 horas.</p>
+                </div>
+                <div class="step-box">
+                    <span class="step-num">04</span>
+                    <h4>Integração via API</h4>
+                    <p style="font-size: 13px; color: var(--text-dim); margin-top: 8px;">O sistema da seguradora dispara o pedido via API para a Movvi automaticamente quando o resgate for compatível (cambão).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- GROWTH PLAN --- -->
+    <section class="container" id="growth" style="padding: 100px 0;">
+        <div style="text-align: center;">
+            <span class="section-label reveal">Roadmap 2026</span>
+            <h2 class="section-title reveal">Plano de Expansão Nacional</h2>
+            
+            <div class="grid-3" style="margin-top: 64px;">
+                <div class="card glass reveal">
+                    <h4 style="color: var(--primary); margin-bottom: 8px;">Q3 2025</h4>
+                    <h3>Dominação Rio de Janeiro</h3>
+                    <p>Consolidação de 1.000 parceiros ativos na região metropolitana/baixada e fechamento de 5 contratos com grandes Associações de Proteção.</p>
+                </div>
+                <div class="card glass reveal">
+                    <h4 style="color: var(--primary); margin-bottom: 8px;">Q1 2026</h4>
+                    <h3>Expansão Sudeste (SP/MG)</h3>
+                    <p>Replicação do modelo no eixo São Paulo e Belo Horizonte. Foco em capilaridade urbana rápida.</p>
+                </div>
+                <div class="card glass reveal">
+                    <h4 style="color: var(--primary); margin-bottom: 8px;">Q4 2026</h4>
+                    <h3>Operação em Capitais</h3>
+                    <p>Presença em todas as capitais do Sul e Sudeste, tornando a Movvi o padrão ouro de micro-assistência veicular.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- TICKER --- -->
+    <div class="ticker">
+        <div class="ticker-track">
+            <span class="ticker-item">A Revolução Brasileira do Resgate</span>
+            <span class="ticker-item">Investimento com ROI Estruturado</span>
+            <span class="ticker-item">Tecnologia Geo-Spacial</span>
+            <span class="ticker-item">Escalabilidade Infinita</span>
+            <span class="ticker-item">Assistência 24h</span>
+            <span class="ticker-item">A Revolução Brasileira do Resgate</span>
+            <span class="ticker-item">Investimento com ROI Estruturado</span>
+            <span class="ticker-item">Tecnologia Geo-Spacial</span>
+            <span class="ticker-item">Escalabilidade Infinita</span>
+            <span class="ticker-item">Assistência 24h</span>
+        </div>
+    </div>
+
+    <!-- --- FOOTER --- -->
+    <footer>
+        <div class="container">
+            <img src="assets/images/logo_movvi.png" alt="Movvi" style="height: 48px; opacity: 0.3; margin-bottom: 24px;">
+            <p style="color: var(--text-dim); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2rem;">© 2026 Movvi Technologies. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+
+</html>

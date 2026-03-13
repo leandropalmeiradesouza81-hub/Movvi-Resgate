@@ -107,11 +107,23 @@ window.viewDocuments = async (id) => {
 
             <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 pb-10">
                 <div class="p-6 bg-slate-800/50 rounded-2xl border border-white/10">
-                    <h4 class="text-[10px] font-black text-text-dim uppercase tracking-widest mb-4">Dados Técnicos</h4>
+                    <h4 class="text-[10px] font-black text-text-dim uppercase tracking-widest mb-4">Dados de Contato e Vínculo</h4>
+                    <div class="space-y-3 font-mono text-xs">
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                           <span class="text-text-dim">E-MAIL:</span>
+                           <span class="text-white break-all ml-4">${d.email || '---'}</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                           <span class="text-text-dim">TELEFONE:</span>
+                           <span class="text-white">${d.phone || '---'}</span>
+                        </div>
+                    </div>
+
+                    <h4 class="text-[10px] font-black text-text-dim uppercase tracking-widest mt-6 mb-4">Dados Técnicos do Veículo</h4>
                     <div class="space-y-3 font-mono text-xs">
                         <div class="flex justify-between border-b border-white/5 pb-2">
                            <span class="text-text-dim">VEÍCULO:</span>
-                           <span class="text-white">${d.vehicle || 'N/A'}</span>
+                           <span class="text-white text-right">${d.vehicle || 'N/A'}</span>
                         </div>
                         <div class="flex justify-between border-b border-white/5 pb-2">
                            <span class="text-text-dim">PLACA:</span>

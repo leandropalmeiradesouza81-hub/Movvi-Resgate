@@ -631,36 +631,50 @@ async function renderDrivers() {
         <table class="w-full text-left bg-slate-900/20">
           <thead class="bg-slate-900 border-b border-white/5">
             <tr class="text-[10px] text-text-dim uppercase font-black tracking-widest">
-              <th class="p-6">Identificador</th><th class="p-6">Operador</th><th class="p-6">Frota/Unit</th>
-              <th class="p-6">Wallet Balance</th><th class="p-6">Selo Operação</th><th class="p-6 text-right">Ação</th>
+              <th class="p-6">Operador</th>
+              <th class="p-6">Contato</th>
+              <th class="p-6">Frota/Unit</th>
+              <th class="p-6">Wallet Balance</th>
+              <th class="p-6">Estágio / Status</th>
+              <th class="p-6 text-right">Ação</th>
             </tr>
           </thead>
           <tbody class="text-xs font-bold divide-y divide-white/5">
-            ${drivers.map(d => `
+            ${drivers.length === 0 ? '<tr><td colspan="6" class="p-10 text-center text-text-dim uppercase">Nenhum parceiro encontrado.</td></tr>' :
+      drivers.map(d => `
             <tr class="hover:bg-white/[0.02] transition-colors group">
-              <td class="p-6 font-mono text-text-dim text-[10px] uppercase">${d.id.slice(0, 8)}</td>
               <td class="p-6">
                 <div class="flex items-center gap-3">
-                    <div class="size-8 rounded-lg bg-slate-800 flex items-center justify-center overflow-hidden">
-                        ${d.photo ? `<img src="${d.photo}" class="size-full object-cover">` : '<span class="material-symbols-outlined text-sm text-text-dim">person</span>'}
+                    <div class="size-10 rounded-xl bg-slate-800 flex items-center justify-center overflow-hidden border border-white/10 shadow-lg">
+                        ${d.photo ? `<img src="${d.photo}" class="size-full object-cover">` : '<span class="material-symbols-outlined text-text-dim">person</span>'}
                     </div>
-                    <span class="text-white">${d.name}</span>
+                    <div>
+                        <span class="text-white block font-black uppercase tracking-tight text-[11px]">${d.name}</span>
+                        <span class="text-[9px] text-text-dim font-mono uppercase">ID: ${d.id.slice(0, 8)}</span>
+                    </div>
                 </div>
               </td>
+              <td class="p-6">
+                <p class="text-slate-300 font-mono text-[10px] leading-tight">${d.email}</p>
+                <p class="text-text-dim text-[10px] tracking-widest mt-1">${d.phone || '---'}</p>
+              </td>
               <td class="p-6 text-slate-300">
-                <p class="mb-0.5">${d.vehicle || 'N/A'}</p>
-                <p class="text-[10px] font-mono text-text-dim uppercase">${d.plate || '---'}</p>
+                <p class="mb-0.5 text-[11px] font-black uppercase text-primary">${d.vehicle || 'N/A'}</p>
+                <p class="text-[10px] font-mono text-text-dim uppercase tracking-widest">${d.plate || '---'}</p>
               </td>
               <td class="p-6">
-                <span class="${(d.walletBalance || 0) < 0 ? 'text-signal-red' : 'text-signal-green'} font-black text-sm">
+                <span class="${(d.walletBalance || 0) < 0 ? 'text-signal-red' : 'text-signal-green'} font-black text-[13px] font-mono">
                     R$ ${(d.walletBalance || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 </span>
-                ${(d.walletBalance || 0) <= -50 ? '<div class="text-[8px] text-signal-red uppercase font-black tracking-widest mt-1">SINAL BLOQUEADO</div>' : ''}
+                ${(d.walletBalance || 0) <= -50 ? '<div class="flex items-center gap-1 text-[8px] text-signal-red uppercase font-black tracking-widest mt-1 animate-pulse"><span class="material-symbols-outlined text-[10px]">lock</span> Bloqueado</div>' : ''}
               </td>
               <td class="p-6">
-                 <span class="px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${d.approved ? 'bg-signal-green/10 text-signal-green border-signal-green/30' : 'bg-slate-800 text-text-dim border-slate-700'}">
-                    ${d.approved ? 'AUTORIZADO' : 'AGUARDANDO'}
-                 </span>
+                 <div class="flex flex-col gap-2">
+                   <span class="inline-flex px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${d.approved ? 'bg-signal-green/10 text-signal-green border-signal-green/30' : 'bg-slate-800 text-text-dim border-slate-700'}">
+                      ${d.approved ? 'AUTORIZADO' : 'EM ANÁLISE'}
+                   </span>
+                   <span class="text-[8px] font-black text-white/30 uppercase tracking-[0.2em] italic">Etapa: ${d.onboardingStep?.replace('_', ' ') || 'Finalizado'}</span>
+                 </div>
               </td>
               <td class="p-6 text-right">
                 <div class="flex items-center justify-end gap-2">

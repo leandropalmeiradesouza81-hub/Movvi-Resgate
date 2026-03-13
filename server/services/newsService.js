@@ -9,11 +9,13 @@ export async function getTrafficNews(city = 'Rio de Janeiro') {
     }
 
     try {
-        const query = encodeURIComponent(`${city} trânsito notícias when:7d`);
+        // Force regional context to avoid results from other states (like SP or Recife)
+        const regionalContext = city.toLowerCase().includes('rio') || city.toLowerCase().includes('rj') ? '' : ' Rio de Janeiro RJ';
+        const query = encodeURIComponent(`${city}${regionalContext} trânsito notícias when:7d`);
         const rssUrl = `https://news.google.com/rss/search?q=${query}&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
 
         const resp = await fetch(rssUrl, {
-            headers: { 'User-Agent': 'MovviResgate/1.0' }
+            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36' }
         });
 
         if (!resp.ok) throw new Error(`RSS fetch failed: ${resp.status}`);
@@ -38,9 +40,22 @@ export async function getTrafficNews(city = 'Rio de Janeiro') {
             const imgMatch = description.match(/src="([^"]+)"/);
             if (imgMatch) {
                 image = imgMatch[1];
+                // Google News often uses small thumbnails, try to get a slightly better version if it's a known pattern
+                if (image.includes('lh3.googleusercontent.com')) {
+                    image = image.replace(/=w\d+-h\d+/, '=w800-h600');
+                }
             } else {
-                // Default placeholder image for the location if not found
-                image = `https://images.unsplash.com/photo-1544620347-c4fd4a3d5947?w=500&q=80`; // Generic car/road image
+                // Use a diverse set of traffic/city images based on title keywords to avoid repetition
+                const keywords = ['traffic', 'street', 'city', 'car', 'ambulance', 'police', 'highway'];
+                const randomSeed = Math.abs(cleanTitle.split('').reduce((a,b) => (a<<5)-a+b.charCodeAt(0), 0)) % keywords.length;
+                image = `https://images.unsplash.com/photo-${[
+                    '1544620347-c4fd4a3d5947', // car
+                    '1514924013597-4b743088202c', // night city
+                    '1449965408869-eaa3f722e40d', // driving
+                    '1494976388531-d1058494cdd8', // dash
+                    '1506015391300-4802dc74de2e', // highway
+                    '1581005151525-41e97596ad5e'  // road signs
+                ][randomSeed % 6]}?w=800&q=80`;
             }
 
             if (cleanTitle) {

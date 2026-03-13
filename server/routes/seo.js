@@ -131,13 +131,37 @@ router.get('/:citySlug', async (req, res) => {
         .section-title { font-family: 'Outfit'; font-size: 2.8rem; font-weight: 950; margin: 80px 0 50px; text-align: center; }
         .section-title span { background: var(--primary); padding: 0 15px; }
 
-        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(450px, 1fr)); gap: 40px; }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; }
         .news-card { background: #fff; border-radius: 35px; overflow: hidden; text-decoration: none; color: inherit; box-shadow: 0 20px 50px rgba(0,0,0,0.06); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #f0f0f0; display: flex; flex-direction: column; }
         .news-card:hover { transform: translateY(-15px); box-shadow: 0 40px 100px rgba(0,0,0,0.12); }
-        .news-img { width: 100%; height: 300px; object-fit: cover; background: #eee; }
-        .news-body { padding: 40px; flex-grow: 1; }
-        .news-source { font-size: 11px; font-weight: 900; color: #000; background: var(--primary); padding: 5px 15px; border-radius: 99px; display: inline-block; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
-        .news-title { font-family: 'Outfit'; font-size: 1.8rem; font-weight: 900; line-height: 1.2; margin: 0; color: #000; letter-spacing: -0.02em; }
+        .news-img-container { width: 100%; height: 260px; overflow: hidden; background: #eee; }
+        .news-img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        .news-card:hover .news-img { transform: scale(1.1); }
+        
+        .news-body { padding: 35px; flex-grow: 1; display: flex; flex-direction: column; }
+        .news-source { font-size: 11px; font-weight: 900; color: #000; background: var(--primary); padding: 5px 15px; border-radius: 99px; display: inline-block; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; align-self: flex-start; }
+        .news-title { font-family: 'Outfit'; font-size: 1.6rem; font-weight: 900; line-height: 1.25; margin: 0; color: #000; letter-spacing: -0.02em; }
+        .news-excerpt { font-size: 1rem; color: #666; margin: 15px 0; display: none; }
+        .read-more { margin-top: auto; padding-top: 20px; font-weight: 800; font-size: 13px; text-transform: uppercase; color: var(--primary-dark); letter-spacing: 1px; }
+
+        /* Featured Card logic */
+        .card-featured { grid-column: 1 / -1; flex-direction: row; min-height: 450px; }
+        .card-featured .news-img-container { width: 60%; height: auto; min-height: 450px; }
+        .card-featured .news-body { width: 40%; padding: 60px; justify-content: center; }
+        .card-featured .news-title { font-size: 2.8rem; }
+        .card-featured .news-excerpt { display: block; }
+
+        @media (max-width: 1024px) {
+            .card-featured { flex-direction: column; }
+            .card-featured .news-img-container { width: 100%; height: 350px; min-height: auto; }
+            .card-featured .news-body { width: 100%; padding: 40px; }
+            .card-featured .news-title { font-size: 2.2rem; }
+        }
+
+        @media (max-width: 900px) {
+            .news-grid { grid-template-columns: 1fr; }
+            .card-featured .news-title { font-size: 1.8rem; }
+        }
 
         .guide-footer { background: #fff; padding: 100px 5%; margin-top: 100px; border-radius: 60px 60px 0 0; text-align: center; box-shadow: 0 -40px 100px rgba(0,0,0,0.03); }
         .guide-footer h3 { font-family: 'Outfit'; font-size: 3.2rem; font-weight: 950; margin-bottom: 30px; letter-spacing: -0.04em; }
@@ -180,20 +204,27 @@ router.get('/:citySlug', async (req, res) => {
 
         <h2 class="section-title">Acontece em <span>${loc.name}</span></h2>
 
-        <div class="news-grid">
-            ${news.length ? news.map(n => `
-                <a href="/local/${loc.slug}/noticia/${n.slug}" class="news-card">
-                    <img src="${n.image}" alt="${n.title}" class="news-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=500&q=80';">
-                    <div class="news-body">
-                        <span class="news-source">${n.source} • ${n.timeAgo}</span>
-                        <h3 class="news-title">${n.title}</h3>
-                    </div>
-                </a>
-            `).join('') : `
+        <div class="news-blog">
+            ${news.length ? `
+                <div class="news-grid">
+                    ${news.map((n, index) => `
+                        <a href="/local/${loc.slug}/noticia/${n.slug}" class="news-card ${index === 0 ? 'card-featured' : ''}">
+                            <div class="news-img-container">
+                                <img src="${n.image}" alt="${n.title}" class="news-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800&q=80';">
+                            </div>
+                            <div class="news-body">
+                                <span class="news-source">${n.source} • ${n.timeAgo}</span>
+                                <h3 class="news-title">${n.title}</h3>
+                                ${index === 0 ? `<p class="news-excerpt">Acompanhe esta atualização importante sobre o trânsito e acontecimentos em ${loc.name}. A Movvi Resgate traz os detalhes para você dirigir com segurança.</p>` : ''}
+                                <span class="read-more">Ler matéria completa →</span>
+                            </div>
+                        </a>
+                    `).join('')}
+                </div>
+            ` : `
                 <div style="grid-column: 1/-1; text-align: center; padding: 120px 0; color: #888; background: #fff; border-radius: 30px;">
                     <h3 style="font-family: 'Outfit'; font-size: 24px; color: #000;">Buscando notícias frescas...</h3>
-                    <p>Estamos conectando com os portais G1 e R7 para trazer as últimas de ${loc.name}.</p>
-                    <p style="font-size: 14px; margin-top: 20px;">Tente recarregar a página em alguns instantes.</p>
+                    <p>Estamos conectando com os portais regionais para trazer as últimas de <strong>${loc.name}</strong>.</p>
                 </div>
             `}
         </div>

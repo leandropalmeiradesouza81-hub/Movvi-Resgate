@@ -177,4 +177,26 @@ router.post('/drivers/:id/sync', async (req, res) => {
     res.json({ success: true });
 });
 
+router.delete('/drivers/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await Driver.deleteOne({ id });
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ error: 'Motorista não encontrado' });
+        }
+        
+        // Also clean up wallet history or chats if necessary, 
+        // but for now simple deletion is what was requested.
+        
+        if (req.io) {
+            // Inform the driver if they are online (force logout)
+            req.io.to(`driver_${id}`).emit('driver:force-logout');
+        }
+
+        res.json({ success: true });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 export default router;

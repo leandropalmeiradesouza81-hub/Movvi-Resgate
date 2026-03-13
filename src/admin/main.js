@@ -23,6 +23,21 @@ window.resetDriverBalance = async (id) => {
   } catch (err) { alert(err.message); }
 };
 
+window.deleteDriver = async (id, name) => {
+  if (!confirm(`ATENÇÃO: Deseja realmente EXCLUIR permanentemente o cadastro de ${name}? Esta ação não pode ser desfeita.`)) return;
+  try {
+    const res = await fetch(`/api/admin/drivers/${id}`, { method: 'DELETE' });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Erro ao excluir motorista');
+    
+    if (currentPage === 'drivers') loadPage('drivers', true);
+    else if (currentPage === 'onboarding') loadPage('onboarding', true);
+    else if (currentPage === 'chat') loadPage('chat', true);
+    
+    alert('Cadastro excluído com sucesso.');
+  } catch (err) { alert(err.message); }
+};
+
 window.zoomImage = (src) => {
   let zoomModal = $('#zoom-modal');
   if (!zoomModal) {
@@ -603,6 +618,9 @@ async function renderOnboarding() {
                     <span class="material-symbols-outlined text-sm">visibility</span>
                     Avaliar Perfil
                   </button>
+                  <button class="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white size-9 rounded-xl flex items-center justify-center transition-all shadow-lg" onclick="deleteDriver('${d.id}', '${d.name}')">
+                    <span class="material-symbols-outlined text-base">delete</span>
+                  </button>
                 </div>
               </td>
             </tr>`).join('')}
@@ -691,6 +709,9 @@ async function renderDrivers() {
                       Desbloquear
                     </button>
                   ` : ''}
+                  <button class="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white size-8 rounded-lg flex items-center justify-center transition-all" onclick="deleteDriver('${d.id}', '${d.name}')">
+                    <span class="material-symbols-outlined text-sm">delete</span>
+                  </button>
                   <button class="text-text-dim hover:text-primary p-2 rounded-lg transition-all" onclick="alert('Dados do Motorista: ${d.name}')">
                     <span class="material-symbols-outlined">settings</span>
                   </button>

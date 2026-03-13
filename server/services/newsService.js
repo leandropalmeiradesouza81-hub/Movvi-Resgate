@@ -1,11 +1,11 @@
-// In-memory cache
-let newsCache = { city: '', items: [], fetchedAt: 0 };
-const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
+// In-memory cache for multiple cities
+const newsCache = new Map();
+const CACHE_TTL = 60 * 60 * 1000; // 1 hour
 
 export async function getTrafficNews(city = 'Rio de Janeiro') {
-    // Serve cache if fresh
-    if (newsCache.city === city && Date.now() - newsCache.fetchedAt < CACHE_TTL) {
-        return newsCache.items;
+    const cached = newsCache.get(city);
+    if (cached && Date.now() - cached.fetchedAt < CACHE_TTL) {
+        return cached.items;
     }
 
     try {
@@ -63,11 +63,12 @@ export async function getTrafficNews(city = 'Rio de Janeiro') {
         }
 
         const items = allItems.slice(0, 20);
-        newsCache = { city, items, fetchedAt: Date.now() };
+        newsCache.set(city, { items, fetchedAt: Date.now() });
         return items;
     } catch (e) {
         console.error('[NewsService] Error:', e.message);
-        return newsCache.items || [];
+        const cached = newsCache.get(city);
+        return cached ? cached.items : [];
     }
 }
 

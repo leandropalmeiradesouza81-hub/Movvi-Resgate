@@ -159,7 +159,9 @@ router.get('/:citySlug', async (req, res) => {
 <body>
     <header>
         <div class="header-brand">${loc.name} NEWS PORTAL</div>
-        <a href="https://movviresgate.com.br"><img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="logo" style="filter: none !important;"></a>
+        <a href="https://movviresgate.com.br">
+            <img src="https://movviresgate.com.br/assets/images/logo_movvi.png" alt="Movvi Resgate" class="logo" onerror="this.onerror=null; this.src='https://movviresgate.com.br/assets/images/logo_movvi_icon.png';">
+        </a>
     </header>
 
     <section class="hero">
@@ -181,7 +183,7 @@ router.get('/:citySlug', async (req, res) => {
         <div class="news-grid">
             ${news.length ? news.map(n => `
                 <a href="/local/${loc.slug}/noticia/${n.slug}" class="news-card">
-                    <img src="${n.image}" alt="${n.title}" class="news-img" onerror="this.src='https://images.unsplash.com/photo-1544620347-c4fd4a3d5947?w=500&q=80'">
+                    <img src="${n.image}" alt="${n.title}" class="news-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=500&q=80';">
                     <div class="news-body">
                         <span class="news-source">${n.source} • ${n.timeAgo}</span>
                         <h3 class="news-title">${n.title}</h3>
@@ -205,7 +207,7 @@ router.get('/:citySlug', async (req, res) => {
     </section>
 
     <footer>
-        <img src="/assets/images/logo_movvi.png" alt="Movvi" class="footer-logo">
+        <img src="https://movviresgate.com.br/assets/images/logo_movvi.png" alt="Movvi" class="footer-logo">
         <p style="opacity: 0.6; font-size: 14px; max-width: 500px; margin: 0 auto 40px;">Socorro veicular inteligente. O reboque no cambão que é a cara do Rio de Janeiro.</p>
         <div class="tag-cloud">
             ${Object.values(locations).map(l => `<a href="/local/${l.slug}" class="tag">${l.name}</a>`).join('')}
@@ -264,11 +266,13 @@ router.get('/:citySlug/noticia/:newsSlug', async (req, res) => {
 <body>
     <header>
         <a href="/local/${loc.slug}"><span class="btn-back">← Voltar</span></a>
-        <a href="https://movviresgate.com.br"><img src="/assets/images/logo_movvi.png" alt="Movvi" class="logo" style="filter: none !important;"></a>
+        <a href="https://movviresgate.com.br">
+            <img src="https://movviresgate.com.br/assets/images/logo_movvi.png" alt="Movvi" class="logo" onerror="this.onerror=null; this.src='https://movviresgate.com.br/assets/images/logo_movvi_icon.png';">
+        </a>
     </header>
 
     <article class="container">
-        <img src="${item.image}" alt="${item.title}" class="article-img" onerror="this.src='https://images.unsplash.com/photo-1544620347-c4fd4a3d5947?w=500&q=80'">
+        <img src="${item.image}" alt="${item.title}" class="article-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1544620347-c4fd4a3d5947?w=500&q=80'">
         <div class="article-body">
             <span class="article-meta">ATUALIZAÇÃO: ${item.source} • ${item.timeAgo}</span>
             <h1 class="article-title">${item.title}</h1>

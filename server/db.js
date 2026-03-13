@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { Setting, Admin } from './models.js';
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://user:pass@cluster.mongodb.net/movvi?retryWrites=true&w=majority';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://leandropalmeiradesouza81_db_user:x5avGzneUGSidHeR@cluster0.madtagb.mongodb.net/movvi?retryWrites=true&w=majority';
 
 const defaultPricing = {
     basePrice: 50,

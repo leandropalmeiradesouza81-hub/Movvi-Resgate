@@ -47,6 +47,12 @@ resumeAllMatching(io);
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('dist'));
+    // Handle SPA routing - serve index.html for any unknown routes
+    app.get('*', (req, res) => {
+        if (!req.path.startsWith('/api')) {
+            res.sendFile('index.html', { root: 'dist' });
+        }
+    });
 }
 
 const PORT = process.env.PORT || 3001;

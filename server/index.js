@@ -11,6 +11,7 @@ import driverRoutes from './routes/drivers.js';
 import pricingRoutes from './routes/pricing.js';
 import adminRoutes from './routes/admin.js';
 import newsRoutes from './routes/news.js';
+import webhookRoutes from './routes/webhooks.js';
 
 const app = express();
 const server = createServer(app);
@@ -35,6 +36,7 @@ app.use('/api/drivers', driverRoutes);
 app.use('/api/pricing', pricingRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/news', newsRoutes);
+app.use('/api/webhooks', webhookRoutes);
 
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });

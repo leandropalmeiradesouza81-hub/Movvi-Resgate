@@ -664,9 +664,8 @@ function onboardingView() {
         <span class="material-symbols-outlined text-[40px]">check</span>
       </div>
       <h2 class="text-2xl font-black text-[#1a1400] dark:text-white mb-3">Tudo Certo!</h2>
-      <p class="text-[15px] font-medium text-[#1a1400]/60 dark:text-slate-400 mb-8 leading-relaxed">O pagamento do seu Kit Resgate foi confirmado. <strong class="text-[#1a1400] dark:text-white">Você será notificado(a) em breve a respeito da entrega do seu Kit.</strong> O perfil ficará online em até <strong class="text-[#1a1400] dark:text-white">12 horas</strong> após o recebimento dos materiais confirmados.</p>
+      <p class="text-[15px] font-medium text-[#1a1400]/60 dark:text-slate-400 mb-8 leading-relaxed">O pagamento do seu Kit Resgate foi confirmado via <strong class="text-primary">C6 Bank Webhook</strong>. <strong class="text-[#1a1400] dark:text-white">Seu acesso será liberado assim que o Kit for entregue, conforme as regras da plataforma.</strong></p>
       <button id="btn-refresh" class="w-full bg-[#fafaf7] dark:bg-[#201d10] border-2 border-slate-200 dark:border-white/10 text-[#1a1400] dark:text-white font-bold py-4 rounded-xl active:scale-[0.98] transition-all uppercase tracking-wider text-sm flex items-center justify-center gap-2"><span class="material-symbols-outlined text-[18px]">refresh</span> Atualizar Status</button>
-      <button id="btn-request-release" class="w-full bg-[#FFD900] text-[#1a1400] shadow-md font-black py-4 mt-3 rounded-xl active:scale-[0.98] transition-all uppercase tracking-wider text-sm flex items-center justify-center gap-2"><span class="material-symbols-outlined text-[18px]">gavel</span> Pedir Liberação do Sistema</span></button>
       <button id="btn-logout" class="mt-6 text-sm font-bold text-red-500">Sair ou Entrar com outra conta</button>
     </div>
   `;
@@ -692,36 +691,31 @@ function onboardingView() {
         } catch (err) { alert(err.message); }
       };
     } else if (step === 'kit') {
-      d.querySelector('#btn-pay').onclick = () => {
-        const modal = d.querySelector('#pix-modal');
-        modal.classList.remove('hidden');
-        setTimeout(() => modal.querySelector('#pix-modal-content').classList.replace('scale-95', 'scale-100'), 10);
+      d.querySelector('#btn-pay').onclick = async () => {
+        const btn = d.querySelector('#btn-pay');
+        const original = btn.innerHTML;
+        btn.innerHTML = '<div class="size-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>';
+        try {
+          const res = await api(`/drivers/${user.id}/pix/generate`, 'POST', { amount: 399.00, reason: 'kit' });
+          const modal = d.querySelector('#pix-modal');
+          modal.querySelector('img').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(res.pixCopiaECola)}`;
+          modal.classList.remove('hidden');
+          setTimeout(() => modal.querySelector('#pix-modal-content').classList.replace('scale-95', 'scale-100'), 10);
+
+          modal.querySelector('#btn-copy-pix').onclick = () => {
+            navigator.clipboard.writeText(res.pixCopiaECola);
+            const cpBtn = modal.querySelector('#btn-copy-pix');
+            cpBtn.textContent = "Chave PIX Copiada!";
+            cpBtn.classList.add('opacity-50');
+            setTimeout(() => { cpBtn.textContent = "Copiar Código PIX"; cpBtn.classList.remove('opacity-50'); }, 2000);
+          };
+        } catch (err) {
+          alert('Erro ao gerar pagamento. Verifique sua conexão.');
+        } finally {
+          btn.innerHTML = original;
+        }
       };
       d.querySelector('#btn-cancel-pix').onclick = () => d.querySelector('#pix-modal').classList.add('hidden');
-      d.querySelector('#btn-copy-pix').onclick = () => {
-        const btn = d.querySelector('#btn-copy-pix');
-        btn.textContent = "Chave PIX Copiada!";
-        btn.classList.add('opacity-50');
-
-        // Simular a confirmação que chega via webhook bancário
-        setTimeout(() => {
-          d.querySelector('#pix-modal-content').innerHTML = `
-             <div class="size-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-6 mx-auto"><span class="material-symbols-outlined text-[40px]">check_circle</span></div>
-             <h3 class="font-black text-2xl text-[#1a1400] dark:text-white mb-2">Pagamento Confirmado!</h3>
-             <p class="text-[15px] font-medium text-slate-500 dark:text-slate-400 mb-2">Avisaremos você sobre a entrega do Kit Resgate. Redirecionando...</p>
-           `;
-
-          setTimeout(async () => {
-            try {
-              await Drivers.update(user.id, { onboardingStep: 'pending_approval', kitAcquired: true });
-              user.onboardingStep = 'pending_approval';
-              user.kitAcquired = true;
-              saveUser(user);
-              nav(onboardingView);
-            } catch (err) { alert(err.message); }
-          }, 3500);
-        }, 3000);
-      };
     } else {
       d.querySelector('#btn-refresh').onclick = async () => {
         try {
@@ -1817,15 +1811,23 @@ function earningsView() {
     }
   };
 
-  const showPixModal = (amount) => {
-    const m = document.createElement('div');
-    m.className = 'fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300';
-    
-    // Official PIX Info
-    const PIX_PAYLOAD = "00020126800014br.gov.bcb.pix01365b8d0027-c2e5-4110-88a4-86830c98dd760218Pagamento de taxas27600016BR.COM.PAGSEGURO0136AB28099B-3336-4382-8291-2C15A645515A5204899953039865802BR5925LEANDRO PALMEIRA DE SOUZA6014RIO DE JANEIRO62290525PAGS0000000002603092327616304B7EE";
+  const showPixModal = async (amount) => {
     const amountToPay = amount > 0 ? amount : 20.00;
     const amountStr = amountToPay.toFixed(2).replace('.', ',');
 
+    // Gerar PIX Real via Servidor
+    let pixPayload = "";
+    try {
+      const res = await api(`/drivers/${user.id}/pix/generate`, 'POST', { amount: amountToPay, reason: 'wallet' });
+      pixPayload = res.pixCopiaECola;
+    } catch (e) {
+      alert("Erro ao conectar com o serviço de pagamentos. Tente novamente.");
+      return;
+    }
+
+    const m = document.createElement('div');
+    m.className = 'fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300';
+    
     m.innerHTML = `
       <div class="w-full max-w-sm bg-white dark:bg-background-dark rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl slide-in-from-bottom duration-500 animate-in relative overflow-hidden">
         <div class="absolute -right-10 -top-10 size-32 bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
@@ -1845,7 +1847,7 @@ function earningsView() {
 
         <div class="flex flex-col items-center gap-4 mb-6">
           <div class="bg-white p-4 rounded-3xl shadow-xl border-4 border-slate-50 relative">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(PIX_PAYLOAD)}" class="w-44 h-44 rounded-xl" />
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(pixPayload)}" class="w-44 h-44 rounded-xl" />
             <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                <div class="size-10 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-primary">
                  <img src="/assets/images/logo_movvi.png" class="w-6 h-auto" />
@@ -1856,7 +1858,7 @@ function earningsView() {
           <div class="w-full mt-2">
             <div class="flex items-center justify-between mb-1.5 px-1">
               <label class="text-[10px] text-slate-400 uppercase font-black tracking-widest">Valor do Pagamento</label>
-              <div class="flex items-center gap-1"><span class="size-1.5 rounded-full bg-red-500"></span><span class="text-[9px] text-red-500 font-bold uppercase">Valor Fixo</span></div>
+              <div class="flex items-center gap-1"><span class="size-1.5 rounded-full bg-emerald-500"></span><span class="text-[9px] text-emerald-500 font-bold uppercase">Valor Dinâmico</span></div>
             </div>
             <div class="relative">
               <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-black">R$</div>
@@ -1869,12 +1871,12 @@ function earningsView() {
           <button id="btn-copy-pix" class="w-full bg-slate-900 text-white font-black py-4 rounded-2xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-3 text-sm uppercase tracking-wider">
             Copiar Código PIX <span class="material-symbols-outlined text-base">content_copy</span>
           </button>
-          <button id="btn-confirm-pay" class="w-full bg-emerald-500 text-white font-black py-4 rounded-2xl shadow-lg active:scale-95 transition-all text-sm uppercase tracking-widest flex items-center justify-center gap-2">
-            ENVIAR COMPROVANTE <span class="material-symbols-outlined text-base">chat</span>
+          <button id="btn-check-pix" class="w-full bg-emerald-500 text-white font-black py-4 rounded-2xl shadow-lg active:scale-95 transition-all text-sm uppercase tracking-widest flex items-center justify-center gap-2">
+            PÁGUEI, VERIFICAR <span class="material-symbols-outlined text-base">sync</span>
           </button>
         </div>
         
-        <p class="text-[9px] text-center text-slate-400 mt-6 px-4 leading-relaxed">Pague exatamente o valor informado. Após o pagamento, clique em <b>Enviar Comprovante</b> para que nossa equipe valide e libere seu saldo.</p>
+        <p class="text-[9px] text-center text-slate-400 mt-6 px-4 leading-relaxed">Pague exatamente o valor informado. O sistema identificará o pagamento automaticamente via <strong class="text-primary">Webhook C6 Bank</strong>.</p>
       </div>`;
 
     document.body.appendChild(m);
@@ -1882,8 +1884,24 @@ function earningsView() {
     const close = () => { m.classList.remove('animate-in'); m.classList.add('animate-out', 'fade-out', 'duration-300'); m.querySelector('div').classList.add('slide-out-to-bottom'); setTimeout(() => m.remove(), 300); };
     m.querySelector('#close-modal-pix').onclick = close;
 
+    m.querySelector('#btn-check-pix').onclick = async () => {
+      const btn = m.querySelector('#btn-check-pix');
+      btn.innerHTML = '<div class="size-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>';
+      try {
+        const fresh = await Drivers.get(user.id);
+        if (fresh.walletBalance > -50 && !fresh.blocked && (amount === 0 || fresh.kitAcquired)) {
+           close();
+           if (fresh.approved) nav(dashboardView);
+           else nav(onboardingView);
+        } else {
+           btn.innerHTML = 'Aguardando Banco...';
+           setTimeout(() => btn.innerHTML = 'VERIFICAR NOVAMENTE <span class="material-symbols-outlined text-base">sync</span>', 2000);
+        }
+      } catch (e) { btn.innerHTML = 'VERIFICAR NOVAMENTE <span class="material-symbols-outlined text-base">sync</span>'; }
+    };
+
     m.querySelector('#btn-copy-pix').onclick = () => {
-      navigator.clipboard.writeText(PIX_PAYLOAD);
+      navigator.clipboard.writeText(pixPayload);
       const btn = m.querySelector('#btn-copy-pix');
       const original = btn.innerHTML;
       btn.innerHTML = 'Código Copiado! <span class="material-symbols-outlined text-base">check_circle</span>';
@@ -1892,19 +1910,6 @@ function earningsView() {
         btn.innerHTML = original;
         btn.classList.replace('bg-emerald-600', 'bg-slate-900');
       }, 2000);
-    };
-
-    const confirmBtn = m.querySelector('#btn-confirm-pay');
-    if (confirmBtn) confirmBtn.onclick = () => {
-      close();
-      nav(supportChatView);
-      setTimeout(() => {
-        const inp = document.getElementById('chat-input');
-        if (inp) {
-          inp.value = `Olá, acabei de realizar o pagamento de R$ ${amountStr} referente às minhas taxas. Segue o comprovante abaixo:`;
-          inp.focus();
-        }
-      }, 500);
     };
   };
 

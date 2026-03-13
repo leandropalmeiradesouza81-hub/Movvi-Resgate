@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { v4 as uuid } from 'uuid';
+import { createPixCharge } from '../services/pix.js';
 
 const router = Router();
 
@@ -88,6 +89,36 @@ router.post('/:id/pay', async (req, res) => {
 
     await req.db.write();
     res.json({ success: true, balance: driver.walletBalance });
+});
+
+router.post('/:id/pix/generate', async (req, res) => {
+    const driver = req.db.data.drivers.find(d => d.id === req.params.id);
+    if (!driver) return res.status(404).json({ error: 'Motorista não encontrado' });
+
+    const { amount, reason } = req.body; // reason: 'kit' ou 'wallet'
+    const txid = uuid().replace(/-/g, '').substring(0, 35); // txid deve ter entre 26 e 35 caracteres alfanuméricos
+    const pixKey = req.db.data.settings.platformPixKey;
+
+    try {
+        const charge = await createPixCharge({
+            amount: parseFloat(amount),
+            description: reason === 'kit' ? 'Pagamento Kit Movvi Resgate' : 'Recarga de Saldo Movvi',
+            txid: txid,
+            pixKey: pixKey
+        });
+
+        // Salvar o txid pendente para o webhook identificar
+        driver.pendingTxid = txid;
+        await req.db.write();
+
+        res.json({
+            success: true,
+            pixCopiaECola: charge.pixCopiaECola,
+            txid: txid
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao gerar PIX. Tente novamente em instantes.' });
+    }
 });
 
 router.delete('/:id', async (req, res) => {

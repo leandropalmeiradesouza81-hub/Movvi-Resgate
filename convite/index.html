@@ -375,7 +375,42 @@
         </div>
     </nav>
 
-    <section class="hero">
+    <section class="hero" id="referral-section" style="display: none;">
+        <div class="container">
+            <div class="hero-top">
+                <div class="nav-logo" style="margin-bottom: 40px;">
+                    <img src="/assets/images/logo_movvi.png" alt="Movvi">
+                    <p style="font-size: 10px; font-weight: 800; color: var(--primary); letter-spacing: 0.3em; margin-top: 10px;">REBOCANDO O PASSADO, ACELERANDO O FUTURO</p>
+                </div>
+
+                <div id="referrer-info" style="margin-bottom: 40px; animation: fadeUp 0.8s ease-out;">
+                    <div class="referrer-photo-wrapper" style="position: relative; width: 120px; height: 120px; margin: 0 auto 20px;">
+                        <img id="ref-photo" src="" alt="Indicação" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 4px solid var(--primary); box-shadow: 0 0 30px rgba(255,217,0,0.3);">
+                        <div style="position: absolute; bottom: 0; right: 0; background: var(--primary); color: #000; padding: 4px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <span class="material-symbols-outlined" style="font-size: 16px; font-weight: 900;">verified</span>
+                        </div>
+                    </div>
+                    <h2 style="font-size: 1.5rem; text-transform: none; font-family: 'Inter'; font-weight: 400; color: #888;">
+                        <strong id="ref-name" style="color: #fff; font-family: 'Outfit'; text-transform: uppercase;">...</strong> está te convidando para a
+                    </h2>
+                    <h1 style="font-size: clamp(2.5rem, 8vw, 4rem); margin-top: 10px;">MOVVI <span>RESGATE</span></h1>
+                </div>
+
+                <div class="badge-rio">
+                    <span class="material-symbols-outlined" style="font-size: 16px; font-weight: 950;">timer</span>
+                    CONVITE EXPIRA EM: <span id="ref-timer" style="margin-left: 8px;">--:--:--</span>
+                </div>
+
+                <p style="max-width: 500px; margin: 0 auto 40px;">Esta é uma oportunidade exclusiva para entrar na Fase 01 da Movvi no Rio de Janeiro. Vagas limitadas.</p>
+                
+                <a href="/driver.html?download=1&invite=pioneer" id="btn-garantir" class="btn-dark" style="background: var(--primary); color: #000; padding: 20px 60px; border-radius: 20px;">
+                    Aceitar Convite de <span id="ref-name-btn">...</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="hero" id="main-hero">
         <div class="container">
             <div class="hero-top">
                 <div class="badge-rio">
@@ -462,12 +497,12 @@
     <section class="vagas-counter" id="vagas">
         <div class="container">
             <h2 style="font-size: 2.5rem; margin-bottom: 10px;">FASE PIONEIRA 01</h2>
-            <p style="color: #666; font-weight: 600;">Apenas 100 vagas disponíveis para garantir a qualidade operacional.</p>
+            <p style="color: #666; font-weight: 600;">Apenas 200 vagas disponíveis para garantir a qualidade operacional.</p>
             
             <div class="vagas-track">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: 900; font-family: 'Outfit';">
                     <span style="color: #666;">PREENCHIDAS</span>
-                    <span id="vagas-text" style="color: var(--primary);">14 / 100</span>
+                    <span id="vagas-text" style="color: var(--primary);">28 / 200</span>
                 </div>
                 <div class="v-bar-bg">
                     <div id="vagas-bar" class="v-bar-fill" style="width: 14%;"></div>
@@ -494,10 +529,56 @@
     <script>
         async function initPage() {
             try {
+                const params = new URLSearchParams(window.location.search);
+                const refCode = params.get('ref');
+
+                if (refCode) {
+                    try {
+                        const refRes = await fetch(`/api/drivers/referral/${refCode}`);
+                        if (refRes.ok) {
+                            const refData = await refRes.json();
+                            document.getElementById('main-hero').style.display = 'none';
+                            document.getElementById('referral-section').style.display = 'block';
+                            
+                            // Set referrer name (First and Last name only as requested)
+                            const nameParts = refData.name.split(' ');
+                            const shortName = nameParts.length > 1 ? `${nameParts[0]} ${nameParts[nameParts.length - 1]}` : nameParts[0];
+                            
+                            document.getElementById('ref-name').innerText = shortName;
+                            document.getElementById('ref-name-btn').innerText = nameParts[0];
+                            document.getElementById('ref-photo').src = refData.photo || '/assets/images/default_avatar.png';
+
+                            // Referral Countdown (24h)
+                            const expiry = new Date(refData.expiresAt);
+                            function updateRefTimer() {
+                                const now = new Date();
+                                const diff = expiry - now;
+                                if (diff <= 0) {
+                                    document.getElementById('ref-timer').innerText = "EXPIRADO";
+                                    document.getElementById('btn-garantir').style.opacity = '0.5';
+                                    document.getElementById('btn-garantir').style.pointerEvents = 'none';
+                                    return;
+                                }
+                                const h = Math.floor(diff / (1000 * 60 * 60));
+                                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                                const s = Math.floor((diff % (1000 * 60)) / 1000);
+                                document.getElementById('ref-timer').innerText = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                            }
+                            setInterval(updateRefTimer, 1000);
+                            updateRefTimer();
+
+                        } else {
+                           console.warn("Invalid or expired referral code");
+                        }
+                    } catch (err) {
+                        console.error("Error fetching referral:", err);
+                    }
+                }
+
                 const res = await fetch('/api/pricing/public');
                 const settings = await res.json();
                 
-                // --- TIMER LOGIC ---
+                // --- TIMER LOGIC (Launch Date) ---
                 const targetDate = new Date(settings.launchDate + "T00:00:00");
 
                 function updateTimer() {

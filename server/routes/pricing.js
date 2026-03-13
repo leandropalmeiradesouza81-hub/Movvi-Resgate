@@ -34,7 +34,7 @@ router.put('/', async (req, res) => {
         const settings = settingsObj?.value || {};
         const approvedCount = await Driver.countDocuments({ approved: true });
         req.io.emit('spots:updated', {
-            totalSpots: settings.totalSpotsPhase1 || 100,
+            totalSpots: settings.totalSpotsPhase1 || 200,
             occupiedSpots: approvedCount
         });
     }
@@ -53,7 +53,7 @@ router.put('/settings', async (req, res) => {
         // Count approved drivers for spots update
         const approvedCount = await Driver.countDocuments({ approved: true });
         req.io.emit('spots:updated', {
-            totalSpots: settings.value.totalSpotsPhase1 || 100,
+            totalSpots: settings.value.totalSpotsPhase1 || 200,
             occupiedSpots: approvedCount
         });
     }
@@ -75,7 +75,7 @@ router.get('/public', async (req, res) => {
     
     res.json({
         launchDate: settings.launchDate || "2026-04-20",
-        totalSpots: settings.totalSpotsPhase1 || 100,
+        totalSpots: settings.totalSpotsPhase1 || 200,
         occupiedSpots: approvedCount,
         systemLockdown: settings.systemLockdown || false
     });

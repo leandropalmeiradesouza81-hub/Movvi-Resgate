@@ -27,10 +27,101 @@ window.approveDriver = async (id) => {
   if (!confirm('Deseja aprovar e liberar o acesso deste motorista na plataforma?')) return;
   try {
     await Admin.approveDriver(id);
+    const modal = $('#doc-modal');
+    if (modal) modal.classList.add('hidden');
     if (currentPage === 'drivers') loadPage('drivers', true);
     else if (currentPage === 'onboarding') loadPage('onboarding', true);
     else if (currentPage === 'chat') loadPage('chat', true);
   } catch (err) { alert(err.message); }
+};
+
+window.viewDocuments = async (id) => {
+  const drivers = await Drivers.list();
+  const d = drivers.find(drv => drv.id === id);
+  if (!d) return alert('Motorista não encontrado');
+
+  let modal = $('#doc-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'doc-modal';
+    modal.className = 'fixed inset-0 z-[2000] bg-black/95 backdrop-blur-xl hidden flex items-center justify-center p-6';
+    document.body.appendChild(modal);
+  }
+
+  modal.innerHTML = `
+    <div class="saas-card w-full max-w-5xl bg-slate-900 border-2 border-slate-800 shadow-2xl flex flex-col h-[90vh]">
+        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-slate-900/50">
+            <div>
+                <h3 class="text-white font-black uppercase text-sm flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">verified_user</span> 
+                    Triagem Operacional: ${d.name}
+                </h3>
+                <p class="text-[9px] text-text-dim uppercase tracking-widest mt-1">Verificação de identidade e frota</p>
+            </div>
+            <button onclick="document.getElementById('doc-modal').classList.add('hidden')" class="text-text-dim hover:text-white transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto p-10 custom-scrollbar">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Foto de Perfil -->
+                <div class="space-y-4">
+                    <p class="text-[10px] font-black text-primary uppercase tracking-widest text-center">FOTO DE PERFIL</p>
+                    <div class="aspect-square bg-black rounded-2xl border-2 border-white/5 overflow-hidden shadow-2xl group cursor-zoom-in">
+                        ${d.photo ? `<img src="${d.photo}" class="w-full h-full object-cover transition-transform group-hover:scale-110" onclick="window.open(this.src)">` : '<div class="w-full h-full flex items-center justify-center text-text-dim uppercase text-[10px]">Não enviada</div>'}
+                    </div>
+                </div>
+                
+                <!-- CNH -->
+                <div class="space-y-4">
+                    <p class="text-[10px] font-black text-primary uppercase tracking-widest text-center">CARTEIRA (CNH)</p>
+                    <div class="aspect-[3/4] bg-black rounded-2xl border-2 border-white/5 overflow-hidden shadow-2xl group cursor-zoom-in">
+                        ${d.cnhPhoto || d.onboardingDocuments?.cnh ? `<img src="${d.cnhPhoto || d.onboardingDocuments?.cnh}" class="w-full h-full object-cover transition-transform group-hover:scale-110" onclick="window.open(this.src)">` : '<div class="w-full h-full flex items-center justify-center text-text-dim uppercase text-[10px]">Não enviada</div>'}
+                    </div>
+                </div>
+
+                <!-- CRLV -->
+                <div class="space-y-4">
+                    <p class="text-[10px] font-black text-primary uppercase tracking-widest text-center">DOCUMENTO (CRLV)</p>
+                    <div class="aspect-[3/4] bg-black rounded-2xl border-2 border-white/5 overflow-hidden shadow-2xl group cursor-zoom-in">
+                        ${d.crlvPhoto || d.onboardingDocuments?.crlv ? `<img src="${d.crlvPhoto || d.onboardingDocuments?.crlv}" class="w-full h-full object-cover transition-transform group-hover:scale-110" onclick="window.open(this.src)">` : '<div class="w-full h-full flex items-center justify-center text-text-dim uppercase text-[10px]">Não enviada</div>'}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 pb-10">
+                <div class="p-6 bg-slate-800/50 rounded-2xl border border-white/10">
+                    <h4 class="text-[10px] font-black text-text-dim uppercase tracking-widest mb-4">Dados Técnicos</h4>
+                    <div class="space-y-3 font-mono text-xs">
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                           <span class="text-text-dim">VEÍCULO:</span>
+                           <span class="text-white">${d.vehicle || 'N/A'}</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/5 pb-2">
+                           <span class="text-text-dim">PLACA:</span>
+                           <span class="text-white uppercase">${d.plate || '---'}</span>
+                        </div>
+                        <div class="flex justify-between">
+                           <span class="text-text-dim">CPF/CNH:</span>
+                           <span class="text-white">${d.cpf || d.cnh || '---'}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col justify-center gap-4">
+                    <button class="w-full bg-signal-green text-black font-black uppercase py-5 rounded-2xl shadow-xl hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-3" onclick="approveDriver('${d.id}')">
+                        Aprovar e Ativar Parceiro <span class="material-symbols-outlined">check_circle</span>
+                    </button>
+                    <button class="w-full bg-slate-800 text-signal-red font-black uppercase py-4 rounded-2xl border border-signal-red/30 hover:bg-signal-red/10 transition-all flex items-center justify-center gap-3" onclick="alert('Funcionalidade de reprovação será implementada em breve. Por favor, contate o motorista manualmente.')">
+                        Sinalizar Irregularidade <span class="material-symbols-outlined">report</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+  `;
+  modal.classList.remove('hidden');
 };
 
 // ─── AUTHENTICATION ───────────────────────────────────
@@ -472,8 +563,9 @@ async function renderOnboarding() {
               </td>
               <td class="p-6 text-right">
                 <div class="flex items-center justify-end gap-2">
-                  <button class="bg-signal-green/10 text-signal-green hover:bg-signal-green hover:text-white px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all" onclick="approveDriver('${d.id}')">
-                    Liberar na Plataforma
+                  <button class="bg-primary/10 text-primary hover:bg-primary hover:text-black px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2" onclick="viewDocuments('${d.id}')">
+                    <span class="material-symbols-outlined text-sm">visibility</span>
+                    Avaliar Perfil
                   </button>
                 </div>
               </td>

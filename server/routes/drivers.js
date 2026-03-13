@@ -15,6 +15,22 @@ router.get('/online', async (req, res) => {
     res.json(drivers);
 });
 
+router.get('/referral/:code', async (req, res) => {
+    const driver = await Driver.findOne({ referralCode: req.params.code });
+    if (!driver) return res.status(404).json({ error: 'Convite inválido' });
+
+    const now = new Date();
+    if (driver.referralExpiresAt && now > driver.referralExpiresAt) {
+        return res.status(410).json({ error: 'Este link de convite expirou' });
+    }
+
+    res.json({
+        name: driver.name,
+        photo: driver.photo,
+        expiresAt: driver.referralExpiresAt
+    });
+});
+
 router.get('/test', (req, res) => res.json({ status: 'drivers router ok' }));
 
 router.get('/:id/wallet', async (req, res) => {

@@ -126,14 +126,16 @@ router.post('/register/client', async (req, res) => {
 });
 
 router.post('/register/driver', async (req, res) => {
-    const { name, email, phone, cpf, cnh, vehicle, plate, password, pixKey } = req.body;
-    if (!name || !email || !phone) {
-        return res.status(400).json({ error: 'Nome, email e telefone são obrigatórios' });
+    const { name, email, phone, cpf, cnh, vehicle, plate, password, pixKey, photo } = req.body;
+    if (!name || !email || !phone || !photo) {
+        return res.status(400).json({ error: 'Nome, email, telefone e foto são obrigatórios' });
     }
     const existing = await Driver.findOne({ email });
     if (existing) return res.status(409).json({ error: 'Email já cadastrado' });
 
     const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const expiryDate = new Date();
+    expiryDate.setHours(expiryDate.getHours() + 24);
     
     const driver = await Driver.create({
         id: uuid(),
@@ -142,9 +144,11 @@ router.post('/register/driver', async (req, res) => {
         vehicle: vehicle || '', plate: plate || '',
         password: password || '123456',
         pixKey: pixKey || cpf || phone || '',
+        photo,
         referralCode,
+        referralExpiresAt: expiryDate,
         referredBy: req.body.referredBy || null,
-        onboardingStep: 'documents', // Start at documents after pre-registration info
+        onboardingStep: 'documents', 
         approved: false
     });
 
@@ -167,7 +171,11 @@ router.post('/register/driver', async (req, res) => {
 
     const driverObj = driver.toObject();
     delete driverObj.password;
-    res.status(201).json({ user: driverObj, token: `driver_${driver.id}` });
+    res.status(201).json({ 
+        user: driverObj, 
+        token: `driver_${driver.id}`,
+        referralLink: `https://movviresgate.com/convite/?ref=${referralCode}`
+    });
 });
 
 router.post('/login/client', async (req, res) => {

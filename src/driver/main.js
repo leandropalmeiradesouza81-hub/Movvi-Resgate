@@ -481,66 +481,75 @@ function loginView() {
 
 // ═══ REGISTER ═══
 function registerView() {
-  const d = document.createElement('div'); d.className = 'view active bg-white dark:bg-[#111]';
+  const d = document.createElement('div'); d.className = 'view active bg-black text-white';
   d.innerHTML = `
-<div class="flex flex-col relative overflow-hidden" style="min-height:100dvh;font-family:Outfit,Inter,sans-serif">
-  <header class="flex items-center p-6 border-b border-slate-100 dark:border-white/5 sticky top-0 bg-white/80 dark:bg-[#111]/80 backdrop-blur-md z-10">
-    <button id="bk" class="size-11 rounded-2xl bg-[#FFD900]/10 flex items-center justify-center text-primary active:scale-90 transition-all shadow-sm"><span class="material-symbols-outlined font-black">arrow_back</span></button>
+<div class="flex flex-col relative overflow-hidden bg-black ml-0" style="min-height:100dvh;font-family:Outfit,Inter,sans-serif">
+  <header class="flex items-center p-6 border-b border-white/5 sticky top-0 bg-black/80 backdrop-blur-md z-10">
+    <button id="bk" class="size-11 rounded-2xl bg-[#FFD900] flex items-center justify-center text-black active:scale-90 transition-all shadow-sm"><span class="material-symbols-outlined font-black">arrow_back</span></button>
     <div class="flex-1 text-center">
-      <h1 class="text-[#1a1400] dark:text-white text-base font-black italic uppercase tracking-widest pl-4">Novo Parceiro</h1>
-      <p class="text-[9px] text-[#aaa] font-bold uppercase tracking-widest pl-4">Fase 01 Pionerismos</p>
+      <h1 class="text-white text-base font-black italic uppercase tracking-widest pl-4">Novo Parceiro</h1>
+      <p class="text-[9px] text-primary font-black uppercase tracking-widest pl-4">Inscrição de Pioneiro</p>
     </div>
     <div class="size-11"></div>
   </header>
   <main class="flex-1 p-6 pb-24 max-w-sm mx-auto w-full">
-    <div class="mb-8 p-5 bg-primary/5 border-2 border-primary/20 rounded-[2rem] relative overflow-hidden">
-      <div class="absolute top-0 right-0 p-4 opacity-10">
-        <span class="material-symbols-outlined text-4xl">trending_up</span>
+    <div class="mb-8 p-6 bg-white/5 border-2 border-primary/40 rounded-[2.5rem] relative overflow-hidden backdrop-blur-sm">
+      <div class="absolute top-0 right-0 p-4 opacity-20">
+        <span class="material-symbols-outlined text-4xl text-primary">verified</span>
       </div>
-      <p class="text-[12px] text-[#1a1400]/80 dark:text-primary/80 font-bold leading-relaxed relative z-10">
-        Entre para o grupo de elite que vai atender <span class="text-primary dark:text-primary font-black">1.200 chamados diários</span> no Rio. 
-        <strong id="vagas-badge" class="text-[#1a1400] dark:text-white block mt-2 text-[10px] uppercase tracking-widest bg-primary/20 py-1 px-3 rounded-full w-fit">Vagas Limitadas: .../100</strong>
+      <p class="text-[14px] text-white font-bold leading-relaxed relative z-10">
+        Garanta sua vaga no grupo de elite que vai atender <span class="text-primary font-black">1.200 chamados</span> no RJ.
+        <strong id="vagas-badge" class="text-black bg-primary block mt-4 text-[12px] font-black uppercase tracking-widest py-2 px-4 rounded-full w-fit mx-auto shadow-lg shadow-primary/20">Vagas Disponíveis: 200 / 200</strong>
       </p>
     </div>
 
-    <form id="rf" class="flex flex-col gap-5">
-      <div class="flex flex-col gap-1.5 focus-within:translate-x-1 transition-transform">
-        <label class="text-[#1a1400]/40 dark:text-white/30 text-[10px] font-black uppercase tracking-widest pl-1">Identificação Pessoal</label>
-        <div class="relative group">
-          <input id="rn" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="Nome Completo" required/>
+    <form id="rf" class="flex flex-col gap-6">
+      <div class="flex flex-col items-center gap-3 mb-2">
+        <label class="text-white/40 text-[10px] font-black uppercase tracking-widest pl-1 w-full text-center">Sua Foto de Perfil (Obrigatório)</label>
+        <div id="photo-preview-box" class="size-28 rounded-[2rem] bg-white/5 border-2 border-dashed border-white/20 flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 transition-all overflow-hidden relative group">
+          <input type="file" id="photo-input" accept="image/*" class="hidden" required />
+          <div id="photo-placeholder" class="flex flex-col items-center gap-1">
+            <span class="material-symbols-outlined text-2xl text-white/20">add_a_photo</span>
+            <span class="text-[8px] font-black uppercase text-white/30">Anexar Foto</span>
+          </div>
+          <img id="photo-img" class="absolute inset-0 size-full object-cover hidden" />
         </div>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-white/40 text-[10px] font-black uppercase tracking-widest pl-1">Identificação</label>
+        <input id="rn" class="form-input w-full rounded-2xl bg-white/5 border-2 border-white/10 text-white py-4 px-4 font-bold text-base focus:border-primary transition-all outline-none" placeholder="Nome Completo" required/>
       </div>
       
-      <div class="flex flex-col gap-1.5 focus-within:translate-x-1 transition-transform">
-        <label class="text-[#1a1400]/40 dark:text-white/30 text-[10px] font-black uppercase tracking-widest pl-1">Contato e Pagamento</label>
-        <div class="grid grid-cols-2 gap-3">
-          <input id="re" type="email" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="E-mail" required/>
-          <input id="rph" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="WhatsApp"/>
-        </div>
-        <input id="rpix" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm mt-1" placeholder="Chave PIX (Para Recebimentos)"/>
-      </div>
-
-      <div class="flex flex-col gap-1.5 focus-within:translate-x-1 transition-transform">
-        <label class="text-[#1a1400]/40 dark:text-white/30 text-[10px] font-black uppercase tracking-widest pl-1">Informações do Veículo</label>
-        <div class="grid grid-cols-2 gap-3">
-          <input id="rv" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="Modelo (Ex: Spin)" required/>
-          <input id="rpl" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="Placa" required/>
+      <div class="flex flex-col gap-2">
+        <label class="text-white/40 text-[10px] font-black uppercase tracking-widest pl-1">Contato</label>
+        <div class="grid grid-cols-1 gap-4">
+          <input id="re" type="email" class="form-input w-full rounded-2xl bg-white/5 border-2 border-white/10 text-white py-4 px-4 font-bold text-base focus:border-primary transition-all outline-none" placeholder="Seu melhor E-mail" required/>
+          <input id="rph" class="form-input w-full rounded-2xl bg-white/5 border-2 border-white/10 text-white py-4 px-4 font-bold text-base focus:border-primary transition-all outline-none" placeholder="WhatsApp (DDD + Número)" required/>
         </div>
       </div>
 
-      <div class="flex flex-col gap-1.5 focus-within:translate-x-1 transition-transform">
-        <label class="text-[#1a1400]/40 dark:text-white/30 text-[10px] font-black uppercase tracking-widest pl-1">Segurança</label>
-        <div class="grid grid-cols-1 gap-3">
-          <input id="rp" type="password" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="Crie uma Senha Forte" required/>
-          <input id="rpc" type="password" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="Confirme sua Senha" required/>
+      <div class="flex flex-col gap-2">
+        <label class="text-white/40 text-[10px] font-black uppercase tracking-widest pl-1">Informações do Veículo</label>
+        <div class="grid grid-cols-2 gap-4">
+          <input id="rv" class="form-input w-full rounded-2xl bg-white/5 border-2 border-white/10 text-white py-4 px-4 font-bold text-base focus:border-primary transition-all outline-none" placeholder="Modelo" required/>
+          <input id="rpl" class="form-input w-full rounded-2xl bg-white/5 border-2 border-white/10 text-white py-4 px-4 font-bold text-base focus:border-primary transition-all outline-none" placeholder="Placa" required/>
         </div>
       </div>
 
-      <div id="re-err" class="text-red-500 text-[11px] font-bold hidden bg-red-50 p-3 rounded-xl border border-red-100 italic"></div>
+      <div class="flex flex-col gap-2">
+        <label class="text-white/40 text-[10px] font-black uppercase tracking-widest pl-1">Senha de Acesso</label>
+        <div class="grid grid-cols-1 gap-4">
+          <input id="rp" type="password" class="form-input w-full rounded-2xl bg-white/5 border-2 border-white/10 text-white py-4 px-4 font-bold text-base focus:border-primary transition-all outline-none" placeholder="Escolha uma Senha" required/>
+          <input id="rpc" type="password" class="form-input w-full rounded-2xl bg-white/5 border-2 border-white/10 text-white py-4 px-4 font-bold text-base focus:border-primary transition-all outline-none" placeholder="Repita a Senha" required/>
+        </div>
+      </div>
+
+      <div id="re-err" class="text-red-500 text-[11px] font-bold hidden bg-red-500/10 p-4 rounded-2xl border border-red-500/20 italic"></div>
       
-      <button type="submit" class="w-full bg-[#1a1400] text-white font-black py-5 rounded-2xl shadow-xl shadow-[#1a1400]/10 mt-4 active:scale-[0.98] transition-all uppercase tracking-widest text-[14px] flex items-center justify-center gap-3">
-        <span>Criar Minha Conta</span>
-        <span class="material-symbols-outlined text-[20px]">how_to_reg</span>
+      <button type="submit" class="w-full bg-primary text-black font-black py-5 rounded-2xl shadow-2xl shadow-primary/20 mt-4 active:scale-[0.98] transition-all uppercase tracking-widest text-[14px] flex items-center justify-center gap-3">
+        <span>Garantir Minha Vaga</span>
+        <span class="material-symbols-outlined text-[20px]">bolt</span>
       </button>
     </form>
     
@@ -550,6 +559,29 @@ function registerView() {
   </main>
 </div>`;
   d.querySelector('#bk').onclick = () => nav(loginView);
+
+  const photoInput = d.querySelector('#photo-input');
+  const photoPreviewBox = d.querySelector('#photo-preview-box');
+  const photoImg = d.querySelector('#photo-img');
+  const photoPlaceholder = d.querySelector('#photo-placeholder');
+  let photoBase64 = null;
+
+  photoPreviewBox.onclick = () => photoInput.click();
+  photoInput.onchange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (re) => {
+        photoBase64 = re.target.result;
+        photoImg.src = photoBase64;
+        photoImg.classList.remove('hidden');
+        photoPlaceholder.classList.add('hidden');
+        photoPreviewBox.style.borderColor = 'var(--primary)';
+        photoPreviewBox.style.borderStyle = 'solid';
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   // Load dynamic vacancies
   (async () => {
@@ -566,202 +598,288 @@ function registerView() {
     const pc = d.querySelector('#rpc').value;
     const errEl = d.querySelector('#re-err');
 
+    if (!photoBase64) {
+      errEl.textContent = "A foto de perfil é obrigatória para o cadastro.";
+      errEl.classList.remove('hidden');
+      return;
+    }
+
     if (p !== pc) {
       errEl.textContent = "As senhas não coincidem. Por favor, verifique.";
       errEl.classList.remove('hidden');
       return;
     }
 
-    try { const { user: u } = await Auth.registerDriver({ name: d.querySelector('#rn').value, email: d.querySelector('#re').value, phone: d.querySelector('#rph').value, pixKey: d.querySelector('#rpix').value, vehicle: d.querySelector('#rv').value, plate: d.querySelector('#rpl').value, password: p }); saveUser(u); connectSocket(); buildSidebar(); (!u.approved && u.onboardingStep !== 'approved') ? nav(onboardingView) : nav(dashboardView); }
-    catch (err) { errEl.textContent = err.message; errEl.classList.remove('hidden'); }
+    const btn = d.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.innerHTML = '<div class="size-6 border-4 border-black border-t-transparent rounded-full animate-spin"></div>';
+
+    try {
+      const { user: u } = await Auth.registerDriver({
+        name: d.querySelector('#rn').value,
+        email: d.querySelector('#re').value,
+        phone: d.querySelector('#rph').value,
+        vehicle: d.querySelector('#rv').value,
+        plate: d.querySelector('#rpl').value,
+        password: p,
+        photo: photoBase64
+      });
+      saveUser(u);
+      connectSocket();
+      buildSidebar();
+      (!u.approved && u.onboardingStep !== 'approved') ? nav(onboardingView) : nav(dashboardView);
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerHTML = '<span>Garantir Minha Vaga</span> <span class="material-symbols-outlined text-[20px]">bolt</span>';
+      errEl.textContent = err.message;
+      errEl.classList.remove('hidden');
+    }
   };
   return d;
 }
 
 // ═══ ONBOARDING ═══
 function onboardingView() {
-  const d = document.createElement('div'); d.className = 'view active bg-background-light dark:bg-background-dark';
-  const step = user.onboardingStep || 'documents';
+  const d = document.createElement('div'); d.className = 'view active bg-black text-white';
+  const step = user.onboardingStep || 'pre_cadastro';
 
-  const renderDocuments = () => `
-    <h2 class="text-xl font-bold mb-4 text-[#1a1400] dark:text-white">Envio de Documentos</h2>
-    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 font-medium">Precisamos validar suas informações. Envie fotos nítidas dos seus documentos.</p>
-    <form id="docs-form" class="flex flex-col gap-5">
-      <div class="flex flex-col gap-2">
-        <label class="text-sm font-bold text-[#1a1400] dark:text-white">Foto da CNH</label>
-        <input type="file" id="fi-cnh" accept="image/*" required class="w-full form-input bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 rounded-xl p-3 text-sm text-[#1a1400] dark:text-white">
-      </div>
-      <div class="flex flex-col gap-2">
-        <label class="text-sm font-bold text-[#1a1400] dark:text-white">Documento do Veículo (CRLV)</label>
-        <input type="file" id="fi-crlv" accept="image/*" required class="w-full form-input bg-white dark:bg-white/5 border border-slate-300 dark:border-white/10 rounded-xl p-3 text-sm text-[#1a1400] dark:text-white">
-      </div>
-      <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-[#1a1400] font-black py-4 mt-4 rounded-xl shadow-md active:scale-[0.98] transition-all uppercase tracking-wider text-sm">Próximo</button>
-    </form>
-  `;
+  const steps = [
+    { id: 'documents', label: 'Embarcado', icon: 'verified_user', active: step === 'documents' || step === 'pre_cadastro' },
+    { id: 'kit', label: 'Adquirir Kit', icon: 'payments', active: step === 'approved_pending_kit' },
+    { id: 'waiting', label: 'Aguarde', icon: 'schedule', active: step === 'kit_acquired' || step === 'waiting_delivery' }
+  ];
 
-  const renderKit = () => `
-    <div class="animate-fade-in">
-      <div class="flex items-center gap-3 mb-6">
-        <div class="size-12 rounded-2xl bg-primary flex items-center justify-center text-black shadow-lg shadow-primary/20">
-          <span class="material-symbols-outlined font-black">inventory_2</span>
-        </div>
-        <div>
-          <h2 class="text-xl font-black text-[#1a1400] dark:text-white uppercase italic tracking-tighter">O Kit Oficial</h2>
-          <p class="text-[10px] text-primary font-black uppercase tracking-widest leading-none">Fase Pioneira 01</p>
-        </div>
-      </div>
+  const currentStepIndex = steps.findIndex(s => s.active);
 
-      <p class="text-sm text-[#1a1400]/60 dark:text-slate-400 font-bold mb-6 leading-relaxed">Para iniciar suas operações e garantir a segurança dos resgates, você precisa adquirir o <span class="text-[#1a1400] dark:text-white underline underline-offset-2">Kit Movvi Heavy Duty</span>.</p>
-      
-      <div class="bg-white dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 p-6 rounded-[2rem] mb-8 shadow-sm">
-         <h3 class="font-black text-[11px] uppercase tracking-widest text-[#1a1400]/40 dark:text-white/30 mb-4 border-b border-slate-50 dark:border-white/5 pb-3">Hardwares Inclusos:</h3>
-         <ul class="flex flex-col gap-4 mb-8">
-           <li class="flex items-start gap-3">
-              <div class="size-6 rounded-full bg-primary/10 flex items-center justify-center text-primary mt-0.5 shrink-0"><span class="material-symbols-outlined text-sm font-black">check</span></div>
-              <div>
-                <p class="text-[13px] font-black text-[#1a1400] dark:text-white leading-none mb-1">Cambão Articulado</p>
-                <p class="text-[10px] text-[#aaa] font-bold">Aço Carbono reforçado (padrão reboque)</p>
-              </div>
-           </li>
-           <li class="flex items-start gap-3">
-              <div class="size-6 rounded-full bg-primary/10 flex items-center justify-center text-primary mt-0.5 shrink-0"><span class="material-symbols-outlined text-sm font-black">check</span></div>
-              <div>
-                <p class="text-[13px] font-black text-[#1a1400] dark:text-white leading-none mb-1">Cabos Heavy Duty</p>
-                <p class="text-[10px] text-[#aaa] font-bold">Para transferência de carga entre baterias</p>
-              </div>
-           </li>
-           <li class="flex items-start gap-3">
-              <div class="size-6 rounded-full bg-primary/10 flex items-center justify-center text-primary mt-0.5 shrink-0"><span class="material-symbols-outlined text-sm font-black">check</span></div>
-              <div>
-                <p class="text-[13px] font-black text-[#1a1400] dark:text-white leading-none mb-1">Reparador & Galão</p>
-                <p class="text-[10px] text-[#aaa] font-bold">Spray para furos e bombona de combustível</p>
-              </div>
-           </li>
-         </ul>
-         
-         <div class="flex flex-col items-center justify-center p-6 bg-slate-50 dark:bg-black rounded-3xl border border-slate-100 dark:border-white/5">
-           <span class="text-[9px] uppercase font-black text-[#aaa] mb-2 tracking-[0.2em]">Investimento Vitalício</span>
-           <div class="flex items-baseline gap-1">
-             <span class="text-sm font-bold text-[#1a1400] dark:text-white opacity-40">R$</span>
-             <span class="text-4xl font-black text-[#1a1400] dark:text-white tracking-tighter">399,00</span>
-           </div>
-           <p class="text-[9px] text-primary font-black uppercase mt-3">Taxa Única • Sem Mensalidade</p>
-         </div>
-      </div>
-
-      <button id="btn-pay" class="w-full bg-[#1a1400] text-white font-black py-5 flex flex-col items-center justify-center rounded-2xl shadow-2xl shadow-[#1a1400]/20 active:scale-[0.98] transition-all group overflow-hidden relative">
-        <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-        <span class="uppercase tracking-widest text-[14px] mb-0.5 flex items-center gap-2 relative z-10"><span class="material-symbols-outlined text-[18px]">bolt</span> Adquirir via PIX</span>
-        <span class="text-[9px] opacity-50 font-bold uppercase tracking-widest relative z-10">Liberação imediata em sistema</span>
-      </button>
-      
-      <p class="text-center text-[10px] font-bold text-[#aaa] mt-6 px-4 uppercase tracking-tighter">
-        Ao adquirir, você também garante sua <span class="text-[#1a1400] dark:text-white">Homologação Vitalícia</span> como motorista de resgate.
-      </p>
-    </div>
-    
-    <!-- Modal do PIX -->
-    <div id="pix-modal" class="hidden fixed inset-0 z-50 bg-[#1a1400]/95 backdrop-blur-xl flex items-center justify-center p-6 transition-all duration-300">
-      <div id="pix-modal-content" class="bg-white dark:bg-[#111] w-full max-w-sm rounded-[3rem] p-8 flex flex-col items-center text-center scale-95 transition-transform duration-300 shadow-2xl">
-        <div class="size-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6">
-          <span class="material-symbols-outlined text-3xl font-black">qr_code_2</span>
-        </div>
-        <h3 class="font-black text-2xl text-[#1a1400] dark:text-white mb-2 uppercase italic tracking-tighter">Pagamento Seguro</h3>
-        <p class="text-xs font-bold text-slate-400 mb-8 max-w-[240px]">Escaneie o QR Code abaixo no app do seu banco ou use a chave Copia e Cola.</p>
+  const renderTrail = () => `
+    <div class="flex flex-col items-center w-full mb-12 px-4 text-white">
+      <div class="relative flex items-center justify-between w-full max-w-[300px]">
+        <div class="absolute top-1/2 left-0 w-full h-1 bg-white/10 -translate-y-1/2 rounded-full"></div>
+        <div class="absolute top-1/2 left-0 h-1 bg-primary -translate-y-1/2 rounded-full transition-all duration-700" style="width: ${currentStepIndex * 50}%"></div>
         
-        <div class="bg-white p-6 rounded-[2rem] mb-8 flex justify-center w-full shadow-inner border border-slate-50">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020126460014BR.GOV.BCB.PIX011112345678900209Kit%20Movvi5204000053039865406399.005802BR5913Movvi%20Resgate6009Sao%20Paulo62070503***6304" alt="QR Code PIX" class="w-48 h-48 rounded-2xl">
-        </div>
-
-        <div class="flex flex-col gap-3 w-full">
-          <button id="btn-copy-pix" class="w-full bg-primary text-black font-black py-4 rounded-2xl active:scale-95 transition-all text-xs uppercase tracking-[0.2em] shadow-lg shadow-primary/20">Copiar Código PIX</button>
-          <button id="btn-cancel-pix" class="w-full text-red-500 font-bold py-3 text-[10px] uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">Cancelar Operação</button>
-        </div>
+        ${steps.map((s, i) => {
+    const isDone = currentStepIndex > i;
+    const isActive = currentStepIndex === i;
+    return `
+            <div class="relative z-10 flex flex-col items-center">
+              <div class="size-10 rounded-full flex items-center justify-center border-4 transition-all duration-500 ${isDone ? 'bg-primary border-primary text-black' : isActive ? 'bg-black border-primary text-primary' : 'bg-black border-white/20 text-white/20'}">
+                ${isActive && i === 0 ? '<div class="absolute -top-1 -right-1 size-3 bg-green-500 rounded-full animate-ping"></div><div class="absolute -top-1 -right-1 size-3 bg-green-500 rounded-full"></div>' : ''}
+                <span class="material-symbols-outlined text-[20px]">${isDone ? 'check' : s.icon}</span>
+              </div>
+              <span class="absolute top-12 whitespace-nowrap text-[10px] font-black uppercase tracking-widest ${isActive || isDone ? 'text-white' : 'text-white/30'}">${s.label}</span>
+            </div>
+          `;
+  }).join('')}
       </div>
     </div>
   `;
 
-  const renderPending = () => `
-    <div class="flex flex-col items-center justify-center text-center py-12 px-2">
-      <div class="w-20 h-20 bg-green-100 dark:bg-green-900/30 text-green-600 rounded-full flex items-center justify-center mb-6">
-        <span class="material-symbols-outlined text-[40px]">check</span>
+  const renderContent = () => {
+    if (step === 'documents' || step === 'pre_cadastro') {
+      return `
+        <div class="animate-fade-in flex flex-col items-center">
+          <div class="mb-8 text-center">
+            <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-2">Validação de Perfil</h2>
+            <p class="text-xs text-white/50 font-bold uppercase tracking-widest">Inicie seu embarque na Movvi</p>
+          </div>
+          
+          <div class="w-full bg-white/5 border-2 border-white/10 rounded-[2.5rem] p-6 mb-8">
+            <p class="text-sm text-white/60 font-medium mb-6 leading-relaxed">Envie fotos nítidas da sua <strong class="text-white">CNH</strong> e do <strong class="text-white">CRLV</strong> do veículo para iniciarmos sua análise.</p>
+            <form id="docs-form" class="space-y-4">
+              <div class="space-y-2">
+                <label class="text-[10px] font-black uppercase tracking-widest text-primary ml-1">CNH (Frente e Verso)</label>
+                <div class="relative">
+                   <input type="file" id="fi-cnh" accept="image/*" required class="hidden" />
+                   <button type="button" onclick="document.getElementById('fi-cnh').click()" class="w-full bg-white/5 border-2 border-dashed border-white/20 rounded-2xl py-8 flex flex-col items-center justify-center gap-2 active:scale-95 transition-all">
+                     <span class="material-symbols-outlined text-3xl opacity-30">add_a_photo</span>
+                     <span class="text-[10px] uppercase font-black tracking-widest opacity-40">Tirar Foto CNH</span>
+                   </button>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <label class="text-[10px] font-black uppercase tracking-widest text-primary ml-1">Documento do Veículo</label>
+                <div class="relative">
+                   <input type="file" id="fi-crlv" accept="image/*" required class="hidden" />
+                   <button type="button" onclick="document.getElementById('fi-crlv').click()" class="w-full bg-white/5 border-2 border-dashed border-white/20 rounded-2xl py-8 flex flex-col items-center justify-center gap-2 active:scale-95 transition-all">
+                     <span class="material-symbols-outlined text-3xl opacity-30">add_a_photo</span>
+                     <span class="text-[10px] uppercase font-black tracking-widest opacity-40">Tirar Foto CRLV</span>
+                   </button>
+                </div>
+              </div>
+              <button type="submit" class="w-full bg-primary text-black font-black py-5 rounded-2xl shadow-xl shadow-primary/20 mt-4 uppercase tracking-[0.15em] text-sm">Enviar Documentação</button>
+            </form>
+          </div>
+        </div>
+      `;
+    }
+
+    if (step === 'approved_pending_kit') {
+      return `
+        <div class="animate-fade-in flex flex-col items-center">
+          <div class="mb-8 text-center px-4">
+            <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-2 text-white">Perfil Aprovado!</h2>
+            <p class="text-xs text-primary font-black uppercase tracking-widest">Agora garanta seu Kit Resgate</p>
+          </div>
+
+          <div class="bg-white/5 border-2 border-primary/20 p-6 rounded-[2.5rem] mb-8 w-full shadow-2xl backdrop-blur-md">
+             <div class="flex items-center gap-4 mb-6 border-b border-white/5 pb-4">
+                <div class="size-14 bg-primary rounded-2xl flex items-center justify-center text-black shadow-lg">
+                  <span class="material-symbols-outlined text-3xl font-black">inventory_2</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-lg text-white leading-none">Kit Movvi Resgate</h3>
+                  <p class="text-[10px] font-bold text-white/40 uppercase tracking-widest mt-1">Instrumental de Trabalho</p>
+                </div>
+             </div>
+             
+             <ul class="space-y-4 mb-8">
+               <li class="flex items-center gap-3 text-sm font-bold text-white/80"><span class="material-symbols-outlined text-primary text-lg">check</span> Cambão Articulado Robusto</li>
+               <li class="flex items-center gap-3 text-sm font-bold text-white/80"><span class="material-symbols-outlined text-primary text-lg">check</span> Cabos de Chupeta Heavy Duty</li>
+               <li class="flex items-center gap-3 text-sm font-bold text-white/80"><span class="material-symbols-outlined text-primary text-lg">check</span> Reparador e Galão Tático</li>
+             </ul>
+
+             <div class="bg-black/40 rounded-3xl p-6 text-center border border-white/5 mb-2">
+                <span class="text-[10px] uppercase font-black text-white/30 tracking-widest mb-1 block">Investimento Vitalício</span>
+                <div class="flex items-baseline justify-center gap-1">
+                  <span class="text-sm font-bold opacity-40 text-white">R$</span>
+                  <span class="text-4xl font-black text-white italic">399,00</span>
+                </div>
+             </div>
+          </div>
+
+          <button id="btn-pay" class="w-full bg-primary text-black font-black py-5 flex flex-col items-center justify-center rounded-2xl shadow-2xl shadow-primary/30 active:scale-[0.98] transition-all">
+            <span class="uppercase tracking-widest text-[14px]">Adquirir via PIX agora</span>
+            <span class="text-[9px] font-black uppercase tracking-widest opacity-60">Liberação Automática via C6 Bank</span>
+          </button>
+        </div>
+      `;
+    }
+
+    if (step === 'kit_acquired' || step === 'waiting_delivery' || step === 'pending') {
+      return `
+        <div class="animate-fade-in flex flex-col items-center text-center">
+          <div class="size-24 bg-primary rounded-full flex items-center justify-center text-black mb-8 shadow-2xl shadow-primary/20">
+            <span class="material-symbols-outlined text-[40px] font-black">hourglass_top</span>
+          </div>
+          <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-4 text-white">Preparando Entrega</h2>
+          <p class="text-base font-bold text-white/60 mb-10 leading-relaxed px-4">Seu Kit foi adquirido com sucesso. Em até <strong class="text-primary">48 horas</strong> nossa equipe entrará em contato para agendar a entrega física e treinamento básico.</p>
+          
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-6 mb-8 w-full flex items-center gap-4">
+             <div class="size-2 rounded-full bg-primary animate-pulse"></div>
+             <p class="text-[10px] font-black uppercase tracking-widest text-primary">Aguardando disponibilidade de frota</p>
+          </div>
+
+          <button id="btn-refresh" class="w-full bg-white/5 border-2 border-white/10 text-white font-black py-4 rounded-2xl uppercase tracking-widest text-xs flex items-center justify-center gap-2 active:scale-95 transition-all mb-4">
+            <span class="material-symbols-outlined text-sm">refresh</span> Atualizar Status
+          </button>
+          
+          <button id="btn-logout" class="text-[10px] font-black uppercase tracking-widest text-red-500 opacity-60 hover:opacity-100 transition-opacity">Sair da Conta</button>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="flex flex-col items-center text-center py-20">
+        <div class="size-10 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p class="text-xs font-black uppercase tracking-widest opacity-40 text-white">Sincronizando dados...</p>
       </div>
-      <h2 class="text-2xl font-black text-[#1a1400] dark:text-white mb-3">Tudo Certo!</h2>
-      <p class="text-[15px] font-medium text-[#1a1400]/60 dark:text-slate-400 mb-8 leading-relaxed">O pagamento do seu Kit Resgate foi confirmado via <strong class="text-primary">C6 Bank Webhook</strong>. <strong class="text-[#1a1400] dark:text-white">Seu acesso será liberado assim que o Kit for entregue, conforme as regras da plataforma.</strong></p>
-      <button id="btn-refresh" class="w-full bg-[#fafaf7] dark:bg-[#201d10] border-2 border-slate-200 dark:border-white/10 text-[#1a1400] dark:text-white font-bold py-4 rounded-xl active:scale-[0.98] transition-all uppercase tracking-wider text-sm flex items-center justify-center gap-2"><span class="material-symbols-outlined text-[18px]">refresh</span> Atualizar Status</button>
-      <button id="btn-logout" class="mt-6 text-sm font-bold text-red-500">Sair ou Entrar com outra conta</button>
-    </div>
-  `;
+    `;
+  };
 
   d.innerHTML = `
-    <header class="flex items-center justify-center p-5 border-b border-slate-200 dark:border-white/10 sticky top-0 bg-white/80 dark:bg-[#1a1706]/80 backdrop-blur-md z-10 w-full">
-      <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="h-6 object-contain drop-shadow-sm">
+    <header class="flex items-center justify-center p-6 border-b border-white/5 sticky top-0 bg-black/80 backdrop-blur-md z-10 w-full mb-8">
+      <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="h-6 object-contain">
     </header>
-    <main class="w-full max-w-md mx-auto p-6 pb-24 flex flex-col items-stretch" id="ob-container">
-      ${step === 'documents' ? renderDocuments() : step === 'kit' ? renderKit() : renderPending()}
+    <main class="w-full max-w-md mx-auto p-6 flex flex-col items-stretch" id="ob-container">
+      ${renderTrail()}
+      <div id="ob-content" class="mt-4">
+        ${renderContent()}
+      </div>
     </main>
+    
+    <div id="pix-modal" class="hidden fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex items-center justify-center p-6 transition-all duration-300">
+      <div id="pix-modal-content" class="bg-[#111] w-full max-w-sm rounded-[3rem] p-8 flex flex-col items-center text-center scale-95 transition-transform duration-300 shadow-2xl overflow-hidden relative">
+        <div class="absolute -top-10 -right-10 size-40 bg-primary/20 rounded-full blur-3xl"></div>
+        <div class="size-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6 relative">
+          <span class="material-symbols-outlined text-3xl font-black">qr_code_2</span>
+        </div>
+        <h3 class="font-black text-2xl text-white mb-2 uppercase italic tracking-tighter">Finalizar Adesão</h3>
+        <p class="text-xs font-bold text-slate-400 mb-8 max-w-[240px]">Escaneie o QR Code ou use o Copia e Cola para garantir sua vaga pioneira.</p>
+        
+        <div class="bg-white p-6 rounded-[2rem] mb-8 flex justify-center w-full shadow-inner border border-slate-50 relative">
+          <img src="" alt="QR Code PIX" class="w-48 h-48 rounded-2xl">
+        </div>
+
+        <div class="flex flex-col gap-3 w-full relative">
+          <button id="btn-copy-pix" class="w-full bg-primary text-black font-black py-4 rounded-2xl active:scale-95 transition-all text-xs uppercase tracking-[0.2em] shadow-lg shadow-primary/20">Copiar Código PIX</button>
+          <button id="btn-cancel-pix" class="w-full text-red-500 font-bold py-3 text-[10px] uppercase tracking-widest opacity-60">Voltar</button>
+        </div>
+      </div>
+    </div>
   `;
 
   setTimeout(() => {
-    if (step === 'documents') {
-      d.querySelector('#docs-form').onsubmit = async (e) => {
-        e.preventDefault();
-        try {
-          await Drivers.update(user.id, { onboardingStep: 'kit', cnhStatus: 'submitted', crlvStatus: 'submitted' });
-          user.onboardingStep = 'kit';
-          saveUser(user);
-          nav(onboardingView);
-        } catch (err) { alert(err.message); }
-      };
-    } else if (step === 'kit') {
-      d.querySelector('#btn-pay').onclick = async () => {
-        const btn = d.querySelector('#btn-pay');
-        const original = btn.innerHTML;
-        btn.innerHTML = '<div class="size-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>';
-        try {
-          const res = await api(`/drivers/${user.id}/pix/generate`, 'POST', { amount: 399.00, reason: 'kit' });
-          const modal = d.querySelector('#pix-modal');
-          modal.querySelector('img').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(res.pixCopiaECola)}`;
-          modal.classList.remove('hidden');
-          setTimeout(() => modal.querySelector('#pix-modal-content').classList.replace('scale-95', 'scale-100'), 10);
+    const form = d.querySelector('#docs-form');
+    if (form) form.onsubmit = async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]');
+      if (btn) btn.innerHTML = '<div class="size-6 border-4 border-black border-t-transparent rounded-full animate-spin"></div>';
+      try {
+        await Drivers.update(user.id, { onboardingStep: 'documents', documentsStatus: 'under_review' });
+        user.onboardingStep = 'documents';
+        saveUser(user);
+        alert("Documentos enviados com sucesso! Nossa equipe irá validar seu perfil.");
+        nav(onboardingView);
+      } catch (err) {
+        alert(err.message);
+        if (btn) btn.textContent = 'Enviar Documentação';
+      }
+    };
 
-          modal.querySelector('#btn-copy-pix').onclick = () => {
-            navigator.clipboard.writeText(res.pixCopiaECola);
-            const cpBtn = modal.querySelector('#btn-copy-pix');
-            cpBtn.textContent = "Chave PIX Copiada!";
-            cpBtn.classList.add('opacity-50');
-            setTimeout(() => { cpBtn.textContent = "Copiar Código PIX"; cpBtn.classList.remove('opacity-50'); }, 2000);
-          };
-        } catch (err) {
-          alert('Erro ao gerar pagamento. Verifique sua conexão.');
-        } finally {
-          btn.innerHTML = original;
-        }
-      };
-      d.querySelector('#btn-cancel-pix').onclick = () => d.querySelector('#pix-modal').classList.add('hidden');
-    } else {
-      d.querySelector('#btn-refresh').onclick = async () => {
-        try {
-          const freshUser = await Drivers.get(user.id);
-          saveUser(freshUser);
-          if (freshUser.approved) nav(dashboardView);
-          else { alert("Sua conta ainda está em análise. Fique de olho, em breve você estará online!"); nav(onboardingView); }
-        } catch (err) { }
-      };
-      d.querySelector('#btn-request-release').onclick = () => {
-        socket.emit('chat:driver-to-admin', { driverId: user.id, message: "⚠️ *NOVO CANDIDATO - SOLICITAÇÃO DE LIBERAÇÃO*\n\nJá paguei pelo Kit Resgate e estou aguardando a liberação na plataforma." });
-        const btn = d.querySelector('#btn-request-release');
-        btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">check_circle</span> Solicitação Enviada';
-        btn.classList.add('opacity-70', 'pointer-events-none');
-      };
+    const payBtn = d.querySelector('#btn-pay');
+    if (payBtn) payBtn.onclick = async () => {
+      payBtn.innerHTML = '<div class="size-6 border-4 border-black border-t-transparent rounded-full animate-spin"></div>';
+      try {
+        const res = await api(`/drivers/${user.id}/pix/generate`, 'POST', { amount: 399.00, reason: 'kit' });
+        const modal = d.querySelector('#pix-modal');
+        modal.querySelector('img').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(res.pixCopiaECola)}`;
+        modal.classList.remove('hidden');
+        setTimeout(() => modal.querySelector('#pix-modal-content').classList.replace('scale-95', 'scale-100'), 10);
 
-      d.querySelector('#btn-logout').onclick = () => {
-        localStorage.removeItem('movvi_driver');
-        user = null;
-        nav(loginView);
-      };
-    }
-  }, 0);
+        modal.querySelector('#btn-copy-pix').onclick = () => {
+          navigator.clipboard.writeText(res.pixCopiaECola);
+          const cpBtn = modal.querySelector('#btn-copy-pix');
+          const oldTxt = cpBtn.textContent;
+          cpBtn.textContent = "COPIADO!";
+          setTimeout(() => cpBtn.textContent = oldTxt, 2000);
+        };
+      } catch (err) { alert('Erro ao gerar PIX.'); }
+      payBtn.innerHTML = '<span class="uppercase tracking-widest text-[14px]">Adquirir via PIX agora</span><span class="text-[9px] font-black uppercase tracking-widest opacity-60">Liberação Automática via C6 Bank</span>';
+    };
+
+    const cancelPix = d.querySelector('#btn-cancel-pix');
+    if (cancelPix) cancelPix.onclick = () => d.querySelector('#pix-modal').classList.add('hidden');
+
+    const refreshBtn = d.querySelector('#btn-refresh');
+    if (refreshBtn) refreshBtn.onclick = async () => {
+      refreshBtn.innerHTML = '<div class="size-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>';
+      try {
+        const fresh = await Drivers.get(user.id);
+        saveUser(fresh);
+        if (fresh.approved && fresh.onboardingStep === 'approved') nav(dashboardView);
+        else nav(onboardingView);
+      } catch (e) {
+        refreshBtn.innerHTML = '<span class="material-symbols-outlined text-sm">refresh</span> Atualizar Status';
+      }
+    };
+
+    const logoutBtn = d.querySelector('#btn-logout');
+    if (logoutBtn) logoutBtn.onclick = () => {
+      localStorage.removeItem('movvi_driver');
+      user = null;
+      nav(loginView);
+    };
+  }, 100);
 
   return d;
 }

@@ -25,6 +25,7 @@ const driverSchema = new mongoose.Schema({
     onboardingStep: { type: String, default: 'pre_cadastro' }, // pre_cadastro, documents, pending_approval, approved_pending_kit, active
     referralCode: { type: String, unique: true }, // Own code to share
     referredBy: { type: String, default: null }, // Who referred this driver
+    referralExpiresAt: { type: Date, default: null }, // Referral link validity
     kitPaymentDeadline: { type: Date, default: null }, // 7-day window to pay kit after approval
     cnhStatus: { type: String, default: 'pending' },
     crlvStatus: { type: String, default: 'pending' },

@@ -654,6 +654,10 @@ async function renderPricing() {
           <label class="text-xs font-bold text-text-dim uppercase tracking-widest mb-3 block">Data Oficial de Lançamento (Contador)</label>
           <input type="date" id="launch-date" class="w-full bg-slate-950 border border-slate-700/50 rounded-xl px-5 py-3 text-white focus:border-primary outline-none transition-all" value="${settings.launchDate || '2026-04-20'}">
         </div>
+        <div>
+          <label class="text-xs font-bold text-text-dim uppercase tracking-widest mb-3 block">Total de Vagas - Fase 01</label>
+          <input type="number" id="total-spots" class="w-full bg-slate-950 border border-slate-700/50 rounded-xl px-5 py-3 text-white focus:border-primary outline-none transition-all font-black text-xl" value="${settings.totalSpotsPhase1 || 100}">
+        </div>
       </div>
     </div>
 
@@ -715,7 +719,8 @@ async function renderPricing() {
     // Save Settings
     const settingsPayload = {
       systemLockdown: isLocked,
-      launchDate: document.querySelector('#launch-date').value
+      launchDate: document.querySelector('#launch-date').value,
+      totalSpotsPhase1: parseInt(document.querySelector('#total-spots').value) || 100
     };
 
     try {

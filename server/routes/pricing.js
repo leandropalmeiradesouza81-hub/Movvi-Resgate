@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { Setting } from '../models.js';
+import { Setting, Driver } from '../models.js';
 
 const router = Router();
 
@@ -45,6 +45,21 @@ router.put('/settings', async (req, res) => {
 router.get('/settings', async (req, res) => {
     const settings = await Setting.findOne({ key: 'settings' });
     res.json(settings?.value || {});
+});
+
+router.get('/public', async (req, res) => {
+    const settingsObj = await Setting.findOne({ key: 'settings' });
+    const settings = settingsObj?.value || {};
+    
+    // Count approved drivers for phase 1
+    const approvedCount = await Driver.countDocuments({ approved: true });
+    
+    res.json({
+        launchDate: settings.launchDate || "2026-04-20",
+        totalSpots: settings.totalSpotsPhase1 || 100,
+        occupiedSpots: approvedCount,
+        systemLockdown: settings.systemLockdown || false
+    });
 });
 
 export default router;

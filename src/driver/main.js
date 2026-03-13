@@ -499,7 +499,7 @@ function registerView() {
       </div>
       <p class="text-[12px] text-[#1a1400]/80 dark:text-primary/80 font-bold leading-relaxed relative z-10">
         Entre para o grupo de elite que vai atender <span class="text-primary dark:text-primary font-black">1.200 chamados diários</span> no Rio. 
-        <strong class="text-[#1a1400] dark:text-white block mt-2 text-[10px] uppercase tracking-widest bg-primary/20 py-1 px-3 rounded-full w-fit">Vagas Limitadas: 14/100</strong>
+        <strong id="vagas-badge" class="text-[#1a1400] dark:text-white block mt-2 text-[10px] uppercase tracking-widest bg-primary/20 py-1 px-3 rounded-full w-fit">Vagas Limitadas: .../100</strong>
       </p>
     </div>
 
@@ -530,7 +530,10 @@ function registerView() {
 
       <div class="flex flex-col gap-1.5 focus-within:translate-x-1 transition-transform">
         <label class="text-[#1a1400]/40 dark:text-white/30 text-[10px] font-black uppercase tracking-widest pl-1">Segurança</label>
-        <input id="rp" type="password" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="Crie uma Senha Forte" required/>
+        <div class="grid grid-cols-1 gap-3">
+          <input id="rp" type="password" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="Crie uma Senha Forte" required/>
+          <input id="rpc" type="password" class="form-input w-full rounded-2xl bg-slate-50 dark:bg-white/[0.03] border-2 border-slate-100 dark:border-white/5 text-[#1a1400] dark:text-white py-4 px-4 font-bold text-sm focus:border-primary transition-all shadow-sm" placeholder="Confirme sua Senha" required/>
+        </div>
       </div>
 
       <div id="re-err" class="text-red-500 text-[11px] font-bold hidden bg-red-50 p-3 rounded-xl border border-red-100 italic"></div>
@@ -547,10 +550,30 @@ function registerView() {
   </main>
 </div>`;
   d.querySelector('#bk').onclick = () => nav(loginView);
+
+  // Load dynamic vacancies
+  (async () => {
+    try {
+      const { occupiedSpots, totalSpots } = await Pricing.getPublicSettings();
+      const badge = d.querySelector('#vagas-badge');
+      if (badge) badge.textContent = `Vagas Limitadas: ${occupiedSpots}/${totalSpots}`;
+    } catch (e) { console.warn("Failed to load vacancies", e); }
+  })();
+
   d.querySelector('#rf').onsubmit = async (e) => {
     e.preventDefault();
-    try { const { user: u } = await Auth.registerDriver({ name: d.querySelector('#rn').value, email: d.querySelector('#re').value, phone: d.querySelector('#rph').value, pixKey: d.querySelector('#rpix').value, vehicle: d.querySelector('#rv').value, plate: d.querySelector('#rpl').value, password: d.querySelector('#rp').value }); saveUser(u); connectSocket(); buildSidebar(); (!u.approved && u.onboardingStep !== 'approved') ? nav(onboardingView) : nav(dashboardView); }
-    catch (err) { const el = d.querySelector('#re-err'); el.textContent = err.message; el.classList.remove('hidden'); }
+    const p = d.querySelector('#rp').value;
+    const pc = d.querySelector('#rpc').value;
+    const errEl = d.querySelector('#re-err');
+
+    if (p !== pc) {
+      errEl.textContent = "As senhas não coincidem. Por favor, verifique.";
+      errEl.classList.remove('hidden');
+      return;
+    }
+
+    try { const { user: u } = await Auth.registerDriver({ name: d.querySelector('#rn').value, email: d.querySelector('#re').value, phone: d.querySelector('#rph').value, pixKey: d.querySelector('#rpix').value, vehicle: d.querySelector('#rv').value, plate: d.querySelector('#rpl').value, password: p }); saveUser(u); connectSocket(); buildSidebar(); (!u.approved && u.onboardingStep !== 'approved') ? nav(onboardingView) : nav(dashboardView); }
+    catch (err) { errEl.textContent = err.message; errEl.classList.remove('hidden'); }
   };
   return d;
 }

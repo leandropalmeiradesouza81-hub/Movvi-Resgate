@@ -4,12 +4,39 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    <title>Movvi Resgate - Reboque Mais Barato a partir de R$ 80</title>
+    <meta name="google-site-verification" content="yCfsupcyBMiWH8H7mbsYM3fRhUzJg_mNH-npzuftbh8" />
+    <title>Movvi Resgate | Reboque e Guincho 24h Mais Barato do Rio (R$ 80)</title>
 
     <meta name="description"
-        content="Precisa de resgate agora? A Movvi Resgate é o app parceiro mais barato, com taxa fixa inicial a partir de R$ 80 + km. Motoristas de app espalhados pela cidade te salvam com reboque no cambão (barra rígida)!" />
+        content="Precisa de Guincho ou Reboque 24h? A Movvi Resgate é a solução mais barata no Rio de Janeiro. Reboque no cambão a partir de R$ 80 + km. Atendimento rápido perto de você!" />
     <meta name="keywords"
-        content="reboque, resgate barato, reboque de carros, aplicativo de reboque, cambão, barra rígida, reboque barra rígida, pane seca, recarga de bateria, trocar pneu, guincho barato, movvi resgate" />
+        content="reboque, guincho 24h, reboque perto de mim, guincho perto de mim, reboque barato, guincho barato, reboque rj, guincho rj, reboque no cambão, barra rígida, pane seca, recarga de bateria, trocar pneu, movvi resgate" />
+    <link rel="canonical" href="https://movviresgate.com.br/" />
+
+    <!-- JSON-LD para Google (Schema.org) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EmergencyService",
+      "name": "Movvi Resgate",
+      "description": "Serviço de reboque e assistência veicular 24h com o melhor preço do Rio de Janeiro.",
+      "url": "https://movviresgate.com.br",
+      "telephone": "+5521999999999",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Rio de Janeiro",
+        "addressRegion": "RJ",
+        "addressCountry": "BR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -22.9068,
+        "longitude": -43.1729
+      },
+      "openingHours": "Mo-Su 00:00-23:59",
+      "priceRange": "R$80+"
+    }
+    </script>
     <meta name="theme-color" content="#ffd900" />
     <link id="manifest-link" rel="manifest" href="manifest_client.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1908,7 +1935,7 @@
         // ═══ LOCKDOWN LOGIC ═══
         async function checkLockdown() {
             try {
-                const res = await fetch('/api/pricing/settings');
+                const res = await fetch('/api/pricing/public');
                 const settings = await res.json();
                 
                 if (settings.systemLockdown) {
@@ -1917,6 +1944,16 @@
                     
                     startLockCountdown(settings.launchDate || "2026-04-20");
                 }
+
+                // Update any generic vacancy counters if they exist (added for consistency)
+                const vText = document.getElementById('vagas-text');
+                const vBar = document.getElementById('vagas-bar');
+                if (vText && vBar) {
+                    const perc = Math.round((settings.occupiedSpots / settings.totalSpots) * 100);
+                    vText.innerText = `${settings.occupiedSpots} / ${settings.totalSpots}`;
+                    vBar.style.width = perc + '%';
+                }
+
             } catch (e) {
                 console.error('Lockdown check failed:', e);
             }
@@ -1931,7 +1968,9 @@
                 
                 if (diff <= 0) {
                     clearInterval(timer);
-                    location.reload();
+                    // Don't reload automatically if it's already open, 
+                    // but the user might want it to reveal the site.
+                    // location.reload(); 
                     return;
                 }
                 
@@ -1940,10 +1979,15 @@
                 const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 const s = Math.floor((diff % (1000 * 60)) / 1000);
                 
-                document.getElementById('lock-d').innerText = d.toString().padStart(2, '0');
-                document.getElementById('lock-h').innerText = h.toString().padStart(2, '0');
-                document.getElementById('lock-m').innerText = m.toString().padStart(2, '0');
-                document.getElementById('lock-s').innerText = s.toString().padStart(2, '0');
+                const dEl = document.getElementById('lock-d');
+                const hEl = document.getElementById('lock-h');
+                const mEl = document.getElementById('lock-m');
+                const sEl = document.getElementById('lock-s');
+
+                if (dEl) dEl.innerText = d.toString().padStart(2, '0');
+                if (hEl) hEl.innerText = h.toString().padStart(2, '0');
+                if (mEl) mEl.innerText = m.toString().padStart(2, '0');
+                if (sEl) sEl.innerText = s.toString().padStart(2, '0');
             }, 1000);
         }
 

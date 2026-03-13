@@ -12,6 +12,7 @@ import pricingRoutes from './routes/pricing.js';
 import adminRoutes from './routes/admin.js';
 import newsRoutes from './routes/news.js';
 import webhookRoutes from './routes/webhooks.js';
+import seoRoutes from './routes/seo.js';
 
 const app = express();
 const server = createServer(app);
@@ -37,6 +38,18 @@ app.use('/api/pricing', pricingRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/webhooks', webhookRoutes);
+app.use('/local', seoRoutes);
+
+// SEO Root Routes
+app.get('/sitemap.xml', (req, res) => res.redirect('/local/sitemap.xml'));
+app.get('/robots.txt', (req, res) => {
+    res.type('text/plain');
+    res.send('User-agent: *\nAllow: /\nAllow: /local/\n\nSitemap: https://movviresgate.com.br/sitemap.xml');
+});
+
+app.get('/google2a4285b186031aeb.html', (req, res) => {
+    res.send('google-site-verification: google2a4285b186031aeb.html');
+});
 
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });

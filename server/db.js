@@ -20,6 +20,7 @@ const defaultSettings = {
     platformFee: 15,
     systemLockdown: true,
     launchDate: "2026-04-20",
+    totalSpotsPhase1: 100,
     platformPixKey: "65628833000147"
 };
 

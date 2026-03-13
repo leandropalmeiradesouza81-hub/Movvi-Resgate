@@ -472,10 +472,10 @@
             <div class="vagas-track">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: 900; font-family: 'Outfit';">
                     <span style="color: #666;">PREENCHIDAS</span>
-                    <span style="color: var(--primary);">14 / 100</span>
+                    <span id="vagas-text" style="color: var(--primary);">14 / 100</span>
                 </div>
                 <div class="v-bar-bg">
-                    <div class="v-bar-fill" style="width: 14%;"></div>
+                    <div id="vagas-bar" class="v-bar-fill" style="width: 14%;"></div>
                 </div>
                 <p style="font-size: 11px; color: #444; font-weight: 700;">* Atualizado em tempo real</p>
             </div>
@@ -497,26 +497,44 @@
     </div>
 
     <script>
-        // --- TIMER LOGIC ---
-        const targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() + 29);
+        async function initPage() {
+            try {
+                const res = await fetch('/api/pricing/public');
+                const settings = await res.json();
+                
+                // --- TIMER LOGIC ---
+                const targetDate = new Date(settings.launchDate + "T00:00:00");
 
-        function updateTimer() {
-            const now = new Date();
-            const diff = targetDate - now;
+                function updateTimer() {
+                    const now = new Date();
+                    const diff = targetDate - now;
 
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
+                    if (diff <= 0) {
+                        document.querySelectorAll('.t-chunk .n').forEach(el => el.innerText = '00');
+                        return;
+                    }
 
-            document.getElementById('d').innerText = d.toString().padStart(2, '0');
-            document.getElementById('h').innerText = h.toString().padStart(2, '0');
-            document.getElementById('m').innerText = m.toString().padStart(2, '0');
-            document.getElementById('s').innerText = s.toString().padStart(2, '0');
+                    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+                    document.getElementById('d').innerText = d.toString().padStart(2, '0');
+                    document.getElementById('h').innerText = h.toString().padStart(2, '0');
+                    document.getElementById('m').innerText = m.toString().padStart(2, '0');
+                    document.getElementById('s').innerText = s.toString().padStart(2, '0');
+                }
+                setInterval(updateTimer, 1000);
+                updateTimer();
+
+                // --- VAGAS LOGIC ---
+                const perc = Math.round((settings.occupiedSpots / settings.totalSpots) * 100);
+                document.getElementById('vagas-text').innerText = `${settings.occupiedSpots} / ${settings.totalSpots}`;
+                document.getElementById('vagas-bar').style.width = perc + '%';
+
+            } catch (e) { console.error('Failed to init page:', e); }
         }
-        setInterval(updateTimer, 1000);
-        updateTimer();
+        initPage();
     </script>
 </body>
 </html>

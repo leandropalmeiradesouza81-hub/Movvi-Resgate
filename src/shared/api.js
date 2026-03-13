@@ -54,6 +54,7 @@ export const Pricing = {
     update: (data) => api('/pricing', { method: 'PUT', body: data }),
     getSettings: () => api('/pricing/settings'),
     updateSettings: (data) => api('/pricing/settings', { method: 'PUT', body: data }),
+    getPublicSettings: () => api('/pricing/public'),
 };
 
 export const Clients = {

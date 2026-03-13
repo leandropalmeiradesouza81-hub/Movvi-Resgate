@@ -9,7 +9,7 @@ export async function getTrafficNews(city = 'Rio de Janeiro') {
     }
 
     try {
-        const query = encodeURIComponent(`${city} trânsito "G1" OR "R7" OR "O Globo" when:1d`);
+        const query = encodeURIComponent(`${city} trânsito notícias when:7d`);
         const rssUrl = `https://news.google.com/rss/search?q=${query}&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
 
         const resp = await fetch(rssUrl, {

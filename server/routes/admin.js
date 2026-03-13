@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { v4 as uuid } from 'uuid';
-import { Driver, Client, Order, WalletTransaction } from '../models.js';
+import { Driver, Client, Order, WalletTransaction, Setting } from '../models.js';
 
 const router = Router();
 

@@ -23,6 +23,21 @@ window.resetDriverBalance = async (id) => {
   } catch (err) { alert(err.message); }
 };
 
+window.zoomImage = (src) => {
+  let zoomModal = $('#zoom-modal');
+  if (!zoomModal) {
+    zoomModal = document.createElement('div');
+    zoomModal.id = 'zoom-modal';
+    zoomModal.className = 'fixed inset-0 z-[3000] bg-black/98 hidden flex items-center justify-center p-4 cursor-zoom-out';
+    zoomModal.innerHTML = '<img id="zoom-img" class="max-w-full max-h-full object-contain shadow-2xl rounded-lg animate-fade-in">';
+    zoomModal.onclick = () => zoomModal.classList.add('hidden');
+    document.body.appendChild(zoomModal);
+  }
+  const zImg = zoomModal.querySelector('#zoom-img');
+  zImg.src = src;
+  zoomModal.classList.remove('hidden');
+};
+
 window.approveDriver = async (id) => {
   if (!confirm('Deseja aprovar e liberar o acesso deste motorista na plataforma?')) return;
   try {
@@ -69,7 +84,7 @@ window.viewDocuments = async (id) => {
                 <div class="space-y-4">
                     <p class="text-[10px] font-black text-primary uppercase tracking-widest text-center">FOTO DE PERFIL</p>
                     <div class="aspect-square bg-black rounded-2xl border-2 border-white/5 overflow-hidden shadow-2xl group cursor-zoom-in">
-                        ${d.photo ? `<img src="${d.photo}" class="w-full h-full object-cover transition-transform group-hover:scale-110" onclick="window.open(this.src)">` : '<div class="w-full h-full flex items-center justify-center text-text-dim uppercase text-[10px]">Não enviada</div>'}
+                        ${d.photo ? `<img src="${d.photo}" class="w-full h-full object-cover transition-transform group-hover:scale-110" onclick="zoomImage(this.src)">` : '<div class="w-full h-full flex items-center justify-center text-text-dim uppercase text-[10px]">Não enviada</div>'}
                     </div>
                 </div>
                 
@@ -77,7 +92,7 @@ window.viewDocuments = async (id) => {
                 <div class="space-y-4">
                     <p class="text-[10px] font-black text-primary uppercase tracking-widest text-center">CARTEIRA (CNH)</p>
                     <div class="aspect-[3/4] bg-black rounded-2xl border-2 border-white/5 overflow-hidden shadow-2xl group cursor-zoom-in">
-                        ${d.cnhPhoto || d.onboardingDocuments?.cnh ? `<img src="${d.cnhPhoto || d.onboardingDocuments?.cnh}" class="w-full h-full object-cover transition-transform group-hover:scale-110" onclick="window.open(this.src)">` : '<div class="w-full h-full flex items-center justify-center text-text-dim uppercase text-[10px]">Não enviada</div>'}
+                        ${d.cnhPhoto || d.onboardingDocuments?.cnh ? `<img src="${d.cnhPhoto || d.onboardingDocuments?.cnh}" class="w-full h-full object-cover transition-transform group-hover:scale-110" onclick="zoomImage(this.src)">` : '<div class="w-full h-full flex items-center justify-center text-text-dim uppercase text-[10px]">Não enviada</div>'}
                     </div>
                 </div>
 
@@ -85,7 +100,7 @@ window.viewDocuments = async (id) => {
                 <div class="space-y-4">
                     <p class="text-[10px] font-black text-primary uppercase tracking-widest text-center">DOCUMENTO (CRLV)</p>
                     <div class="aspect-[3/4] bg-black rounded-2xl border-2 border-white/5 overflow-hidden shadow-2xl group cursor-zoom-in">
-                        ${d.crlvPhoto || d.onboardingDocuments?.crlv ? `<img src="${d.crlvPhoto || d.onboardingDocuments?.crlv}" class="w-full h-full object-cover transition-transform group-hover:scale-110" onclick="window.open(this.src)">` : '<div class="w-full h-full flex items-center justify-center text-text-dim uppercase text-[10px]">Não enviada</div>'}
+                        ${d.crlvPhoto || d.onboardingDocuments?.crlv ? `<img src="${d.crlvPhoto || d.onboardingDocuments?.crlv}" class="w-full h-full object-cover transition-transform group-hover:scale-110" onclick="zoomImage(this.src)">` : '<div class="w-full h-full flex items-center justify-center text-text-dim uppercase text-[10px]">Não enviada</div>'}
                     </div>
                 </div>
             </div>

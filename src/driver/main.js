@@ -723,30 +723,65 @@ function registerView() {
 }
 
 function registrationSuccessView({ referralLink }) {
-  const d = document.createElement('div'); d.className = 'view active bg-[#FFD900] text-black';
+  const d = document.createElement('div'); d.className = 'view active bg-black text-white';
+  
+  const steps = [
+    { id: 'documents', label: 'Embarcado', icon: 'verified_user', active: true },
+    { id: 'kit', label: 'Adquirir Kit', icon: 'payments', active: false },
+    { id: 'waiting', label: 'Aguarde', icon: 'schedule', active: false }
+  ];
+
+  const renderTrail = () => `
+    <div class="flex flex-col items-center w-full mb-12 px-4 text-white">
+      <div class="relative flex items-center justify-between w-full max-w-[300px]">
+        <div class="absolute top-1/2 left-0 w-full h-1 bg-white/10 -translate-y-1/2 rounded-full"></div>
+        <div class="absolute top-1/2 left-0 h-1 bg-primary -translate-y-1/2 rounded-full transition-all duration-700" style="width: 0%"></div>
+        
+        ${steps.map((s, i) => {
+    const isDone = false;
+    const isActive = i === 0;
+    return `
+            <div class="relative z-10 flex flex-col items-center">
+              <div class="size-10 rounded-full flex items-center justify-center border-4 transition-all duration-500 ${isDone ? 'bg-primary border-primary text-black' : isActive ? 'bg-black border-primary text-primary' : 'bg-black border-white/20 text-white/20'}">
+                ${isActive ? '<div class="absolute -top-1 -right-1 size-3 bg-green-500 rounded-full animate-ping"></div><div class="absolute -top-1 -right-1 size-3 bg-green-500 rounded-full"></div>' : ''}
+                <span class="material-symbols-outlined text-[20px]">${isDone ? 'check' : s.icon}</span>
+              </div>
+              <span class="absolute top-12 whitespace-nowrap text-[10px] font-black uppercase tracking-widest ${isActive || isDone ? 'text-white' : 'text-white/30'}">${s.label}</span>
+            </div>
+          `;
+  }).join('')}
+      </div>
+    </div>
+  `;
+
   d.innerHTML = `
-<div class="flex flex-col items-center justify-center p-8 text-center" style="min-height:100dvh;font-family:Outfit,Inter,sans-serif">
-    <div class="size-24 bg-black rounded-full flex items-center justify-center text-primary mb-8 shadow-2xl animate-bounce">
+<header class="flex items-center justify-center p-6 border-b border-white/5 sticky top-0 bg-black/80 backdrop-blur-md z-10 w-full mb-8">
+  <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="h-6 object-contain">
+</header>
+<div class="flex flex-col items-center p-8 text-center" style="min-height:80dvh;font-family:Outfit,Inter,sans-serif">
+    ${renderTrail()}
+    
+    <div class="size-20 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6 animate-fade-in border border-primary/20">
       <span class="material-symbols-outlined text-[40px] font-black">check_circle</span>
     </div>
-    <h2 class="text-3xl font-black italic uppercase tracking-tighter mb-4">Cadastro Realizado!</h2>
-    <p class="text-base font-bold text-black/60 mb-10 leading-relaxed">
-        Seu pré-cadastro foi recebido com sucesso. Agora você faz parte da lista de espera Movvi Resgate.
+    <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-4 text-white">Cadastro Realizado!</h2>
+    <p class="text-sm font-bold text-white/50 mb-10 leading-relaxed">
+        Seu pré-cadastro foi recebido. Estaremos avaliando seus documentos agora. <br>
+        <span class="text-primary">Aguarde a avaliação dos documentos.</span>
     </p>
 
-    <div class="w-full bg-black/5 border-2 border-black/10 rounded-[2.5rem] p-8 mb-10">
-        <p class="text-[10px] font-black uppercase tracking-[0.2em] mb-4 opacity-40">Link de Indicação (Expira em: <span id="countdown">23:59:59</span>)</p>
-        <div class="bg-white rounded-2xl p-4 mb-4 font-mono text-sm break-all border border-black/5 shadow-inner">
+    <div class="w-full bg-white/5 border-2 border-white/10 rounded-[2.5rem] p-8 mb-10">
+        <p class="text-[10px] font-black uppercase tracking-[0.2em] mb-4 opacity-40 text-white">Link de Indicação (Expira em: <span id="countdown" class="text-primary">23:59:59</span>)</p>
+        <div class="bg-black/40 rounded-2xl p-4 mb-4 font-mono text-sm break-all border border-white/5 shadow-inner text-white">
             ${referralLink}
         </div>
-        <button id="btn-copy-link" class="w-full bg-black text-primary font-black py-4 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-all uppercase tracking-widest text-xs">
+        <button id="btn-copy-link" class="w-full bg-primary text-black font-black py-4 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-all uppercase tracking-widest text-xs">
             <span class="material-symbols-outlined text-[18px]">content_copy</span> COPIAR LINK
         </button>
-        <p class="text-[9px] font-bold uppercase tracking-widest mt-4 opacity-30 italic">*Compartilhe com outros motoristas parceiros</p>
     </div>
 
-    <button id="btn-continue" class="w-full bg-black text-white font-black py-5 rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-widest text-[14px]">
-        Acompanhar Aprovação
+    <button id="btn-continue" class="w-full bg-white text-black font-black py-5 rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-widest text-[14px]">
+        Acompanhar Status
     </button>
 </div>`;
 

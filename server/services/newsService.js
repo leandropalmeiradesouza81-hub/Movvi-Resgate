@@ -44,8 +44,15 @@ export async function getTrafficNews(city = 'Rio de Janeiro') {
             }
 
             if (cleanTitle) {
+                const slug = cleanTitle.toLowerCase()
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove accents
+                    .replace(/[^a-z0-9]/g, '-') // Replace non-alphanumeric with dash
+                    .replace(/-+/g, '-') // Remove double dashes
+                    .replace(/^-|-$/g, ''); // Trim dashes
+                
                 allItems.push({
                     title: cleanTitle,
+                    slug,
                     link: link.trim(),
                     source: cleanSource,
                     image,

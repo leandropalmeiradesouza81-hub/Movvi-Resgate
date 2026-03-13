@@ -64,8 +64,8 @@ router.get('/sitemap.xml', (req, res) => {
     res.send(generateSitemapXML());
 });
 
-router.get('/:slug', async (req, res) => {
-    const loc = locations[req.params.slug];
+router.get('/:citySlug', async (req, res) => {
+    const loc = locations[req.params.citySlug];
     if (!loc) return res.status(404).send('Localidade não encontrada');
 
     const news = await getTrafficNews(loc.name);
@@ -76,118 +76,188 @@ router.get('/:slug', async (req, res) => {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Guia ${loc.name} | Reboque e Guincho 24h | Movvi Resgate</title>
-    <meta name="description" content="Guia de Bairros ${loc.name}: Notícias em tempo real, trânsito e o reboque mais barato da região. Movvi Resgate te salva em ${loc.name}!" />
-    <meta name="keywords" content="reboque ${loc.name}, guincho ${loc.name}, guia ${loc.name}, notícias ${loc.name}, trânsito ${loc.name}, movvi resgate" />
+    <title>Guia ${loc.name} | Notícias e Reboque 24h | Movvi Resgate</title>
+    <meta name="description" content="Guia Oficial de ${loc.name}. Notícias do trânsito, acontecimentos e o Reboque Particular mais barato do RJ. Chame a Movvi!" />
     <link rel="canonical" href="https://movviresgate.com.br/local/${loc.slug}" />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     <style>
-        :root { --primary: #ffd900; --bg: #f8f8f6; --text: #0a0a0a; --card-bg: #ffffff; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; }
+        :root { --primary: #ffd900; --accent: #ff0033; --bg: #ffffff; --card-bg: #f9f9f9; --text: #050505; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.5; }
         
-        .header-main { background: #000; color: #fff; border-bottom: 6px solid var(--primary); padding: 15px 40px; }
-        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-        .logo-main { height: 50px; display: block; }
-        .badge-city { background: var(--primary); color: #000; padding: 4px 14px; border-radius: 6px; font-family: 'Outfit'; font-weight: 900; font-size: 13px; text-transform: uppercase; }
-        
-        .hero-v3 { background: #000; color: #fff; padding: 60px 24px; text-align: center; }
-        .news-badge { font-family: 'Outfit', sans-serif; font-size: 38px; font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
-        
-        .container { max-width: 1100px; margin: 0 auto; padding: 60px 24px; }
-        
-        .emergency-pill { background: #fff; border: 2px solid var(--primary); color: #000; padding: 25px; border-radius: 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 60px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .pill-text h2 { margin: 0; font-family: 'Outfit'; font-size: 24px; color: #000; }
-        .pill-btn { background: #000; color: #fff; padding: 12px 30px; border-radius: 12px; font-weight: 800; text-decoration: none; text-transform: uppercase; font-size: 13px; }
-        
-        .section-title { font-family: 'Outfit'; font-size: 32px; font-weight: 900; margin-bottom: 40px; display: flex; align-items: center; gap: 15px; }
-        .section-title::after { content: ''; flex: 1; height: 3px; background: #eee; }
-        
-        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px; }
-        .news-card { background: var(--card-bg); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid #eee; display: flex; flex-direction: column; }
-        .news-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.08); transition: 0.3s ease; }
-        .news-img-box { width: 100%; height: 240px; overflow: hidden; position: relative; background: #eee; }
-        .news-img { width: 100%; height: 100%; object-fit: cover; }
-        .news-content { padding: 25px; flex-grow: 1; }
-        .news-meta { font-size: 11px; font-weight: 800; color: var(--primary); background: #000; padding: 3px 10px; border-radius: 4px; display: inline-block; margin-bottom: 15px; text-transform: uppercase; }
-        .news-title { font-family: 'Outfit'; font-size: 21px; font-weight: 800; line-height: 1.3; margin-bottom: 15px; color: #000; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .news-desc { font-size: 15px; color: #555; margin-bottom: 20px; }
-        .news-footer { border-top: 1px solid #f5f5f5; padding: 15px 25px; background: #fafafa; display: flex; justify-content: space-between; align-items: center; }
-        .news-link { color: #000; font-weight: 800; font-size: 13px; text-decoration: none; border-bottom: 2px solid var(--primary); }
-        
-        .info-card { background: #000; color: #fff; padding: 50px; border-radius: 30px; margin-top: 80px; text-align: center; }
-        .info-card h2 { font-family: 'Outfit'; font-size: 36px; color: var(--primary); margin-top: 0; }
-        
-        .footer-minimal { background: #fff; border-top: 1px solid #eee; padding: 60px 40px; text-align: center; color: #888; }
-        .tag-cloud { margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-        .tag-item { font-size: 11px; padding: 5px 15px; background: #f0f0f0; border-radius: 99px; text-decoration: none; color: #666; }
-        .tag-item:hover { background: var(--primary); color: #000; }
+        header { background: #000; padding: 15px 5%; border-bottom: 5px solid var(--primary); position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
+        .logo { height: 45px; }
+        .nav-brand { font-family: 'Outfit'; font-weight: 900; color: var(--primary); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
 
-        @media (max-width: 600px) {
+        .hero-banner { background: #000; color: #fff; padding: 80px 5% 120px; text-align: left; position: relative; overflow: hidden; }
+        .hero-banner h1 { font-family: 'Outfit'; font-size: clamp(40px, 10vw, 82px); font-weight: 900; margin: 0; color: var(--primary); line-height: 0.9; text-transform: uppercase; }
+        .hero-banner p { font-size: 20px; color: #888; margin-top: 20px; max-width: 600px; }
+        .hero-badge { background: var(--accent); color: white; padding: 5px 15px; border-radius: 4px; font-weight: 900; font-size: 12px; display: inline-block; margin-bottom: 20px; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+        
+        .emergency-bar { background: var(--primary); margin-top: -60px; padding: 30px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 30px 60px rgba(0,0,0,0.1); position: relative; z-index: 10; }
+        .emergency-bar h2 { margin: 0; font-family: 'Outfit'; font-size: clamp(18px, 4vw, 24px); color: #000; font-weight: 800; }
+        .btn-call { background: #000; color: #fff; padding: 15px 30px; border-radius: 12px; text-decoration: none; font-weight: 800; text-transform: uppercase; font-size: 14px; white-space: nowrap; }
+
+        .section-header { margin: 80px 0 40px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .section-header h2 { font-family: 'Outfit'; font-size: 32px; font-weight: 900; margin: 0; }
+        
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .news-card { background: var(--card-bg); border-radius: 24px; overflow: hidden; text-decoration: none; color: inherit; transition: 0.4s; display: flex; flex-direction: column; }
+        .news-card:hover { transform: translateY(-10px); box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
+        .news-image { width: 100%; height: 240px; object-fit: cover; }
+        .news-body { padding: 25px; flex-grow: 1; }
+        .news-source { font-size: 11px; font-weight: 900; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; display: block; }
+        .news-title { font-family: 'Outfit'; font-size: 20px; font-weight: 800; line-height: 1.3; margin: 0; color: #000; }
+
+        .neighborhood-guide { background: #f4f4f4; padding: 100px 5%; margin-top: 100px; border-radius: 50px 50px 0 0; text-align: center; }
+        .guide-content { max-width: 800px; margin: 0 auto; }
+        .guide-content h3 { font-family: 'Outfit'; font-size: 42px; font-weight: 900; margin-bottom: 25px; }
+        .guide-content p { font-size: 18px; line-height: 1.8; color: #444; margin-bottom: 30px; }
+        .btn-reboque { display: inline-block; background: var(--primary); color: #000; padding: 18px 45px; border-radius: 15px; font-weight: 900; text-decoration: none; text-transform: uppercase; }
+
+        footer { background: #000; color: #fff; padding: 80px 5%; text-align: center; }
+        .footer-logo { height: 40px; margin-bottom: 30px; opacity: 0.5; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 40px; }
+        .tag { color: #555; text-decoration: none; font-size: 11px; border: 1px solid #222; padding: 5px 15px; border-radius: 99px; }
+        .tag:hover { color: var(--primary); border-color: var(--primary); }
+
+        @media (max-width: 768px) {
             .news-grid { grid-template-columns: 1fr; }
-            .pill-btn { width: 100%; text-align: center; }
-            .emergency-pill { flex-direction: column; text-align: center; }
+            .emergency-bar { flex-direction: column; text-align: center; gap: 20px; }
+            .hero-banner { padding-top: 50px; }
         }
     </style>
 </head>
 <body>
-    <header class="header-main">
-        <div class="nav-container">
-            <a href="https://movviresgate.com.br"><img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="logo-main"></a>
-            <div class="badge-city">GUIA DE BAIRROS</div>
-        </div>
+    <header>
+        <a href="https://movviresgate.com.br"><img src="/assets/images/logo_movvi.png" alt="Movvi" class="logo"></a>
+        <div class="nav-brand">${loc.name} NEWS PORTAL</div>
     </header>
 
-    <div class="hero-v3">
-        <div class="news-badge">${loc.name} News</div>
-        <p style="font-size: 18px; color: #888; max-width: 600px; margin: 10px auto;">Informação local e trânsito em tempo real para os moradores de ${loc.name}.</p>
-    </div>
+    <section class="hero-banner">
+        <div class="hero-badge">DIRETAMENTE DE ${loc.name.toUpperCase()}</div>
+        <h1>${loc.name} News</h1>
+        <p>Tudo o que acontece na sua região, com o olhar de quem cuida do trânsito do Rio.</p>
+    </section>
 
-    <main class="container">
-        <div class="emergency-pill">
-            <div class="pill-text">
-                <h2>Enguiçou em ${loc.name}?</h2>
-                <p>O <strong>Reboque Perto de Mim</strong> mais rápido do Rio. Chegamos em 15 minutos.</p>
-            </div>
-            <a href="https://movviresgate.com.br" class="pill-btn">CHAMAR AGORA</a>
+    <div class="container">
+        <div class="emergency-bar">
+            <h2>Enguiçou aqui em ${loc.name}?</h2>
+            <a href="https://movviresgate.com.br" class="btn-call">PEÇA REBOQUE R$ 80</a>
         </div>
 
-        <h2 class="section-title">Acontece em ${loc.name}</h2>
+        <div class="section-header">
+            <h2>Últimos Acontecimentos</h2>
+        </div>
 
         <div class="news-grid">
-            ${news.length ? news.map(n => `
-                <article class="news-card">
-                    <div class="news-img-box">
-                        <img src="${n.image}" alt="${n.title}" class="news-img" onerror="this.src='https://images.unsplash.com/photo-1544620347-c4fd4a3d5947?w=500&q=80'">
-                    </div>
-                    <div class="news-content">
-                        <span class="news-meta">${n.source} • ${n.timeAgo}</span>
+            ${news.map(n => `
+                <a href="/local/${loc.slug}/noticia/${n.slug}" class="news-card">
+                    <img src="${n.image}" alt="${n.title}" class="news-image" onerror="this.src='https://images.unsplash.com/photo-1544620347-c4fd4a3d5947?w=500&q=80'">
+                    <div class="news-body">
+                        <span class="news-source">${n.source} • ${n.timeAgo}</span>
                         <h3 class="news-title">${n.title}</h3>
-                        <p class="news-desc">Atualização importante para quem circula pelas vias de ${loc.name}. A Movvi Resgate monitora as principais rotas da região.</p>
-                        <a href="${n.link}" target="_blank" class="news-link">LER MATÉRIA COMPLETA</a>
                     </div>
-                </article>
-            `).join('') : '<p>Estamos buscando as notícias mais recentes para você...</p>'}
+                </a>
+            `).join('')}
         </div>
+    </div>
 
-        <section class="info-card">
-            <h2>Movvi Resgate em ${loc.name}</h2>
-            <p style="font-size: 18px; opacity: 0.9; line-height: 1.8;">
-                Se você está na região de <strong>${loc.name}</strong>, a Movvi Resgate é sua aliada número 1. 
-                Com uma rede exclusiva de motoristas parceiros prontos para atuar via barra rígida (reboque cambão), 
-                garantimos um socorro rápido, seguro e com o preço mais competitivo do Rio de Janeiro. 
-                Não fique parado no trânsito, chame quem entende do subúrbio carioca.
-            </p>
-            <a href="https://movviresgate.com.br" class="pill-btn" style="background: var(--primary); color: #000; margin-top: 20px;">PEDIR REBOQUE</a>
-        </section>
-
-        <div class="tag-cloud">
-            ${Object.values(locations).map(l => `<a href="/local/${l.slug}" class="tag-item">Reboque em ${l.name}</a>`).join('')}
+    <section class="neighborhood-guide">
+        <div class="guide-content">
+            <h3>Guia de Bairros: ${loc.name}</h3>
+            <p>${loc.description}</p>
+            <p>A Movvi Resgate é a parceira oficial do motorista em ${loc.name}. Com atendimento especializado e motoristas locais, garantimos a melhor experiência em socorro veicular.</p>
+            <a href="https://movviresgate.com.br" class="btn-reboque">Pedir Socorro Agora</a>
         </div>
-    </main>
+    </section>
 
-    <footer class="footer-minimal">
-        <p>&copy; 2026 Movvi Resgate. A solução inteligente para reboque e guincho 24h.</p>
-        <p style="font-size: 11px;">As notícias exibidas são de responsabilidade de seus respectivos portais (G1, R7, O Globo).</p>
+    <footer>
+        <img src="/assets/images/logo_movvi.png" alt="Movvi" class="footer-logo">
+        <p>&copy; 2026 Movvi Resgate - Inteligência Logística 24h.</p>
+        <div class="tags">
+            ${Object.values(locations).map(l => `<a href="/local/${l.slug}" class="tag">${l.name}</a>`).join('')}
+        </div>
+    </footer>
+</body>
+</html>
+    `;
+    res.send(html);
+});
+
+router.get('/:citySlug/noticia/:newsSlug', async (req, res) => {
+    const loc = locations[req.params.citySlug];
+    if (!loc) return res.status(404).send('Localidade não encontrada');
+
+    const allNews = await getTrafficNews(loc.name);
+    const item = allNews.find(n => n.slug === req.params.newsSlug);
+
+    if (!item) return res.status(404).send('Notícia não encontrada');
+
+    const html = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${item.title} | ${loc.name} News</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        :root { --primary: #ffd900; --bg: #ffffff; --text: #111; }
+        body { font-family: 'Inter', sans-serif; margin: 0; background: #fafafa; }
+        header { background: #000; padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 5px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
+        .logo { height: 40px; }
+        .btn-back { color: var(--primary); text-decoration: none; font-weight: 700; font-size: 14px; text-transform: uppercase; }
+
+        .container { max-width: 800px; margin: 60px auto; padding: 0; background: #fff; border-radius: 30px; box-shadow: 0 40px 100px rgba(0,0,0,0.05); overflow: hidden; }
+        .article-img { width: 100%; height: 450px; object-fit: cover; }
+        .article-body { padding: 50px; }
+        .article-meta { color: #888; font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 20px; display: block; }
+        .article-title { font-family: 'Outfit'; font-size: clamp(28px, 5vw, 42px); font-weight: 900; color: #000; line-height: 1.1; margin-bottom: 30px; }
+        .article-content { font-size: 18px; line-height: 1.8; color: #333; }
+        
+        .movvi-ad { background: #000; color: #fff; padding: 40px; border-radius: 20px; margin: 60px 0; text-align: center; position: relative; overflow: hidden; border: 4px solid var(--primary); }
+        .movvi-ad h4 { font-family: 'Outfit'; font-size: 28px; margin: 0 0 15px; color: var(--primary); text-transform: uppercase; }
+        .movvi-ad p { font-size: 18px; opacity: 0.9; margin-bottom: 25px; }
+        .btn-movvi { display: inline-block; background: var(--primary); color: #000; padding: 15px 40px; border-radius: 12px; font-weight: 900; text-decoration: none; text-transform: uppercase; }
+
+        @media (max-width: 768px) {
+            .article-body { padding: 30px; }
+            .article-img { height: 250px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/local/${loc.slug}"><span class="btn-back">← Voltar para ${loc.name}</span></a>
+        <a href="https://movviresgate.com.br"><img src="/assets/images/logo_movvi.png" alt="Movvi" class="logo"></a>
+    </header>
+
+    <article class="container">
+        <img src="${item.image}" alt="${item.title}" class="article-img" onerror="this.src='https://images.unsplash.com/photo-1544620347-c4fd4a3d5947?w=500&q=80'">
+        <div class="article-body">
+            <span class="article-meta">FONTE: ${item.source} • ${item.timeAgo}</span>
+            <h1 class="article-title">${item.title}</h1>
+            
+            <div class="article-content">
+                <p>Notícia vinda diretamente dos canais oficiais de trânsito e segurança. A Movvi Resgate monitora constantemente os incidentes em ${loc.name} para garantir agilidade no atendimento.</p>
+                
+                <div class="movvi-ad">
+                    <h4>Precisa de Reboque em ${loc.name}?</h4>
+                    <p>O socorro mais barato e rápido do Rio de Janeiro. Chegamos em até 15 minutos.</p>
+                    <a href="https://movviresgate.com.br" class="btn-movvi">REBOQUE AGORA - R$ 80</a>
+                </div>
+
+                <p>Mantenha-se informado e dirija com segurança. Se precisar de assistência técnica ou reboque particular, chame a Movvi.</p>
+                
+                <a href="${item.link}" target="_blank" style="color: grey; font-size: 14px; text-decoration: underline;">Ver notícia completa no portal ${item.source}</a>
+            </div>
+        </div>
+    </article>
+
+    <footer style="text-align: center; padding: 60px; color: #888; font-size: 13px;">
+        <p>&copy; 2026 Movvi Resgate - Sua proteção em ${loc.name}.</p>
     </footer>
 </body>
 </html>

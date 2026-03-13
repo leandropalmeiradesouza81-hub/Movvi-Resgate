@@ -202,6 +202,12 @@ function initAdmin() {
     }
   });
 
+  socket.on('driver:new_registration', () => {
+    const btn = document.querySelector('.nav-item[data-page="onboarding"]');
+    if (btn) btn.classList.add('blink-notification');
+    if (currentPage === 'onboarding') loadPage('onboarding', true);
+  });
+
   loadPage('dashboard');
 }
 
@@ -211,6 +217,9 @@ async function loadPage(page, isUpdate = false) {
   currentPage = page;
   document.querySelectorAll('.nav-item').forEach(el => {
     el.classList.toggle('active', el.dataset.page === page);
+    if (page === 'onboarding' && el.dataset.page === 'onboarding') {
+      el.classList.remove('blink-notification');
+    }
   });
 
   const titleMap = {

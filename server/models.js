@@ -11,6 +11,8 @@ const driverSchema = new mongoose.Schema({
     plate: { type: String, default: '' },
     password: { type: String, default: '123456' },
     photo: { type: String, default: '' },
+    cnhPhoto: { type: String, default: '' },
+    crlvPhoto: { type: String, default: '' },
     online: { type: Boolean, default: false },
     blocked: { type: Boolean, default: false },
     blockingReason: { type: String, default: '' },

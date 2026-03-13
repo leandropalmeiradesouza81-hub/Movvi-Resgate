@@ -449,7 +449,7 @@ function loginView() {
     </form>
 
     <div class="text-center mt-10" style="animation:fadeUpIn 0.5s ease-out 0.25s forwards;opacity:0">
-      <p class="text-[#1a1400]/40 dark:text-white/20 text-[13px] font-bold uppercase tracking-wider">Ainda não é parceiro? <br><a id="go-reg" class="text-primary font-black text-base cursor-pointer hover:underline underline-offset-4 transition-all mt-2 block">Solicitar Cadastro</a></p>
+      <p class="text-[#1a1400]/40 dark:text-white/20 text-[13px] font-bold uppercase tracking-wider">Ainda não é parceiro? <br><a id="go-reg" class="text-primary font-black text-base cursor-pointer hover:underline underline-offset-4 transition-all mt-2 block">CRIAR PRE-CADASTRO</a></p>
     </div>
   </div>
 </div>
@@ -545,6 +545,25 @@ function registerView() {
         </div>
       </div>
 
+      <div class="grid grid-cols-2 gap-4 mt-2">
+        <div class="flex flex-col gap-2">
+          <label class="text-white/40 text-[10px] font-black uppercase tracking-widest pl-1 text-center">Frente CNH</label>
+          <div id="cnh-box" class="aspect-[3/4] rounded-2xl bg-white/5 border-2 border-dashed border-white/20 flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 transition-all overflow-hidden relative">
+            <input type="file" id="cnh-input" accept="image/*" class="hidden" required />
+            <span id="cnh-placeholder" class="material-symbols-outlined text-2xl text-white/20">add_a_photo</span>
+            <img id="cnh-img" class="absolute inset-0 size-full object-cover hidden" />
+          </div>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label class="text-white/40 text-[10px] font-black uppercase tracking-widest pl-1 text-center">CRLV Veículo</label>
+          <div id="crlv-box" class="aspect-[3/4] rounded-2xl bg-white/5 border-2 border-dashed border-white/20 flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 transition-all overflow-hidden relative">
+            <input type="file" id="crlv-input" accept="image/*" class="hidden" required />
+            <span id="crlv-placeholder" class="material-symbols-outlined text-2xl text-white/20">add_a_photo</span>
+            <img id="crlv-img" class="absolute inset-0 size-full object-cover hidden" />
+          </div>
+        </div>
+      </div>
+
       <div id="re-err" class="text-red-500 text-[11px] font-bold hidden bg-red-500/10 p-4 rounded-2xl border border-red-500/20 italic"></div>
       
       <button type="submit" class="w-full bg-primary text-black font-black py-5 rounded-2xl shadow-2xl shadow-primary/20 mt-4 active:scale-[0.98] transition-all uppercase tracking-widest text-[14px] flex items-center justify-center gap-3">
@@ -576,8 +595,45 @@ function registerView() {
         photoImg.src = photoBase64;
         photoImg.classList.remove('hidden');
         photoPlaceholder.classList.add('hidden');
-        photoPreviewBox.style.borderColor = 'var(--primary)';
+        photoPreviewBox.style.borderColor = '#FFD900';
         photoPreviewBox.style.borderStyle = 'solid';
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  let cnhBase64 = null, crlvBase64 = null;
+  const cnhInput = d.querySelector('#cnh-input');
+  const crlvInput = d.querySelector('#crlv-input');
+
+  d.querySelector('#cnh-box').onclick = () => cnhInput.click();
+  d.querySelector('#crlv-box').onclick = () => crlvInput.click();
+
+  cnhInput.onchange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (re) => {
+        cnhBase64 = re.target.result;
+        d.querySelector('#cnh-img').src = cnhBase64;
+        d.querySelector('#cnh-img').classList.remove('hidden');
+        d.querySelector('#cnh-placeholder').classList.add('hidden');
+        d.querySelector('#cnh-box').style.borderColor = '#FFD900';
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  crlvInput.onchange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (re) => {
+        crlvBase64 = re.target.result;
+        d.querySelector('#crlv-img').src = crlvBase64;
+        d.querySelector('#crlv-img').classList.remove('hidden');
+        d.querySelector('#crlv-placeholder').classList.add('hidden');
+        d.querySelector('#crlv-box').style.borderColor = '#FFD900';
       };
       reader.readAsDataURL(file);
     }
@@ -610,24 +666,34 @@ function registerView() {
       return;
     }
 
+    if (!cnhBase64 || !crlvBase64) {
+      errEl.textContent = "Os documentos (CNH e CRLV) são obrigatórios.";
+      errEl.classList.remove('hidden');
+      return;
+    }
+
     const btn = d.querySelector('button[type="submit"]');
     btn.disabled = true;
     btn.innerHTML = '<div class="size-6 border-4 border-black border-t-transparent rounded-full animate-spin"></div>';
 
     try {
-      const { user: u } = await Auth.registerDriver({
+      const res = await Auth.registerDriver({
         name: d.querySelector('#rn').value,
         email: d.querySelector('#re').value,
         phone: d.querySelector('#rph').value,
         vehicle: d.querySelector('#rv').value,
         plate: d.querySelector('#rpl').value,
         password: p,
-        photo: photoBase64
+        photo: photoBase64,
+        cnhPhoto: cnhBase64,
+        crlvPhoto: crlvBase64
       });
+      const u = res.user;
+      const referralLink = res.referralLink;
       saveUser(u);
       connectSocket();
       buildSidebar();
-      (!u.approved && u.onboardingStep !== 'approved') ? nav(onboardingView) : nav(dashboardView);
+      nav(registrationSuccessView, { referralLink });
     } catch (err) {
       btn.disabled = false;
       btn.innerHTML = '<span>Garantir Minha Vaga</span> <span class="material-symbols-outlined text-[20px]">bolt</span>';
@@ -638,13 +704,67 @@ function registerView() {
   return d;
 }
 
+function registrationSuccessView({ referralLink }) {
+  const d = document.createElement('div'); d.className = 'view active bg-[#FFD900] text-black';
+  d.innerHTML = `
+<div class="flex flex-col items-center justify-center p-8 text-center" style="min-height:100dvh;font-family:Outfit,Inter,sans-serif">
+    <div class="size-24 bg-black rounded-full flex items-center justify-center text-primary mb-8 shadow-2xl animate-bounce">
+      <span class="material-symbols-outlined text-[40px] font-black">check_circle</span>
+    </div>
+    <h2 class="text-3xl font-black italic uppercase tracking-tighter mb-4">Cadastro Realizado!</h2>
+    <p class="text-base font-bold text-black/60 mb-10 leading-relaxed">
+        Seu pré-cadastro foi recebido com sucesso. Agora você faz parte da lista de espera Movvi Resgate.
+    </p>
+
+    <div class="w-full bg-black/5 border-2 border-black/10 rounded-[2.5rem] p-8 mb-10">
+        <p class="text-[10px] font-black uppercase tracking-[0.2em] mb-4 opacity-40">Link de Indicação (Expira em: <span id="countdown">23:59:59</span>)</p>
+        <div class="bg-white rounded-2xl p-4 mb-4 font-mono text-sm break-all border border-black/5 shadow-inner">
+            ${referralLink}
+        </div>
+        <button id="btn-copy-link" class="w-full bg-black text-primary font-black py-4 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-all uppercase tracking-widest text-xs">
+            <span class="material-symbols-outlined text-[18px]">content_copy</span> COPIAR LINK
+        </button>
+        <p class="text-[9px] font-bold uppercase tracking-widest mt-4 opacity-30 italic">*Compartilhe com outros motoristas parceiros</p>
+    </div>
+
+    <button id="btn-continue" class="w-full bg-black text-white font-black py-5 rounded-2xl shadow-xl active:scale-95 transition-all uppercase tracking-widest text-[14px]">
+        Acompanhar Aprovação
+    </button>
+</div>`;
+
+  const cdEl = d.querySelector('#countdown');
+  let seconds = 24 * 3600;
+  const timer = setInterval(() => {
+    seconds--;
+    if (seconds <= 0) { clearInterval(timer); cdEl.textContent = "Expirado"; return; }
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    cdEl.textContent = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  }, 1000);
+
+  d.querySelector('#btn-copy-link').onclick = () => {
+    navigator.clipboard.writeText(referralLink);
+    const btn = d.querySelector('#btn-copy-link');
+    const oldHtml = btn.innerHTML;
+    btn.innerHTML = 'COPIADO!';
+    setTimeout(() => btn.innerHTML = oldHtml, 2000);
+  };
+
+  d.querySelector('#btn-continue').onclick = () => {
+    clearInterval(timer);
+    nav(onboardingView);
+  };
+  return d;
+}
+
 // ═══ ONBOARDING ═══
 function onboardingView() {
   const d = document.createElement('div'); d.className = 'view active bg-black text-white';
   const step = user.onboardingStep || 'pre_cadastro';
 
   const steps = [
-    { id: 'documents', label: 'Embarcado', icon: 'verified_user', active: step === 'documents' || step === 'pre_cadastro' },
+    { id: 'documents', label: 'Embarcado', icon: 'verified_user', active: step === 'documents' || step === 'pre_cadastro' || step === 'pending_approval' },
     { id: 'kit', label: 'Adquirir Kit', icon: 'payments', active: step === 'approved_pending_kit' },
     { id: 'waiting', label: 'Aguarde', icon: 'schedule', active: step === 'kit_acquired' || step === 'waiting_delivery' }
   ];
@@ -675,6 +795,35 @@ function onboardingView() {
   `;
 
   const renderContent = () => {
+    if (step === 'pending_approval') {
+      return `
+        <div class="animate-fade-in flex flex-col items-center text-center">
+          <div class="size-20 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6 border border-primary/20">
+            <span class="material-symbols-outlined text-4xl animate-pulse">fact_check</span>
+          </div>
+          <h2 class="text-xl font-black uppercase tracking-tight mb-3">Documentação em Análise</h2>
+          <p class="text-sm text-white/50 font-medium mb-8 leading-relaxed max-w-[280px]">Parabéns! Recebemos seus documentos com sucesso. Nosso time técnico está validando as informações para liberar a próxima etapa.</p>
+          
+          <div class="w-full bg-white/5 border border-white/10 rounded-2xl p-6 mb-6 flex items-center justify-between">
+             <div class="flex items-center gap-3">
+               <span class="material-symbols-outlined text-green-500">check_circle</span>
+               <span class="text-[10px] uppercase font-black tracking-widest opacity-60">Cadastro OK</span>
+             </div>
+             <div class="flex items-center gap-2">
+               <span class="size-1.5 rounded-full bg-primary animate-ping"></span>
+               <span class="text-[10px] uppercase font-black tracking-widest text-primary">Análise Ativa</span>
+             </div>
+          </div>
+
+          <p class="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] mb-4 italic">Retorne em breve para conferir o status</p>
+          
+          <button id="btn-refresh-onboarding" class="w-full bg-white/5 border border-white/10 text-white font-black py-4 rounded-xl uppercase tracking-widest text-xs flex items-center justify-center gap-2 active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-sm">refresh</span> Sincronizar Agora
+          </button>
+        </div>
+      `;
+    }
+
     if (step === 'documents' || step === 'pre_cadastro') {
       return `
         <div class="animate-fade-in flex flex-col items-center">
@@ -860,19 +1009,30 @@ function onboardingView() {
     const cancelPix = d.querySelector('#btn-cancel-pix');
     if (cancelPix) cancelPix.onclick = () => d.querySelector('#pix-modal').classList.add('hidden');
 
+    const refreshObBtn = d.querySelector('#btn-refresh-onboarding');
     const refreshBtn = d.querySelector('#btn-refresh');
-    if (refreshBtn) refreshBtn.onclick = async () => {
-      refreshBtn.innerHTML = '<div class="size-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>';
+
+    const handleRefresh = async (btn) => {
+      const oldHtml = btn.innerHTML;
+      btn.innerHTML = '<div class="size-4 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>';
       try {
         const fresh = await Drivers.get(user.id);
-        saveUser(fresh);
-        if (fresh.approved && fresh.onboardingStep === 'approved') nav(dashboardView);
-        else nav(onboardingView);
+        user.onboardingStep = fresh.onboardingStep;
+        user.approved = fresh.approved;
+        saveUser(user);
+        if (user.approved || user.onboardingStep === 'approved') {
+          nav(dashboardView);
+        } else {
+          nav(onboardingView);
+        }
       } catch (e) {
-        refreshBtn.innerHTML = '<span class="material-symbols-outlined text-sm">refresh</span> Atualizar Status';
+        btn.innerHTML = oldHtml;
+        alert('Erro ao sincronizar. Tente novamente.');
       }
     };
 
+    if (refreshObBtn) refreshObBtn.onclick = () => handleRefresh(refreshObBtn);
+    if (refreshBtn) refreshBtn.onclick = () => handleRefresh(refreshBtn);
     const logoutBtn = d.querySelector('#btn-logout');
     if (logoutBtn) logoutBtn.onclick = () => {
       localStorage.removeItem('movvi_driver');

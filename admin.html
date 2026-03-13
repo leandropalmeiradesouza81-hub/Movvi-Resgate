@@ -155,6 +155,15 @@
             visibility: hidden !important;
             z-index: -1 !important;
         }
+        @keyframes blink-yellow {
+            0% { background: rgba(255, 219, 0, 0.08); color: #ffdb00; }
+            50% { background: rgba(255, 219, 0, 0.4); color: #000; box-shadow: 0 0 15px rgba(255, 219, 0, 0.3); }
+            100% { background: rgba(255, 219, 0, 0.08); color: #ffdb00; }
+        }
+
+        .blink-notification {
+            animation: blink-yellow 1s infinite !important;
+        }
     </style>
     <script>
         // ─── AUTHENTICATION ───────────────────────────────────

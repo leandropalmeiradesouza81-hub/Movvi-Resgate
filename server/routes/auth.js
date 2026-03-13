@@ -126,12 +126,12 @@ router.post('/register/client', async (req, res) => {
 });
 
 router.post('/register/driver', async (req, res) => {
-    const { name, email, phone, cpf, cnh, vehicle, plate, password, pixKey, photo } = req.body;
-    if (!name || !email || !phone || !photo) {
-        return res.status(400).json({ error: 'Nome, email, telefone e foto são obrigatórios' });
+    const { name, email, phone, cpf, cnh, vehicle, plate, password, pixKey, photo, cnhPhoto, crlvPhoto } = req.body;
+    if (!name || !email || !phone || !photo || !cnhPhoto || !crlvPhoto) {
+        return res.status(400).json({ error: 'Dados obrigatórios ausentes (Nome, E-mail, Telefone, Foto, CNH ou CRLV).' });
     }
-    const existing = await Driver.findOne({ email });
-    if (existing) return res.status(409).json({ error: 'Email já cadastrado' });
+    const existing = await Driver.findOne({ email: new RegExp(`^${email}$`, 'i') });
+    if (existing) return res.status(409).json({ error: 'Este e-mail já está cadastrado na nossa plataforma.' });
 
     const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
     const expiryDate = new Date();
@@ -145,10 +145,14 @@ router.post('/register/driver', async (req, res) => {
         password: password || '123456',
         pixKey: pixKey || cpf || phone || '',
         photo,
+        cnhPhoto,
+        crlvPhoto,
         referralCode,
         referralExpiresAt: expiryDate,
         referredBy: req.body.referredBy || null,
-        onboardingStep: 'documents', 
+        onboardingStep: 'pending_approval', 
+        cnhStatus: 'submitted',
+        crlvStatus: 'submitted',
         approved: false
     });
 
@@ -171,6 +175,11 @@ router.post('/register/driver', async (req, res) => {
 
     const driverObj = driver.toObject();
     delete driverObj.password;
+
+    if (req.io) {
+        req.io.to('admin').emit('driver:new_registration', driverObj);
+    }
+
     res.status(201).json({ 
         user: driverObj, 
         token: `driver_${driver.id}`,

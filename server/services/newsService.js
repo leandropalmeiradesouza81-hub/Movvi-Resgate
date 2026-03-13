@@ -28,15 +28,27 @@ export async function getTrafficNews(city = 'Rio de Janeiro') {
             const link = (block.match(/<link>([\s\S]*?)<\/link>/) || [])[1] || '';
             const pubDate = (block.match(/<pubDate>([\s\S]*?)<\/pubDate>/) || [])[1] || '';
             const source = (block.match(/<source[^>]*>([\s\S]*?)<\/source>/) || [])[1] || '';
+            const description = (block.match(/<description>([\s\S]*?)<\/description>/) || [])[1] || '';
 
             const cleanTitle = title.replace(/<!\[CDATA\[|\]\]>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').trim();
             const cleanSource = source.replace(/<!\[CDATA\[|\]\]>/g, '').trim();
+            
+            // Try to extract image from description
+            let image = '';
+            const imgMatch = description.match(/src="([^"]+)"/);
+            if (imgMatch) {
+                image = imgMatch[1];
+            } else {
+                // Default placeholder image for the location if not found
+                image = `https://images.unsplash.com/photo-1544620347-c4fd4a3d5947?w=500&q=80`; // Generic car/road image
+            }
 
             if (cleanTitle) {
                 allItems.push({
                     title: cleanTitle,
                     link: link.trim(),
                     source: cleanSource,
+                    image,
                     pubDate: pubDate.trim(),
                     timeAgo: getTimeAgo(pubDate.trim())
                 });

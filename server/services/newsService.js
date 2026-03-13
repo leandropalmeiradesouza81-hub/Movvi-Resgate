@@ -9,7 +9,7 @@ export async function getTrafficNews(city = 'Rio de Janeiro') {
     }
 
     try {
-        const query = encodeURIComponent(`${city} trânsito "G1" OR "O Globo" when:1d`);
+        const query = encodeURIComponent(`${city} trânsito "G1" OR "R7" OR "O Globo" when:1d`);
         const rssUrl = `https://news.google.com/rss/search?q=${query}&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
 
         const resp = await fetch(rssUrl, {
@@ -22,7 +22,7 @@ export async function getTrafficNews(city = 'Rio de Janeiro') {
         const allItems = [];
         const itemRegex = /<item>([\s\S]*?)<\/item>/g;
         let match;
-        while ((match = itemRegex.exec(xml)) !== null && allItems.length < 15) {
+        while ((match = itemRegex.exec(xml)) !== null && allItems.length < 30) {
             const block = match[1];
             const title = (block.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || '';
             const link = (block.match(/<link>([\s\S]*?)<\/link>/) || [])[1] || '';
@@ -43,7 +43,7 @@ export async function getTrafficNews(city = 'Rio de Janeiro') {
             }
         }
 
-        const items = allItems.slice(0, 10);
+        const items = allItems.slice(0, 20);
         newsCache = { city, items, fetchedAt: Date.now() };
         return items;
     } catch (e) {

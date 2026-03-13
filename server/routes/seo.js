@@ -62,53 +62,73 @@ router.get('/:slug', async (req, res) => {
     <style>
         :root { --primary: #ffd900; --bg: #fafaf7; --text: #111; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; }
-        .hero { background: #000; color: #fff; padding: 60px 24px; text-align: center; }
-        .hero h1 { font-family: 'Outfit', sans-serif; font-size: clamp(32px, 8vw, 56px); color: var(--primary); margin-bottom: 20px; text-transform: uppercase; }
-        .container { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
-        .cta-btn { display: inline-block; background: var(--primary); color: #000; padding: 18px 40px; border-radius: 99px; font-weight: 900; text-decoration: none; font-family: 'Outfit', sans-serif; font-size: 20px; margin-top: 30px; }
-        .news-section { margin-top: 60px; background: #fff; padding: 40px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .news-card { border-bottom: 1px solid #eee; padding: 20px 0; }
-        .news-card:last-child { border: none; }
-        .news-tag { color: var(--primary); font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-        .news-title { font-weight: 800; font-size: 18px; margin: 8px 0; color: #111; line-height: 1.3; }
-        .news-link { color: #555; font-size: 13px; text-decoration: underline; }
-        footer { padding: 40px; text-align: center; font-size: 13px; color: #888; border-top: 1px solid #eee; }
+        .hero { background: #000; color: #fff; padding: 80px 24px; text-align: center; }
+        .hero h1 { font-family: 'Outfit', sans-serif; font-size: clamp(32px, 8vw, 64px); color: var(--primary); margin-bottom: 20px; text-transform: uppercase; font-weight: 900; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 60px 24px; }
+        .cta-btn { display: inline-block; background: var(--primary); color: #000; padding: 20px 48px; border-radius: 99px; font-weight: 900; text-decoration: none; font-family: 'Outfit', sans-serif; font-size: 22px; margin-top: 30px; }
+        .news-section { margin-top: 80px; }
+        .news-header { border-left: 6px solid var(--primary); padding-left: 20px; margin-bottom: 40px; }
+        .news-header h2 { font-family: 'Outfit'; font-size: 32px; margin: 0; }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .news-card { background: #fff; border-radius: 20px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); border: 1px solid #eee; transition: transform 0.3s; }
+        .news-card:hover { transform: translateY(-5px); }
+        .news-tag { color: var(--primary); font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 12px; }
+        .news-title { font-weight: 800; font-size: 19px; margin: 0 0 15px 0; color: #111; line-height: 1.4; font-family: 'Outfit'; }
+        .news-desc { font-size: 15px; color: #555; margin-bottom: 20px; }
+        .news-link { color: #000; font-size: 13px; font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--primary); }
+        footer { padding: 60px 40px; text-align: center; font-size: 14px; color: #888; border-top: 1px solid #eee; background: #fff; }
+        .city-list { margin-top: 40px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .city-link { font-size: 12px; color: #888; text-decoration: none; background: #eee; padding: 5px 12px; border-radius: 99px; }
     </style>
 </head>
 <body>
     <header class="hero">
         <div class="container">
-            <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" style="height: 45px; margin-bottom: 24px;">
+            <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" style="height: 60px; margin-bottom: 30px;">
             <h1>Reboque em ${loc.name}</h1>
-            <p>Precisa de Guincho 24h? Atendimento imediato em ${loc.name} a partir de R$ 80.</p>
-            <a href="https://movviresgate.com.br" class="cta-btn">PEDIR REBOQUE AGORA</a>
+            <p style="font-size: 20px; opacity: 0.9;">Socorro 24h e Guincho Barato em toda região de ${loc.name}.</p>
+            <a href="https://movviresgate.com.br" class="cta-btn">CHAMAR RESGATE AGORA</a>
         </div>
     </header>
 
     <main class="container">
-        <section>
-            <h2>O melhor preço de ${loc.name}</h2>
-            <p>A <strong>Movvi Resgate</strong> oferece o serviço de reboque particular mais acessível para quem está em ${loc.name}. Nosso sistema de reboque no cambão (barra rígida) permite que motoristas parceiros te socorram rapidamente por uma fração do preço de um guincho comum.</p>
+        <section style="text-align: center; margin-bottom: 80px;">
+            <h2 style="font-size: 36px; font-family: 'Outfit';">Atendimento em Minutos</h2>
+            <p style="font-size: 18px; max-width: 700px; margin: 20px auto;">A <strong>Movvi Resgate</strong> revolucionou o socorro veicular. Se você está em ${loc.name}, temos motoristas parceiros equipados e prontos para te salvar de qualquer sufoco, com o melhor preço do mercado.</p>
         </section>
 
         <section class="news-section">
-            <h2 style="font-family: 'Outfit'; border-bottom: 3px solid var(--primary); display: inline-block; padding-bottom: 5px;">Notícias de Trânsito em ${loc.name}</h2>
-            <p style="font-size: 14px; color: #666; margin-bottom: 30px;">Fique por dentro do que acontece nas ruas de ${loc.name} e região. A Movvi Resgate está sempre atenta para garantir seu socorro.</p>
+            <div class="news-header">
+                <h2>Últimas Notícias e Trânsito: ${loc.name}</h2>
+                <p>Informação em tempo real para quem circula por ${loc.name}. Atualizado a cada 24 horas.</p>
+            </div>
             
-            ${news.length ? news.map(n => `
-                <div class="news-card">
-                    <span class="news-tag">${n.source} • ${n.timeAgo}</span>
-                    <h3 class="news-title">${n.title}</h3>
-                    <p style="font-size: 14px; color: #444; margin-bottom: 10px;">Informação relevante para quem circula por ${loc.name}. Em caso de imprevistos, chame o <strong>reboque da Movvi Resgate</strong>.</p>
-                    <a href="${n.link}" target="_blank" class="news-link">Ler notícia completa no G1</a>
-                </div>
-            `).join('') : '<p>Buscando atualizações de trânsito em tempo real...</p>'}
+            <div class="news-grid">
+                ${news.length ? news.map(n => `
+                    <div class="news-card">
+                        <span class="news-tag">${n.source} • ${n.timeAgo}</span>
+                        <h3 class="news-title">${n.title}</h3>
+                        <p class="news-desc">Informação importante para a segurança viária em ${loc.name}. Se o seu veículo apresentar falhas nesta área, chame o <strong>Reboque Movvi</strong>.</p>
+                        <a href="${n.link}" target="_blank" class="news-link">VER NOTÍCIA COMPLETA</a>
+                    </div>
+                `).join('') : '<p>Estamos buscando as notícias mais recentes para você...</p>'}
+            </div>
         </section>
+
+        <section style="margin-top: 100px; text-align: center; padding: 60px; background: #000; color: #fff; border-radius: 30px;">
+            <h2 style="font-family: 'Outfit'; font-size: 40px; color: var(--primary);">Enguiçou em ${loc.name}?</h2>
+            <p style="font-size: 20px; margin: 20px 0;">Não pague caro em guinchos tradicionais. Use a Movvi.</p>
+            <a href="https://movviresgate.com.br" class="cta-btn">PEDIR SOCORRO AGORA</a>
+        </section>
+
+        <div class="city-list">
+            ${Object.values(locations).map(l => `<a href="/local/${l.slug}" class="city-link">Reboque em ${l.name}</a>`).join('')}
+        </div>
     </main>
 
     <footer>
-        <p>&copy; 2026 Movvi Resgate - Especialista em Reboque e Guincho 24h.</p>
-        <p>Atendimento em Rio de Janeiro, Baixada Fluminense e Grande Rio.</p>
+        <p>&copy; 2026 Movvi Resgate - Inteligência em Assistência Veicular 24h.</p>
+        <p>Rio de Janeiro | Baixada Fluminense | Grande Rio</p>
     </footer>
 </body>
 </html>

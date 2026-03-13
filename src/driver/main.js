@@ -138,6 +138,13 @@ function buildSidebar() {
       <a data-nav="dash" class="flex items-center gap-3 px-3 py-3 rounded-lg text-black font-bold dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-primary cursor-pointer transition-colors"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">home</span><span class="text-sm font-semibold">Início</span></a>
       <a data-nav="history" class="flex items-center gap-3 px-3 py-3 rounded-lg text-black font-bold dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-primary cursor-pointer transition-colors"><span class="material-symbols-outlined">history</span><span class="text-sm font-semibold">Histórico</span></a>
       <a data-nav="earn" class="flex items-center gap-3 px-3 py-3 rounded-lg text-black font-bold dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-primary cursor-pointer transition-colors"><span class="material-symbols-outlined">account_balance_wallet</span><span class="text-sm font-semibold">Carteira</span></a>
+      <a data-nav="referral" class="flex items-center justify-between px-3 py-3 rounded-lg bg-primary/20 border border-primary/40 text-black dark:text-white cursor-pointer transition-all hover:scale-[1.02] active:scale-95 shadow-sm mt-2 mb-2">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-black dark:text-primary" style="font-variation-settings:'FILL' 1">stars</span>
+          <span class="text-sm font-black uppercase tracking-tight">Convide e Ganhe</span>
+        </div>
+        <span class="text-[9px] font-black bg-black text-primary px-2 py-0.5 rounded-full animate-pulse">RECOMPENSA</span>
+      </a>
       <a data-nav="profile" class="flex items-center gap-3 px-3 py-3 rounded-lg text-black font-bold dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-primary cursor-pointer transition-colors"><span class="material-symbols-outlined">person</span><span class="text-sm font-semibold">Perfil</span></a>
       <a data-nav="support" class="flex items-center gap-3 px-3 py-3 rounded-lg text-black font-bold dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-primary cursor-pointer transition-colors"><span class="material-symbols-outlined">support_agent</span><span class="text-sm font-semibold">Suporte</span></a>
       <!-- Aparência section removed to force light mode -->
@@ -185,6 +192,7 @@ function buildSidebar() {
       else if (t === 'earn') nav(earningsView);
       else if (t === 'history') nav(historyView);
       else if (t === 'profile') nav(profileView);
+      else if (t === 'referral') nav(referralView);
       else if (t === 'support') nav(supportChatView);
       else if (t === 'logout') { socket?.emit('driver:offline', user.id); socket?.disconnect(); localStorage.removeItem('movvi_driver'); nav(loginView); }
     };
@@ -722,6 +730,83 @@ function registerView() {
   return d;
 }
 
+function referralView() {
+  const d = document.createElement('div'); d.className = 'view active bg-black text-white';
+  const refLink = `${window.location.origin}/convite?ref=${user.id}`;
+  
+  d.innerHTML = `
+<header class="flex items-center p-6 border-b border-white/5 sticky top-0 bg-black/80 backdrop-blur-md z-10 w-full mb-4">
+  <button id="bk" class="size-11 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-primary active:scale-95 transition-all"><span class="material-symbols-outlined font-black">arrow_back</span></button>
+  <div class="flex-1 text-center">
+    <h1 class="text-white text-base font-black italic uppercase tracking-widest pl-4">Indique e Ganhe</h1>
+    <p class="text-[9px] text-primary font-black uppercase tracking-widest pl-4">Programa de Recompensas</p>
+  </div>
+  <div class="size-11"></div>
+</header>
+
+<main class="flex-1 p-8 pb-32 flex flex-col items-center" style="font-family:Outfit,Inter,sans-serif">
+  <div class="size-24 bg-primary/10 rounded-[2.5rem] border-2 border-primary/30 flex items-center justify-center text-primary mb-8 shadow-[0_0_50px_rgba(255,219,0,0.1)] relative">
+    <span class="material-symbols-outlined text-5xl" style="font-variation-settings:'FILL' 1">stars</span>
+    <div class="absolute -top-2 -right-2 bg-primary text-black py-1 px-3 rounded-full text-[10px] font-black animate-bounce shadow-xl">+20</div>
+  </div>
+
+  <div class="text-center mb-10">
+    <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-4">Ganhe 20 Resgates Livres de Taxa!</h2>
+    <p class="text-sm text-white/60 font-medium leading-relaxed max-w-[280px] mx-auto">
+      Cada novo motorista parceiro que você indicar e for <strong class="text-white">APROVADO</strong>, te garante <strong class="text-primary">20 resgates com 0% de comissão</strong>.
+      <br><br>
+      Todo o lucro do atendimento fica 100% com você!
+    </p>
+  </div>
+
+  <div class="w-full bg-white/5 border-2 border-white/10 rounded-[2.5rem] p-8 mb-8 relative overflow-hidden">
+     <div class="absolute top-0 right-0 p-4 opacity-10">
+        <span class="material-symbols-outlined text-4xl text-white">share</span>
+     </div>
+     
+     <p class="text-[10px] font-black uppercase tracking-[0.2em] mb-4 text-white/40">Seu Link de Convite Personalizado</p>
+     <div class="bg-black/60 rounded-2xl p-5 mb-5 font-mono text-xs break-all border border-white/5 text-primary/80 leading-relaxed shadow-inner">
+        ${refLink}
+     </div>
+     
+     <button id="btn-copy-ref" class="w-full bg-primary text-black font-black py-5 rounded-2xl flex items-center justify-center gap-3 active:scale-95 transition-all uppercase tracking-[0.2em] text-xs shadow-xl shadow-primary/20">
+        <span class="material-symbols-outlined text-lg">content_copy</span> COMPARTILHAR LINK
+     </button>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4 w-full">
+     <div class="bg-white/5 border border-white/5 p-4 rounded-3xl text-center">
+        <span class="text-xl font-black text-white block mb-1">0</span>
+        <span class="text-[9px] text-white/30 font-black uppercase tracking-widest">Indicados Aprovados</span>
+     </div>
+     <div class="bg-white/5 border border-white/5 p-4 rounded-3xl text-center">
+        <span class="text-xl font-black text-primary block mb-1">0</span>
+        <span class="text-[9px] text-white/30 font-black uppercase tracking-widest">Resgates Grátis Disp.</span>
+     </div>
+  </div>
+</main>
+`;
+
+  d.querySelector('#bk').onclick = () => {
+    if (user.approved) nav(dashboardView);
+    else nav(onboardingView);
+  };
+  
+  d.querySelector('#btn-copy-ref').onclick = () => {
+    navigator.clipboard.writeText(refLink);
+    const btn = d.querySelector('#btn-copy-ref');
+    const old = btn.innerHTML;
+    btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> COPIADO COM SUCESSO';
+    btn.classList.add('bg-green-500', 'text-white');
+    setTimeout(() => {
+      btn.innerHTML = old;
+      btn.classList.remove('bg-green-500', 'text-white');
+    }, 2000);
+  };
+
+  return d;
+}
+
 function registrationSuccessView({ referralLink }) {
   const d = document.createElement('div'); d.className = 'view active bg-black text-white';
   
@@ -767,8 +852,16 @@ function registrationSuccessView({ referralLink }) {
     <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-4 text-white">Cadastro Realizado!</h2>
     <p class="text-sm font-bold text-white/50 mb-10 leading-relaxed">
         Seu pré-cadastro foi recebido. Estaremos avaliando seus documentos agora. <br>
-        <span class="text-primary">Aguarde a avaliação dos documentos.</span>
+        <span class="text-primary uppercase tracking-widest text-[11px] mt-2 block">Aguarde a avaliação dos documentos.</span>
     </p>
+
+    <div class="w-full bg-primary/10 border-2 border-primary/20 rounded-[2.5rem] p-6 mb-6 animate-bounce shadow-[0_0_30px_rgba(255,219,0,0.1)]">
+       <div class="flex items-center justify-center gap-2 mb-2">
+         <span class="material-symbols-outlined text-primary">redeem</span>
+         <span class="text-[10px] font-black uppercase tracking-[0.2em] text-primary">Recompensa Ativa</span>
+       </div>
+       <p class="text-sm font-black text-white leading-tight">Ganhe <span class="text-primary italic">20 RESGATES LIVRES</span> de taxas ao convidar amigos!</p>
+    </div>
 
     <div class="w-full bg-white/5 border-2 border-white/10 rounded-[2.5rem] p-8 mb-10">
         <p class="text-[10px] font-black uppercase tracking-[0.2em] mb-4 opacity-40 text-white">Link de Indicação (Expira em: <span id="countdown" class="text-primary">23:59:59</span>)</p>
@@ -989,36 +1082,55 @@ function onboardingView() {
   };
 
   d.innerHTML = `
-    <header class="flex items-center justify-center p-6 border-b border-white/5 sticky top-0 bg-black/80 backdrop-blur-md z-10 w-full mb-8">
-      <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="h-6 object-contain">
-    </header>
-    <main class="w-full max-w-md mx-auto p-6 flex flex-col items-stretch" id="ob-container">
-      ${renderTrail()}
-      <div id="ob-content" class="mt-4">
+<header class="flex items-center p-6 border-b border-white/5 sticky top-0 bg-black/80 backdrop-blur-md z-10 w-full mb-8">
+  <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="h-6 object-contain pointer-events-none">
+  <button id="btn-menu-ob" class="ml-auto size-11 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white"><span class="material-symbols-outlined">menu</span></button>
+</header>
+<div class="flex flex-col p-8 pb-32" style="min-height:90dvh;font-family:Outfit,Inter,sans-serif">
+    ${renderTrail()}
+    <div id="ob-content" class="animate-fade-in">
         ${renderContent()}
-      </div>
-    </main>
-    
-    <div id="pix-modal" class="hidden fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex items-center justify-center p-6 transition-all duration-300">
-      <div id="pix-modal-content" class="bg-[#111] w-full max-w-sm rounded-[3rem] p-8 flex flex-col items-center text-center scale-95 transition-transform duration-300 shadow-2xl overflow-hidden relative">
-        <div class="absolute -top-10 -right-10 size-40 bg-primary/20 rounded-full blur-3xl"></div>
-        <div class="size-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6 relative">
-          <span class="material-symbols-outlined text-3xl font-black">qr_code_2</span>
-        </div>
-        <h3 class="font-black text-2xl text-white mb-2 uppercase italic tracking-tighter">Finalizar Adesão</h3>
-        <p class="text-xs font-bold text-slate-400 mb-8 max-w-[240px]">Escaneie o QR Code ou use o Copia e Cola para garantir sua vaga pioneira.</p>
-        
-        <div class="bg-white p-6 rounded-[2rem] mb-8 flex justify-center w-full shadow-inner border border-slate-50 relative">
-          <img src="" alt="QR Code PIX" class="w-48 h-48 rounded-2xl">
-        </div>
-
-        <div class="flex flex-col gap-3 w-full relative">
-          <button id="btn-copy-pix" class="w-full bg-primary text-black font-black py-4 rounded-2xl active:scale-95 transition-all text-xs uppercase tracking-[0.2em] shadow-lg shadow-primary/20">Copiar Código PIX</button>
-          <button id="btn-cancel-pix" class="w-full text-red-500 font-bold py-3 text-[10px] uppercase tracking-widest opacity-60">Voltar</button>
-        </div>
-      </div>
     </div>
-  `;
+    
+    <div class="mt-8 pt-8 border-t border-white/5">
+       <h4 class="text-[10px] font-black uppercase tracking-widest text-primary mb-4 text-center">Indique e Ganhe Agora</h4>
+       <div class="bg-white/5 border border-white/10 rounded-2xl p-5 relative overflow-hidden group cursor-pointer" id="btn-ref-ob">
+          <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div class="flex items-center gap-4 relative z-10">
+             <div class="size-10 rounded-xl bg-primary flex items-center justify-center text-black shadow-lg">
+                <span class="material-symbols-outlined">stars</span>
+             </div>
+             <div class="flex-1">
+                <p class="text-xs font-black text-white leading-tight mb-1">Ganhe 20 Resgates Grátis</p>
+                <p class="text-[9px] text-white/40 font-bold uppercase tracking-widest leading-relaxed italic">Cada amigo aprovado te dá 20 resgates sem taxas.</p>
+             </div>
+             <span class="material-symbols-outlined text-white/20">chevron_right</span>
+          </div>
+       </div>
+    </div>
+</div>
+
+<div id="pix-modal" class="hidden fixed inset-0 z-[2000] bg-black/95 backdrop-blur-xl flex items-center justify-center p-6 transition-all duration-300">
+  <div id="pix-modal-content" class="bg-[#111] w-full max-w-sm rounded-[3rem] p-8 flex flex-col items-center text-center scale-95 transition-transform duration-300 shadow-2xl overflow-hidden relative border border-white/5">
+    <div class="absolute -top-10 -right-10 size-40 bg-primary/20 rounded-full blur-3xl"></div>
+    <div class="size-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6 relative">
+      <span class="material-symbols-outlined text-3xl font-black">qr_code_2</span>
+    </div>
+    <h3 class="font-black text-2xl text-white mb-2 uppercase italic tracking-tighter">Finalizar Adesão</h3>
+    <p class="text-xs font-bold text-slate-400 mb-8 max-w-[240px]">Escaneie o QR Code ou use o Copia e Cola para garantir sua vaga pioneira.</p>
+    
+    <div class="bg-white p-6 rounded-[2rem] mb-8 flex justify-center w-full shadow-inner border border-slate-50 relative">
+      <img src="" alt="QR Code PIX" id="pix-qr-img" class="w-48 h-48 rounded-2xl">
+    </div>
+
+    <div class="flex flex-col gap-3 w-full relative">
+      <button id="btn-copy-pix" class="w-full bg-primary text-black font-black py-4 rounded-2xl active:scale-95 transition-all text-sm uppercase tracking-[0.2em] shadow-xl shadow-primary/20">Copiar Código PIX</button>
+      <button id="btn-check-pix-ob" class="w-full bg-emerald-500 text-white font-black py-4 rounded-2xl active:scale-95 transition-all text-xs uppercase tracking-widest shadow-lg">JÁ PAGUEI, LIBERAR</button>
+      <button id="btn-cancel-pix" class="w-full text-red-500 font-bold py-3 text-[10px] uppercase tracking-widest opacity-60">Voltar</button>
+    </div>
+  </div>
+</div>
+`;
 
   setTimeout(() => {
     const form = d.querySelector('#docs-form');
@@ -1037,6 +1149,13 @@ function onboardingView() {
         if (btn) btn.textContent = 'Enviar Documentação';
       }
     };
+  }
+
+    const menuObBtn = d.querySelector('#btn-menu-ob');
+    if (menuObBtn) menuObBtn.onclick = openSidebar;
+    
+    const refObBtn = d.querySelector('#btn-ref-ob');
+    if (refObBtn) refObBtn.onclick = () => nav(referralView);
 
     const payBtn = d.querySelector('#btn-pay');
     if (payBtn) payBtn.onclick = async () => {
@@ -1048,19 +1167,40 @@ function onboardingView() {
         modal.classList.remove('hidden');
         setTimeout(() => modal.querySelector('#pix-modal-content').classList.replace('scale-95', 'scale-100'), 10);
 
+        modal.querySelector('#btn-check-pix-ob').onclick = async () => {
+           const btn = modal.querySelector('#btn-check-pix-ob');
+           const oldTxt = btn.textContent;
+           btn.innerHTML = '<div class="size-4 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>';
+           try {
+             const fresh = await Drivers.get(user.id);
+             if (fresh.kitAcquired || fresh.onboardingStep === 'kit_acquired') {
+               modal.classList.add('hidden');
+               user.onboardingStep = fresh.onboardingStep;
+               user.kitAcquired = fresh.kitAcquired;
+               saveUser(user);
+               nav(onboardingView);
+             } else {
+               btn.textContent = "AGUARDANDO BANCO...";
+               setTimeout(() => btn.textContent = oldTxt, 3000);
+             }
+           } catch { btn.textContent = oldTxt; }
+        };
+
+        const cancelPix = d.querySelector('#btn-cancel-pix');
+        if (cancelPix) cancelPix.onclick = () => d.querySelector('#pix-modal').classList.add('hidden');
+        
         modal.querySelector('#btn-copy-pix').onclick = () => {
           navigator.clipboard.writeText(res.pixCopiaECola);
           const cpBtn = modal.querySelector('#btn-copy-pix');
-          const oldTxt = cpBtn.textContent;
+          const oldT = cpBtn.textContent;
           cpBtn.textContent = "COPIADO!";
-          setTimeout(() => cpBtn.textContent = oldTxt, 2000);
+          setTimeout(() => cpBtn.textContent = oldT, 2000);
         };
-      } catch (err) { alert('Erro ao gerar PIX.'); }
+      } catch (err) { 
+        alert('Erro ao gerar PIX.'); 
+      }
       payBtn.innerHTML = '<span class="uppercase tracking-widest text-[14px]">Adquirir via PIX agora</span><span class="text-[9px] font-black uppercase tracking-widest opacity-60">Liberação Automática via C6 Bank</span>';
     };
-
-    const cancelPix = d.querySelector('#btn-cancel-pix');
-    if (cancelPix) cancelPix.onclick = () => d.querySelector('#pix-modal').classList.add('hidden');
 
     const refreshObBtn = d.querySelector('#btn-refresh-onboarding');
     const refreshBtn = d.querySelector('#btn-refresh');

@@ -1,35 +1,50 @@
 import { Router } from 'express';
+import { Setting } from '../models.js';
 
 const router = Router();
 
-router.get('/', (req, res) => {
-    res.json(req.db.data.pricing);
+router.get('/', async (req, res) => {
+    const pricing = await Setting.findOne({ key: 'pricing' });
+    res.json(pricing?.value || {});
 });
 
 router.put('/', async (req, res) => {
     const { basePrice, pricePerKm, services } = req.body;
-    if (basePrice !== undefined) req.db.data.pricing.basePrice = basePrice;
-    if (pricePerKm !== undefined) req.db.data.pricing.pricePerKm = pricePerKm;
+    let pricing = await Setting.findOne({ key: 'pricing' });
+    if (!pricing) pricing = new Setting({ key: 'pricing', value: {} });
+
+    if (basePrice !== undefined) pricing.value.basePrice = basePrice;
+    if (pricePerKm !== undefined) pricing.value.pricePerKm = pricePerKm;
     if (services) {
         for (const [key, val] of Object.entries(services)) {
-            if (req.db.data.pricing.services[key]) {
-                Object.assign(req.db.data.pricing.services[key], val);
+            if (pricing.value.services[key]) {
+                Object.assign(pricing.value.services[key], val);
             }
         }
     }
-    await req.db.write();
-    req.io.to('admin').emit('pricing:updated', req.db.data.pricing);
-    res.json(req.db.data.pricing);
+
+    pricing.markModified('value');
+    await pricing.save();
+    
+    if (req.io) {
+        req.io.to('admin').emit('pricing:updated', pricing.value);
+    }
+    res.json(pricing.value);
 });
 
 router.put('/settings', async (req, res) => {
-    Object.assign(req.db.data.settings, req.body);
-    await req.db.write();
-    res.json(req.db.data.settings);
+    let settings = await Setting.findOne({ key: 'settings' });
+    if (!settings) settings = new Setting({ key: 'settings', value: {} });
+
+    Object.assign(settings.value, req.body);
+    settings.markModified('value');
+    await settings.save();
+    res.json(settings.value);
 });
 
-router.get('/settings', (req, res) => {
-    res.json(req.db.data.settings);
+router.get('/settings', async (req, res) => {
+    const settings = await Setting.findOne({ key: 'settings' });
+    res.json(settings?.value || {});
 });
 
 export default router;

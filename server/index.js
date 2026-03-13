@@ -22,10 +22,10 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 
-const db = await initDB();
+const dbProxy = await initDB();
 
 app.use((req, res, next) => {
-    req.db = db;
+    req.db = dbProxy;
     req.io = io;
     next();
 });
@@ -42,8 +42,8 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-setupSocketHandlers(io, db);
-resumeAllMatching(io, db);
+setupSocketHandlers(io);
+resumeAllMatching(io);
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('dist'));

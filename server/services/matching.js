@@ -1,32 +1,32 @@
 import { findNearestDrivers } from './geo.js';
+import { Driver, Order, Setting } from '../models.js';
 
 const activeMatches = new Map();
 
-export function startMatching(io, db, order) {
+export async function startMatching(io, db, orderIdOrObj) {
+    const orderId = typeof orderIdOrObj === 'string' ? orderIdOrObj : orderIdOrObj.id;
     const triedDrivers = [];
-    const matchId = order.id;
+    const matchId = orderId;
 
     async function tryNextDriver() {
-        // Ensure order is still matching
-        const currentOrder = db.data.orders.find(o => o.id === order.id);
-        if (!currentOrder || currentOrder.status !== 'searching') {
+        const order = await Order.findOne({ id: orderId });
+        if (!order || order.status !== 'searching') {
             activeMatches.delete(matchId);
             return;
         }
 
-        console.log(`[Match] Searching for drivers for order ${order.id}...`);
+        console.log(`[Match] Searching for drivers for order ${orderId}...`);
 
+        const allDrivers = await Driver.find({ online: true, activeOrderId: null, blocked: false });
         const drivers = findNearestDrivers(
-            db.data.drivers,
+            allDrivers,
             Number(order.pickupLat),
             Number(order.pickupLon),
             triedDrivers
         );
 
         if (drivers.length === 0) {
-            const onlineCount = db.data.drivers.filter(d => d.online).length;
-            console.log(`[Match] No drivers found for order ${order.id}. Online total: ${onlineCount}. Retrying in 5s.`);
-
+            console.log(`[Match] No drivers found for order ${orderId}. Retrying in 5s.`);
             triedDrivers.length = 0;
             setTimeout(() => tryNextDriver(), 5000);
             io.to(`client_${order.clientId}`).emit('order:searching', {
@@ -39,7 +39,10 @@ export function startMatching(io, db, order) {
         const driver = drivers[0];
         triedDrivers.push(driver.id);
 
-        console.log(`[Match] Notifying driver ${driver.name} (${driver.id}) about order ${order.id}`);
+        console.log(`[Match] Notifying driver ${driver.name} (${driver.id}) about order ${orderId}`);
+
+        const settingsDoc = await Setting.findOne({ key: 'settings' });
+        const matchTimeout = settingsDoc?.value?.matchTimeout || 15000;
 
         io.to(`driver_${driver.id}`).emit('order:incoming', {
             orderId: order.id,
@@ -59,7 +62,7 @@ export function startMatching(io, db, order) {
             clientPhoto: order.clientPhoto,
             pickupLat: order.pickupLat,
             pickupLon: order.pickupLon,
-            timeout: db.data.settings.matchTimeout
+            timeout: matchTimeout
         });
 
         io.to(`client_${order.clientId}`).emit('order:searching', {
@@ -69,11 +72,11 @@ export function startMatching(io, db, order) {
 
         const timer = setTimeout(() => {
             if (activeMatches.has(matchId)) {
-                console.log(`[Match] Driver ${driver.name} timed out for order ${order.id}. Trying next.`);
+                console.log(`[Match] Driver ${driver.name} timed out for order ${orderId}. Trying next.`);
                 io.to(`driver_${driver.id}`).emit('order:timeout', { orderId: order.id });
                 tryNextDriver();
             }
-        }, db.data.settings.matchTimeout);
+        }, matchTimeout);
 
         activeMatches.set(matchId, { timer, currentDriverId: driver.id, order });
     }
@@ -81,20 +84,20 @@ export function startMatching(io, db, order) {
     tryNextDriver();
 }
 
-export function resumeAllMatching(io, db) {
-    if (!db.data.orders) return;
-    const searchingOrders = db.data.orders.filter(o => o.status === 'searching');
+export async function resumeAllMatching(io) {
+    const searchingOrders = await Order.find({ status: 'searching' });
     if (searchingOrders.length > 0) {
         console.log(`[Match] Resuming matching for ${searchingOrders.length} orders...`);
-        searchingOrders.forEach(order => startMatching(io, db, order));
+        for (const order of searchingOrders) {
+            startMatching(io, null, order);
+        }
     }
 }
 
-export function acceptOrder(io, db, driverId, orderId) {
+export async function acceptOrder(io, driverId, orderId) {
     const match = activeMatches.get(orderId);
-    // Even if not in activeMatches (server restart), we should allow acceptance if order exists
-    const order = db.data.orders.find(o => o.id === orderId);
-    const driver = db.data.drivers.find(d => d.id === driverId);
+    const order = await Order.findOne({ id: orderId });
+    const driver = await Driver.findOne({ id: driverId });
 
     if (!order || !driver) return false;
     if (order.status !== 'searching' && order.status !== 'accepted') return false;
@@ -116,8 +119,10 @@ export function acceptOrder(io, db, driverId, orderId) {
     order.driverLon = driver.longitude;
     order.acceptedAt = new Date().toISOString();
 
+    await order.save();
+
     driver.activeOrderId = orderId;
-    db.write();
+    await driver.save();
 
     io.to(`client_${order.clientId}`).emit('order:accepted', order);
     io.to('admin').emit('order:updated', order);
@@ -125,18 +130,14 @@ export function acceptOrder(io, db, driverId, orderId) {
     return true;
 }
 
-export function declineOrder(io, db, driverId, orderId) {
+export function declineOrder(io, driverId, orderId) {
     const match = activeMatches.get(orderId);
     if (match) {
         clearTimeout(match.timer);
         activeMatches.delete(orderId);
     }
-
-    const order = db.data.orders.find(o => o.id === orderId);
-    if (!order || order.status !== 'searching') return;
-
-    // Restart matching immediately for this order
-    startMatching(io, db, order);
+    // Restart matching immediately
+    startMatching(io, null, orderId);
 }
 
 export function cancelMatching(io, orderId) {

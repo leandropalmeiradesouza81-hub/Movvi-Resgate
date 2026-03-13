@@ -1,93 +1,99 @@
 import { Router } from 'express';
+import { v4 as uuid } from 'uuid';
+import { Driver, Client, Order, WalletTransaction } from '../models.js';
 
 const router = Router();
 
-router.get('/dashboard', (req, res) => {
-    const { orders, drivers, clients, walletTransactions = [] } = req.db.data;
+router.get('/dashboard', async (req, res) => {
     const today = new Date().toISOString().split('T')[0];
-    const todayOrders = orders.filter(o => o.createdAt?.startsWith(today));
+    const startDate = new Date(today);
+    const endDate = new Date(today);
+    endDate.setDate(endDate.getDate() + 1);
 
-    // RRL Calculations (Revenue, Receiving, Ledger)
+    const [
+        totalOrdersCount,
+        todayOrdersCount,
+        orders,
+        drivers,
+        totalClientsCount,
+        walletTransactions
+    ] = await Promise.all([
+        Order.countDocuments(),
+        Order.countDocuments({ createdAt: { $gte: startDate, $lt: endDate } }),
+        Order.find(),
+        Driver.find(),
+        Client.countDocuments(),
+        WalletTransaction.find()
+    ]);
+
+    const activeOrdersCount = orders.filter(o => ['searching', 'accepted', 'pickup', 'in_progress'].includes(o.status)).length;
     const completedOrders = orders.filter(o => o.status === 'completed');
     const totalServiceVolume = completedOrders.reduce((sum, o) => sum + (o.price || 0), 0);
 
-    // Platform Revenue = Total 15% fees collected (sum of negative fee transactions)
     const totalPlatformRevenue = walletTransactions
         .filter(t => t.type === 'fee')
         .reduce((sum, t) => sum + Math.abs(t.amount), 0);
 
     const todayPlatformRevenue = walletTransactions
-        .filter(t => t.type === 'fee' && t.createdAt?.startsWith(today))
+        .filter(t => t.type === 'fee' && t.createdAt >= startDate && t.createdAt < endDate)
         .reduce((sum, t) => sum + Math.abs(t.amount), 0);
 
     const totalDriverDebt = drivers.reduce((sum, d) => sum + (d.walletBalance < 0 ? Math.abs(d.walletBalance) : 0), 0);
 
     res.json({
-        totalOrders: orders.length,
-        todayOrders: todayOrders.length,
-        activeOrders: orders.filter(o => ['searching', 'accepted', 'pickup', 'in_progress'].includes(o.status)).length,
+        totalOrders: totalOrdersCount,
+        todayOrders: todayOrdersCount,
+        activeOrders: activeOrdersCount,
         completedOrders: completedOrders.length,
         cancelledOrders: orders.filter(o => o.status === 'cancelled').length,
         totalDrivers: drivers.length,
         onlineDrivers: drivers.filter(d => d.online).length,
-        totalClients: clients.length,
-        // Financials (RRL)
+        totalClients: totalClientsCount,
         totalRevenue: totalServiceVolume,
         totalPlatformRevenue,
         totalDriverEarnings: totalServiceVolume - totalPlatformRevenue,
         todayPlatformRevenue,
-        todayRevenue: todayOrders.filter(o => o.status === 'completed').reduce((sum, o) => sum + (o.price || 0), 0),
+        todayRevenue: orders.filter(o => o.status === 'completed' && o.createdAt >= startDate && o.createdAt < endDate).reduce((sum, o) => sum + (o.price || 0), 0),
         totalDriverDebt,
         blockedDrivers: drivers.filter(d => d.blocked).length
     });
 });
 
-router.get('/clients', (req, res) => {
-    const clients = req.db.data.clients.map(({ password, ...c }) => c);
+router.get('/clients', async (req, res) => {
+    const clients = await Client.find({}, '-password');
     res.json(clients);
 });
 
 router.delete('/clients/:id', async (req, res) => {
-    const idx = req.db.data.clients.findIndex(c => c.id === req.params.id);
-    if (idx === -1) return res.status(404).json({ error: 'Cliente não encontrado' });
-    req.db.data.clients.splice(idx, 1);
-    await req.db.write();
+    const result = await Client.deleteOne({ id: req.params.id });
+    if (result.deletedCount === 0) return res.status(404).json({ error: 'Cliente não encontrado' });
     res.json({ success: true });
 });
 
-router.get('/orders', (req, res) => {
-    const orders = req.db.data.orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+router.get('/orders', async (req, res) => {
+    const orders = await Order.find().sort({ createdAt: -1 });
     res.json(orders);
 });
 
-router.get('/live', (req, res) => {
-    const drivers = req.db.data.drivers
-        .filter(d => d.latitude && d.longitude)
-        .map(({ password, ...d }) => d);
-
-    const clients = (req.db.data.clients || [])
-        .filter(c => c.latitude && c.longitude)
-        .map(({ password, ...c }) => c);
-
-    const activeOrders = req.db.data.orders.filter(o =>
-        ['searching', 'accepted', 'pickup', 'in_progress'].includes(o.status)
-    );
+router.get('/live', async (req, res) => {
+    const [drivers, clients, activeOrders] = await Promise.all([
+        Driver.find({ latitude: { $ne: 0 }, longitude: { $ne: 0 } }, '-password'),
+        Client.find({ latitude: { $ne: 0 }, longitude: { $ne: 0 } }, '-password'),
+        Order.find({ status: { $in: ['searching', 'accepted', 'pickup', 'in_progress'] } })
+    ]);
     res.json({ drivers, clients, orders: activeOrders });
 });
 
 router.put('/drivers/:id/approve', async (req, res) => {
-    const driver = req.db.data.drivers.find(d => d.id === req.params.id);
+    const driver = await Driver.findOne({ id: req.params.id });
     if (!driver) return res.status(404).json({ error: 'Motorista não encontrado' });
 
     driver.approved = true;
-    driver.status = 'offline';
-    await req.db.write();
+    await driver.save();
 
-    const io = req.io;
-    if (io) {
-        io.to(`driver_${driver.id}`).emit('driver:data-updated', {
-            approved: true,
-            status: 'offline'
+    if (req.io) {
+        req.io.to(`driver_${driver.id}`).emit('driver:data-updated', {
+            approved: true
         });
     }
 
@@ -95,20 +101,15 @@ router.put('/drivers/:id/approve', async (req, res) => {
 });
 
 router.put('/drivers/:id/unblock', async (req, res) => {
-    const driver = req.db.data.drivers.find(d => d.id === req.params.id);
+    const driver = await Driver.findOne({ id: req.params.id });
     if (!driver) return res.status(404).json({ error: 'Motorista não encontrado' });
 
     driver.blocked = false;
     driver.blockingReason = '';
-    // Optional: If unblocking, we usually expect the debt to be paid. 
-    // If the admin manually unblocks, we keep the balance unless they use reset-balance.
+    await driver.save();
 
-    await req.db.write();
-
-    // Notify driver client to refresh data
-    const io = req.io;
-    if (io) {
-        io.to(`driver_${driver.id}`).emit('driver:data-updated', {
+    if (req.io) {
+        req.io.to(`driver_${driver.id}`).emit('driver:data-updated', {
             blocked: false,
             walletBalance: driver.walletBalance
         });
@@ -118,7 +119,7 @@ router.put('/drivers/:id/unblock', async (req, res) => {
 });
 
 router.put('/drivers/:id/reset-balance', async (req, res) => {
-    const driver = req.db.data.drivers.find(d => d.id === req.params.id);
+    const driver = await Driver.findOne({ id: req.params.id });
     if (!driver) return res.status(404).json({ error: 'Motorista não encontrado' });
 
     const amountToReset = Math.abs(driver.walletBalance || 0);
@@ -126,23 +127,19 @@ router.put('/drivers/:id/reset-balance', async (req, res) => {
     driver.blocked = false;
     driver.blockingReason = '';
 
-    if (!req.db.data.walletTransactions) req.db.data.walletTransactions = [];
-    req.db.data.walletTransactions.push({
+    await WalletTransaction.create({
         id: `admin-${Date.now()}`,
         driverId: driver.id,
         type: 'admin_adjustment',
         description: 'Ajuste Administrativo (Quitação de Débito)',
         amount: amountToReset,
-        balanceAfter: 0,
-        createdAt: new Date().toISOString()
+        balanceAfter: 0
     });
 
-    await req.db.write();
+    await driver.save();
 
-    // Notify driver client to refresh data
-    const io = req.io;
-    if (io) {
-        io.to(`driver_${driver.id}`).emit('driver:data-updated', {
+    if (req.io) {
+        req.io.to(`driver_${driver.id}`).emit('driver:data-updated', {
             blocked: false,
             walletBalance: 0
         });
@@ -152,12 +149,11 @@ router.put('/drivers/:id/reset-balance', async (req, res) => {
 });
 
 router.post('/drivers/:id/sync', async (req, res) => {
-    const driver = req.db.data.drivers.find(d => d.id === req.params.id);
+    const driver = await Driver.findOne({ id: req.params.id });
     if (!driver) return res.status(404).json({ error: 'Motorista não encontrado' });
 
-    const io = req.io;
-    if (io) {
-        io.to(`driver_${driver.id}`).emit('driver:data-updated', {
+    if (req.io) {
+        req.io.to(`driver_${driver.id}`).emit('driver:data-updated', {
             blocked: driver.blocked,
             walletBalance: driver.walletBalance
         });

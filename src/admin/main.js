@@ -915,6 +915,8 @@ async function renderPricing() {
   };
 }
 
+const PROD_DOMAIN = 'https://movviresgate.com.br';
+
 async function renderPartners() {
   const leads = await Leads.list().catch(() => []);
   
@@ -940,8 +942,8 @@ async function renderPartners() {
              </div>
           </div>
           <div class="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/5 mb-4">
-             <input readonly value="${window.location.origin}/modelo-de-negocio.html" class="flex-1 bg-transparent border-none text-[11px] text-text-dim font-mono outline-none">
-             <button onclick="navigator.clipboard.writeText('${window.location.origin}/modelo-de-negocio.html'); alert('Link copiado!')" class="text-primary hover:scale-110 transition-transform">
+             <input readonly value="${PROD_DOMAIN}/modelo-de-negocio.html" class="flex-1 bg-transparent border-none text-[11px] text-text-dim font-mono outline-none">
+             <button onclick="navigator.clipboard.writeText('${PROD_DOMAIN}/modelo-de-negocio.html'); alert('Link de Produção copiado!')" class="text-primary hover:scale-110 transition-transform">
                 <span class="material-symbols-outlined text-sm">content_copy</span>
              </button>
           </div>
@@ -961,8 +963,8 @@ async function renderPartners() {
              </div>
           </div>
           <div class="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/5 mb-4">
-             <input readonly value="${window.location.origin}/parcerias.html" class="flex-1 bg-transparent border-none text-[11px] text-text-dim font-mono outline-none">
-             <button onclick="navigator.clipboard.writeText('${window.location.origin}/parcerias.html'); alert('Link copiado!')" class="text-primary hover:scale-110 transition-transform">
+             <input readonly value="${PROD_DOMAIN}/parcerias.html" class="flex-1 bg-transparent border-none text-[11px] text-text-dim font-mono outline-none">
+             <button onclick="navigator.clipboard.writeText('${PROD_DOMAIN}/parcerias.html'); alert('Link de Produção copiado!')" class="text-primary hover:scale-110 transition-transform">
                 <span class="material-symbols-outlined text-sm">content_copy</span>
              </button>
           </div>

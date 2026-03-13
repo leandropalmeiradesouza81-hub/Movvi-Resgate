@@ -95,6 +95,15 @@ router.put('/drivers/:id/approve', async (req, res) => {
         req.io.to(`driver_${driver.id}`).emit('driver:data-updated', {
             approved: true
         });
+
+        // Broadcast spots update to all (for invitation page real-time sync)
+        const settingsObj = await Setting.findOne({ key: 'settings' });
+        const settings = settingsObj?.value || {};
+        const approvedCount = await Driver.countDocuments({ approved: true });
+        req.io.emit('spots:updated', {
+            totalSpots: settings.totalSpotsPhase1 || 100,
+            occupiedSpots: approvedCount
+        });
     }
 
     res.json({ success: true, driver });

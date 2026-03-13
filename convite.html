@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,1&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 
     <style>
         :root {
@@ -281,15 +282,12 @@
             background: #0a0a0a;
             border: 1px solid #1a1a1a;
             border-radius: 40px;
-            padding: 60px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 60px;
-            align-items: center;
+            padding: 80px 60px;
+            text-align: center;
         }
 
         @media (min-width: 992px) {
-            .kit-box { grid-template-columns: 1fr 1fr; }
+            .kit-box { padding: 100px; }
         }
 
         .kit-media img {
@@ -443,16 +441,13 @@
     <section class="kit-section">
         <div class="container">
             <div class="kit-box">
-                <div class="kit-media">
-                    <img src="/assets/images/kit_oficial_movvi_v2.png" alt="Kit Movvi">
-                </div>
                 <div class="kit-info">
-                    <h2>O KIT HEAVY DUTY.</h2>
-                    <ul class="kit-items">
-                        <li><i class="fas fa-check-circle"></i> Cambão Articulado (Aço Carbono)</li>
-                        <li><i class="fas fa-check-circle"></i> Cabos de Transferência (Chupeta)</li>
-                        <li><i class="fas fa-check-circle"></i> Reparadores e Galão Tático</li>
-                        <li><i class="fas fa-check-circle"></i> Homologação Vitalícia no Sistema</li>
+                    <h2>KIT MOVVI RESGATE</h2>
+                    <ul class="kit-items" style="display: inline-block; text-align: left; list-style: none; margin-bottom: 40px;">
+                        <li style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; font-weight: 600; color: #eee;"><i class="fas fa-check-circle" style="color: var(--primary);"></i> Cambão Articulado Profissional</li>
+                        <li style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; font-weight: 600; color: #eee;"><i class="fas fa-check-circle" style="color: var(--primary);"></i> Cabos de Transferência de Alta Carga</li>
+                        <li style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; font-weight: 600; color: #eee;"><i class="fas fa-check-circle" style="color: var(--primary);"></i> Reparadores e Sinalização de Emergência</li>
+                        <li style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; font-weight: 600; color: #eee;"><i class="fas fa-check-circle" style="color: var(--primary);"></i> Homologação Completa no App</li>
                     </ul>
                     <div style="font-family: 'Outfit'; font-weight: 900;">
                         <span style="font-size: 1.5rem; opacity: 0.5;">R$</span>
@@ -527,10 +522,24 @@
                 setInterval(updateTimer, 1000);
                 updateTimer();
 
-                // --- VAGAS LOGIC ---
-                const perc = Math.round((settings.occupiedSpots / settings.totalSpots) * 100);
-                document.getElementById('vagas-text').innerText = `${settings.occupiedSpots} / ${settings.totalSpots}`;
-                document.getElementById('vagas-bar').style.width = perc + '%';
+                // --- UPDATE UI FUNCTION ---
+                function updateSpotsUI(data) {
+                    const perc = Math.round((data.occupiedSpots / data.totalSpots) * 100);
+                    const vagasText = document.getElementById('vagas-text');
+                    const vagasBar = document.getElementById('vagas-bar');
+                    if (vagasText) vagasText.innerText = `${data.occupiedSpots} / ${data.totalSpots}`;
+                    if (vagasBar) vagasBar.style.width = perc + '%';
+                }
+
+                // Initial Load
+                updateSpotsUI(settings);
+
+                // --- REAL-TIME SOCKET UPDATES ---
+                const socket = io();
+                socket.on('spots:updated', (data) => {
+                    console.log('[Socket] Spots updated:', data);
+                    updateSpotsUI(data);
+                });
 
             } catch (e) { console.error('Failed to init page:', e); }
         }

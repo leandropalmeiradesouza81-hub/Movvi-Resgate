@@ -28,6 +28,15 @@ router.put('/', async (req, res) => {
     
     if (req.io) {
         req.io.to('admin').emit('pricing:updated', pricing.value);
+
+        // Broadcast spots update to all (for invitation page real-time sync)
+        const settingsObj = await Setting.findOne({ key: 'settings' });
+        const settings = settingsObj?.value || {};
+        const approvedCount = await Driver.countDocuments({ approved: true });
+        req.io.emit('spots:updated', {
+            totalSpots: settings.totalSpotsPhase1 || 100,
+            occupiedSpots: approvedCount
+        });
     }
     res.json(pricing.value);
 });
@@ -39,6 +48,16 @@ router.put('/settings', async (req, res) => {
     Object.assign(settings.value, req.body);
     settings.markModified('value');
     await settings.save();
+    
+    if (req.io) {
+        // Count approved drivers for spots update
+        const approvedCount = await Driver.countDocuments({ approved: true });
+        req.io.emit('spots:updated', {
+            totalSpots: settings.value.totalSpotsPhase1 || 100,
+            occupiedSpots: approvedCount
+        });
+    }
+    
     res.json(settings.value);
 });
 

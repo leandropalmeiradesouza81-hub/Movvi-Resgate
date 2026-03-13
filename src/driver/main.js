@@ -480,7 +480,7 @@ function loginView() {
 }
 
 // ═══ REGISTER ═══
-const compressImage = (base64, maxWidth = 1280) => {
+const compressImage = (base64, maxWidth = 1024) => {
   return new Promise((resolve) => {
     const img = new Image();
     img.src = base64;
@@ -490,8 +490,10 @@ const compressImage = (base64, maxWidth = 1280) => {
       if (w > maxWidth) { h = (maxWidth * h) / w; w = maxWidth; }
       canvas.width = w; canvas.height = h;
       const ctx = canvas.getContext('2d');
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(img, 0, 0, w, h);
-      resolve(canvas.toDataURL('image/jpeg', 0.7));
+      resolve(canvas.toDataURL('image/jpeg', 0.5));
     };
   });
 };

@@ -1811,19 +1811,21 @@ function earningsView() {
     }
   };
 
-  const showPixModal = async (amount) => {
-    const amountToPay = amount > 0 ? amount : 20.00;
-    const amountStr = amountToPay.toFixed(2).replace('.', ',');
+  const showPixModal = async (initialAmount) => {
+    let currentAmount = initialAmount > 0 ? initialAmount : 20.00;
+    
+    const generatePix = async (val) => {
+        try {
+            const res = await api(`/drivers/${user.id}/pix/generate`, 'POST', { amount: val, reason: 'wallet' });
+            return res.pixCopiaECola;
+        } catch (e) {
+            alert("Erro ao conectar com o serviço de pagamentos. Tente novamente.");
+            return null;
+        }
+    };
 
-    // Gerar PIX Real via Servidor
-    let pixPayload = "";
-    try {
-      const res = await api(`/drivers/${user.id}/pix/generate`, 'POST', { amount: amountToPay, reason: 'wallet' });
-      pixPayload = res.pixCopiaECola;
-    } catch (e) {
-      alert("Erro ao conectar com o serviço de pagamentos. Tente novamente.");
-      return;
-    }
+    let pixPayload = await generatePix(currentAmount);
+    if (!pixPayload) return;
 
     const m = document.createElement('div');
     m.className = 'fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300';
@@ -1862,24 +1864,54 @@ function earningsView() {
             </div>
             <div class="relative">
               <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-black">R$</div>
-              <input id="pix-amount" type="text" value="${amountStr}" readonly class="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-white/10 rounded-2xl pl-12 pr-4 py-4 text-2xl font-black text-slate-900 dark:text-white outline-none" />
+              <input id="pix-amount" type="number" step="0.01" value="${currentAmount.toFixed(2)}" class="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-white/10 rounded-2xl pl-12 pr-4 py-4 text-2xl font-black text-slate-900 dark:text-white outline-none focus:border-primary transition-all" />
             </div>
           </div>
+          <p class="text-[10px] text-slate-400 font-bold uppercase text-center -mt-2">Clique no valor para alterar</p>
         </div>
 
         <div class="space-y-3">
+          <button id="btn-update-pix" class="hidden w-full bg-primary text-black font-black py-4 rounded-2xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-3 text-sm uppercase tracking-wider">
+            Atualizar QR Code <span class="material-symbols-outlined text-base">refresh</span>
+          </button>
           <button id="btn-copy-pix" class="w-full bg-slate-900 text-white font-black py-4 rounded-2xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-3 text-sm uppercase tracking-wider">
             Copiar Código PIX <span class="material-symbols-outlined text-base">content_copy</span>
           </button>
           <button id="btn-check-pix" class="w-full bg-emerald-500 text-white font-black py-4 rounded-2xl shadow-lg active:scale-95 transition-all text-sm uppercase tracking-widest flex items-center justify-center gap-2">
-            PÁGUEI, VERIFICAR <span class="material-symbols-outlined text-base">sync</span>
+            PAGUEI, VERIFICAR <span class="material-symbols-outlined text-base">sync</span>
           </button>
         </div>
         
-        <p class="text-[9px] text-center text-slate-400 mt-6 px-4 leading-relaxed">Pague exatamente o valor informado. O sistema identificará o pagamento automaticamente via <strong class="text-primary">Webhook C6 Bank</strong>.</p>
+        <p class="text-[9px] text-center text-slate-400 mt-6 px-4 leading-relaxed">O sistema identificará o pagamento automaticamente via <strong class="text-primary">Webhook C6 Bank</strong> e atualizará seu saldo na hora.</p>
       </div>`;
 
     document.body.appendChild(m);
+
+    const amountInput = m.querySelector('#pix-amount');
+    const updateBtn = m.querySelector('#btn-update-pix');
+    const qrImg = m.querySelector('img');
+
+    amountInput.oninput = () => {
+        updateBtn.classList.remove('hidden');
+    };
+
+    updateBtn.onclick = async () => {
+        const val = parseFloat(amountInput.value);
+        if (isNaN(val) || val < 1) {
+            alert("Valor mínimo para recarga é R$ 1,00");
+            return;
+        }
+        updateBtn.innerHTML = '<div class="size-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>';
+        const newPayload = await generatePix(val);
+        if (newPayload) {
+            pixPayload = newPayload;
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(pixPayload)}`;
+            updateBtn.classList.add('hidden');
+            updateBtn.innerHTML = 'Atualizar QR Code <span class="material-symbols-outlined text-base">refresh</span>';
+        } else {
+            updateBtn.innerHTML = 'Erro, Tente de novo';
+        }
+    };
 
     const close = () => { m.classList.remove('animate-in'); m.classList.add('animate-out', 'fade-out', 'duration-300'); m.querySelector('div').classList.add('slide-out-to-bottom'); setTimeout(() => m.remove(), 300); };
     m.querySelector('#close-modal-pix').onclick = close;

@@ -29,10 +29,10 @@ router.post('/pix', async (req, res) => {
 
             if (driver.onboardingStep === 'kit' || driver.onboardingStep === 'kit_payment') {
                 driver.kitAcquired = true;
-                driver.onboardingStep = 'approved';
-                driver.approved = true; 
+                driver.onboardingStep = 'kit_acquired';
+                // driver.approved = true; // Mantém falso até aprovação manual do admin
                 transactionDescription = 'Pagamento do Kit Oficial Movvi (Automático)';
-                console.log(`[WEBHOOK-PIX] Kit Homologado para ${driver.name}.`);
+                console.log(`[WEBHOOK-PIX] Kit Adquirido (Aguardando Entrega/Aprovação) para ${driver.name}.`);
             }
 
             if (driver.walletBalance > -50) {

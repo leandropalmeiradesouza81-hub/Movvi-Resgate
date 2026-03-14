@@ -469,7 +469,7 @@ function loginView() {
   d.querySelector('#lf').onsubmit = async (e) => {
     e.preventDefault();
     unlockAudio();
-    try { const { user: u } = await Auth.loginDriver(d.querySelector('#le').value, d.querySelector('#lp').value); saveUser(u); connectSocket(); buildSidebar(); (!u.approved && u.onboardingStep !== 'approved') ? nav(onboardingView) : nav(dashboardView); }
+    try { const { user: u } = await Auth.loginDriver(d.querySelector('#le').value, d.querySelector('#lp').value); saveUser(u); connectSocket(); buildSidebar(); (!u.approved) ? nav(onboardingView) : nav(dashboardView); }
     catch (err) { const el = d.querySelector('#le-err'); el.textContent = err.message; el.classList.remove('hidden'); }
   };
   d.querySelector('#go-reg').onclick = () => nav(registerView);
@@ -1149,7 +1149,6 @@ function onboardingView() {
         if (btn) btn.textContent = 'Enviar Documentação';
       }
     };
-  }
 
     const menuObBtn = d.querySelector('#btn-menu-ob');
     if (menuObBtn) menuObBtn.onclick = openSidebar;
@@ -1213,7 +1212,7 @@ function onboardingView() {
         user.onboardingStep = fresh.onboardingStep;
         user.approved = fresh.approved;
         saveUser(user);
-        if (user.approved || user.onboardingStep === 'approved') {
+        if (user.approved) {
           nav(dashboardView);
         } else {
           nav(onboardingView);

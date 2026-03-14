@@ -10,9 +10,7 @@ import orderRoutes from './routes/orders.js';
 import driverRoutes from './routes/drivers.js';
 import pricingRoutes from './routes/pricing.js';
 import adminRoutes from './routes/admin.js';
-import newsRoutes from './routes/news.js';
 import webhookRoutes from './routes/webhooks.js';
-import seoRoutes, { generateSitemapXML } from './routes/seo.js';
 import leadsRoutes from './routes/leads.js';
 import partnerRoutes from './routes/partners.js';
 
@@ -39,20 +37,18 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/drivers', driverRoutes);
 app.use('/api/pricing', pricingRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/news', newsRoutes);
 app.use('/api/webhooks', webhookRoutes);
 app.use('/api/leads', leadsRoutes);
 app.use('/api/partners', partnerRoutes);
-app.use('/local', seoRoutes);
 
 // SEO Root Routes
 app.get('/sitemap.xml', (req, res) => {
     res.header('Content-Type', 'application/xml');
-    res.send(generateSitemapXML());
+    res.send('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://movviresgate.com.br/</loc><priority>1.0</priority></url></urlset>');
 });
 app.get('/robots.txt', (req, res) => {
     res.type('text/plain');
-    res.send('User-agent: *\nAllow: /\nAllow: /local/\n\nSitemap: https://movviresgate.com.br/sitemap.xml');
+    res.send('User-agent: *\nAllow: /\n\nSitemap: https://movviresgate.com.br/sitemap.xml');
 });
 
 app.get('/google2a4285b186031aeb.html', (req, res) => {

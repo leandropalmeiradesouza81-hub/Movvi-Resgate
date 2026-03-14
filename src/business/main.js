@@ -256,8 +256,8 @@ async function renderNewRequest() {
             serviceType: $('#svc-type').value,
             customerName: $('#cust-name').value,
             customerPlate: $('#cust-plate').value,
-            origin: { address: $('#addr-orig').value, lat: -23.5505, lng: -46.6333 }, // Default SP for test if no map
-            destination: { address: $('#addr-dest').value, lat: -23.5505, lng: -46.6333 },
+            origin: { address: $('#addr-orig').value, lat: -22.9068, lng: -43.1729 }, // Rio de Janeiro Default
+            destination: { address: $('#addr-dest').value, lat: -22.9068, lng: -43.1729 },
             distance: parseFloat($('#dist-km').value),
             duration: 0
         };
@@ -296,6 +296,11 @@ async function renderHistory() {
                                 <p class="text-[10px] text-text-dim uppercase font-bold tracking-widest mt-1">${o.serviceType} • ${o.distance}km</p>
                             </div>
                             <div class="flex items-center gap-3">
+                                ${['searching', 'accepted', 'pickup'].includes(o.status) ? `
+                                    <button onclick="window.cancelOrder('${o.id}')" class="px-3 py-1 bg-signal-red/10 border border-signal-red/20 text-signal-red rounded-full text-[9px] font-black uppercase hover:bg-signal-red hover:text-white transition-all">
+                                        Cancelar
+                                    </button>
+                                ` : ''}
                                 <span class="px-3 py-1 bg-white/5 rounded-full text-[9px] font-black uppercase text-slate-300">
                                     ${o.status.replace('_', ' ')}
                                 </span>
@@ -347,6 +352,16 @@ async function renderHistory() {
         container.innerHTML = `<div class="saas-card p-10 text-center text-red-500 uppercase text-[10px] font-black tracking-widest py-20">Erro: ${err.message}</div>`;
     }
 }
+
+window.cancelOrder = async (id) => {
+    if (!confirm('Deseja realmente cancelar este chamado?')) return;
+    try {
+        await api(`/orders/${id}/status`, { method: 'PUT', body: { status: 'cancelled' } });
+        renderHistory();
+    } catch (err) {
+        alert(err.message);
+    }
+};
 
 function renderBilling() {
     $('#view-title').textContent = '— Extrato Financeiro B2B';

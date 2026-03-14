@@ -263,6 +263,15 @@ function initAdmin() {
 
 // ─── NAVIGATION ─────────────────────────────────────
 let currentPage = 'dashboard';
+window.updateOrderStatus = async (id, status) => {
+    if (status === 'cancelled' && !confirm('Deseja realmente cancelar este pedido?')) return;
+    try {
+        await api(`/orders/${id}/status`, { method: 'PUT', body: { status } });
+        if (currentPage === 'orders') loadPage('orders', true);
+        else if (currentPage === 'dashboard') loadPage('dashboard', true);
+    } catch (err) { alert(err.message); }
+};
+
 async function loadPage(page, isUpdate = false) {
   currentPage = page;
   document.querySelectorAll('.nav-item').forEach(el => {
@@ -533,6 +542,7 @@ async function renderOrders() {
             <tr class="text-[10px] text-text-dim uppercase font-black tracking-widest">
               <th class="p-6">UID_Protocol</th><th class="p-6">Sujeito</th><th class="p-6">Operador</th>
               <th class="p-6">Serviço</th><th class="p-6">Créditos</th><th class="p-6">Status</th>
+              <th class="p-6 text-right">Ação</th>
             </tr>
           </thead>
           <tbody class="text-xs font-bold divide-y divide-white/5">
@@ -547,6 +557,18 @@ async function renderOrders() {
                  <span class="px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${getStatusPillClass(o.status)}">
                     ${o.status.replace('_', ' ')}
                  </span>
+              </td>
+              <td class="p-6 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                        ${['searching', 'accepted', 'pickup'].includes(o.status) ? `
+                            <button onclick="window.updateOrderStatus('${o.id}', 'cancelled')" class="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all">
+                                Cancelar
+                            </button>
+                        ` : ''}
+                        <button class="text-text-dim hover:text-primary p-2 rounded-lg transition-all" onclick="alert('Detalhes do Pedido de ${o.clientName}')">
+                            <span class="material-symbols-outlined">visibility</span>
+                        </button>
+                    </div>
               </td>
             </tr>`).join('')}
           </tbody>

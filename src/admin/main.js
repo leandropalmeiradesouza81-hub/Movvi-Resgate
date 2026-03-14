@@ -1,4 +1,4 @@
-import { Admin, Drivers, Clients, Orders } from '../shared/api.js';
+import { Admin, Drivers, Clients, Orders, Leads, Pricing } from '../shared/api.js';
 
 const $ = (s) => document.querySelector(s);
 let socket = null;

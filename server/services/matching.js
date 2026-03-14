@@ -123,6 +123,24 @@ export async function acceptOrder(io, driverId, orderId) {
     await order.save();
 
     driver.activeOrderId = orderId;
+    
+    // Commission Logic for B2B (Direct Payment to Driver)
+    if (order.metadata?.isB2B) {
+        const commission = order.price * 0.15;
+        const { WalletTransaction } = await import('../models.js');
+        
+        await WalletTransaction.create({
+            id: uuid(),
+            driverId: driver.id,
+            amount: -commission,
+            type: 'debit',
+            description: `Comissão B2B (15%) - Pedido ${order.id.slice(0, 8)}`,
+            orderId: order.id
+        });
+
+        driver.walletBalance = (driver.walletBalance || 0) - commission;
+    }
+
     await driver.save();
 
     io.to(`client_${order.clientId}`).emit('order:accepted', order);

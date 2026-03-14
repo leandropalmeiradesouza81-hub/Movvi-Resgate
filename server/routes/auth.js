@@ -206,6 +206,14 @@ router.post('/login/driver', async (req, res) => {
     
     const driverObj = driver.toObject();
     delete driverObj.password;
+
+    if (driver.walletBalance <= -50) {
+        return res.status(403).json({ 
+            error: 'Acesso bloqueado por saldo negativo excedido (Limite: -R$50). Por favor, regularize sua conta com a plataforma.',
+            user: driverObj 
+        });
+    }
+
     res.json({ user: driverObj, token: `driver_${driver.id}` });
 });
 

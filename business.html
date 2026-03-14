@@ -38,12 +38,14 @@
 </head>
 <body>
     <div id="login-overlay" class="fixed inset-0 flex items-center justify-center p-6 bg-[#0b0f17] z-[2000]">
-        <div class="w-full max-w-md saas-card p-10 border-2 border-slate-800 shadow-2xl">
+        <div id="auth-card" class="w-full max-w-md saas-card p-10 border-2 border-slate-800 shadow-2xl">
             <div class="flex flex-col items-center mb-10 text-center">
-                <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="h-24 object-contain mb-4" style="filter: brightness(0) invert(86%) sepia(93%) saturate(1450%) hue-rotate(334deg) brightness(108%) contrast(106%);">
+                <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="h-20 object-contain mb-4" style="filter: brightness(0) invert(86%) sepia(93%) saturate(1450%) hue-rotate(334deg) brightness(108%) contrast(106%);">
                 <p class="text-primary text-[10px] uppercase tracking-[0.3em] font-black">Portal de Parceiros Corporativos</p>
-                <h2 class="text-white text-xl font-bold mt-2 italic">BUSINESS CENTER</h2>
+                <h2 id="auth-title" class="text-white text-xl font-bold mt-2 italic uppercase">Acesso Business</h2>
             </div>
+
+            <!-- Login Form -->
             <form id="login-form" class="space-y-6">
                 <div>
                     <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2 ml-1">E-mail Corporativo</label>
@@ -55,8 +57,49 @@
                 </div>
                 <div id="login-error" class="hidden p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold text-center"></div>
                 <button type="submit" class="w-full bg-primary hover:brightness-110 text-black font-black uppercase py-4 rounded-xl shadow-xl active:scale-95 transition-all text-sm tracking-widest">Entrar no Terminal</button>
+                <p class="text-center text-[10px] text-text-dim mt-4 font-bold uppercase tracking-widest">Novo parceiro? <a href="#" id="show-register" class="text-primary underline">Cadastre sua empresa</a></p>
             </form>
-            <p class="text-center text-[10px] text-text-dim mt-8 font-bold uppercase tracking-widest">Novo parceiro? <a href="/parcerias.html" class="text-primary underline">Cadastre sua empresa</a></p>
+
+            <!-- Register Form -->
+            <form id="register-form" class="space-y-4 hidden">
+                <div class="grid grid-cols-1 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-1 ml-1">Nome da Empresa</label>
+                        <input type="text" id="reg-company" required class="w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white text-sm focus:border-primary outline-none transition-all" placeholder="Ex: Seguradora X">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-1 ml-1">Nome do Responsável</label>
+                        <input type="text" id="reg-name" required class="w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white text-sm focus:border-primary outline-none transition-all" placeholder="Seu nome">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-1 ml-1">E-mail</label>
+                        <input type="email" id="reg-email" required class="w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white text-sm focus:border-primary outline-none transition-all" placeholder="empresa@email.com">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-1 ml-1">Telefone</label>
+                        <input type="text" id="reg-phone" required class="w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white text-sm focus:border-primary outline-none transition-all" placeholder="(00) 00000-0000">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-1 ml-1">Crie uma Senha</label>
+                    <input type="password" id="reg-password" required class="w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white text-sm focus:border-primary outline-none transition-all" placeholder="••••••••">
+                </div>
+                <div id="reg-error" class="hidden p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold text-center"></div>
+                <button type="submit" class="w-full bg-primary hover:brightness-110 text-black font-black uppercase py-4 rounded-xl shadow-xl active:scale-95 transition-all text-sm tracking-widest">Solicitar Credenciamento</button>
+                <p class="text-center text-[10px] text-text-dim mt-4 font-bold uppercase tracking-widest">Já tem conta? <a href="#" id="show-login" class="text-primary underline">Fazer Login</a></p>
+            </form>
+
+            <!-- Pending Review Message -->
+            <div id="pending-reg" class="hidden text-center py-6 px-4">
+                <div class="size-20 bg-green-500/10 rounded-full flex items-center justify-center text-green-500 mx-auto mb-6">
+                    <span class="material-symbols-outlined text-4xl">inventory_2</span>
+                </div>
+                <h3 class="text-white font-black text-lg uppercase italic mb-2">Solicitação Recebida</h3>
+                <p class="text-xs text-text-dim leading-relaxed uppercase font-bold tracking-widest">Sua empresa foi enviada para análise. Nossa equipe entrará em contato em até 24h para liberar seu acesso.</p>
+                <button onclick="location.reload()" class="mt-8 text-primary font-black uppercase text-[10px] tracking-[0.3em]">Voltar ao Início</button>
+            </div>
         </div>
     </div>
 

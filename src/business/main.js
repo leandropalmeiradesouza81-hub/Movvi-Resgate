@@ -25,9 +25,22 @@ socket.on('order:status', (data) => {
 async function checkAuth() {
     const loggedStr = localStorage.getItem('movvi_partner');
     if (loggedStr) {
-        partner = JSON.parse(loggedStr);
-        socket.emit('join', `client_${partner.id}`);
-        showApp();
+        try {
+            const storedPartner = JSON.parse(loggedStr);
+            // Verify status with server
+            const res = await api(`/partners/${storedPartner.id}/profile`);
+            if (!res.active) {
+                throw new Error('Conta aguardando aprovação');
+            }
+            partner = res;
+            localStorage.setItem('movvi_partner', JSON.stringify(partner));
+            socket.emit('join', `client_${partner.id}`);
+            showApp();
+        } catch (err) {
+            console.error('Auth verification failed:', err);
+            localStorage.removeItem('movvi_partner');
+            $('#login-overlay').classList.remove('hidden');
+        }
     }
 }
 
@@ -38,6 +51,21 @@ function showApp() {
     $('#partner-company').textContent = partner.companyName || 'Empresa';
     renderNewRequest();
 }
+
+// Switch UI
+$('#show-register').onclick = (e) => {
+    e.preventDefault();
+    $('#login-form').classList.add('hidden');
+    $('#register-form').classList.remove('hidden');
+    $('#auth-title').textContent = 'Credenciamento';
+};
+
+$('#show-login').onclick = (e) => {
+    e.preventDefault();
+    $('#register-form').classList.add('hidden');
+    $('#login-form').classList.remove('hidden');
+    $('#auth-title').textContent = 'Acesso Business';
+};
 
 $('#login-form').onsubmit = async (e) => {
     e.preventDefault();
@@ -52,6 +80,30 @@ $('#login-form').onsubmit = async (e) => {
         localStorage.setItem('movvi_partner', JSON.stringify(partner));
         socket.emit('join', `client_${partner.id}`);
         showApp();
+    } catch (err) {
+        errEl.textContent = err.message;
+        errEl.classList.remove('hidden');
+    }
+};
+
+$('#register-form').onsubmit = async (e) => {
+    e.preventDefault();
+    const errEl = $('#reg-error');
+    errEl.classList.add('hidden');
+
+    const payload = {
+        companyName: $('#reg-company').value,
+        name: $('#reg-name').value,
+        email: $('#reg-email').value,
+        phone: $('#reg-phone').value,
+        password: $('#reg-password').value
+    };
+
+    try {
+        await api('/auth/register/partner', { method: 'POST', body: payload });
+        $('#register-form').classList.add('hidden');
+        $('#pending-reg').classList.remove('hidden');
+        $('#auth-title').textContent = 'Solicitação Enviada';
     } catch (err) {
         errEl.textContent = err.message;
         errEl.classList.remove('hidden');
@@ -76,9 +128,14 @@ document.querySelectorAll('.nav-item').forEach(item => {
 });
 
 // ─── VIEWS ──────────────────────────────────────────
-function renderNewRequest() {
+async function renderNewRequest() {
     $('#view-title').textContent = '— Solicitar Resgate Comercial';
     const container = $('#content');
+    
+    // Fetch dynamic pricing
+    const pricing = await api('/pricing').catch(() => ({ b2bTiers: { tier1: 110, tier2: 145, tier3: 170 } }));
+    const tiers = pricing.b2bTiers || { tier1: 110, tier2: 145, tier3: 170 };
+
     container.innerHTML = `
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-6xl">
             <!-- Form Card -->
@@ -106,9 +163,10 @@ function renderNewRequest() {
                         <div class="col-span-1">
                             <label class="text-[10px] font-black uppercase text-text-dim mb-2 block ml-1">Tipo de Serviço</label>
                             <select id="svc-type" class="w-full bg-black border border-white/5 rounded-xl px-5 py-3 text-white outline-none focus:border-primary transition-all">
-                                <option value="tow">Reboque / Guincho</option>
-                                <option value="charge">Carga de Bateria</option>
-                                <option value="tire">Troca de Pneu</option>
+                                <option value="tow">Reboque no Cambão</option>
+                                <option value="battery">Chupeta / Bateria</option>
+                                <option value="fuel">Pane Seca (Combustível)</option>
+                                <option value="tire">Reparo em Pneu</option>
                             </select>
                         </div>
                     </div>
@@ -133,7 +191,7 @@ function renderNewRequest() {
                            <span class="text-xs font-bold text-white uppercase">Valor do Resgate</span>
                            <div class="text-right">
                               <span class="text-xs font-bold text-primary">R$</span>
-                              <span id="price-display" class="text-3xl font-black text-primary italic">110,00</span>
+                              <span id="price-display" class="text-3xl font-black text-primary italic">${tiers.tier1.toFixed(2).replace('.', ',')}</span>
                            </div>
                         </div>
                     </div>
@@ -151,15 +209,15 @@ function renderNewRequest() {
                     <div class="space-y-3">
                         <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5">
                            <span class="text-xs font-bold text-text-dim uppercase tracking-widest">Até 30km</span>
-                           <span class="text-white font-black">R$ 110,00</span>
+                           <span class="text-white font-black">R$ ${tiers.tier1.toFixed(2).replace('.', ',')}</span>
                         </div>
                         <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5">
                            <span class="text-xs font-bold text-text-dim uppercase tracking-widest">31km a 40km</span>
-                           <span class="text-white font-black">R$ 145,00</span>
+                           <span class="text-white font-black">R$ ${tiers.tier2.toFixed(2).replace('.', ',')}</span>
                         </div>
                         <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5">
                            <span class="text-xs font-bold text-text-dim uppercase tracking-widest">41km a 55km</span>
-                           <span class="text-white font-black">R$ 170,00</span>
+                           <span class="text-white font-black">R$ ${tiers.tier3.toFixed(2).replace('.', ',')}</span>
                         </div>
                     </div>
                 </div>
@@ -182,9 +240,9 @@ function renderNewRequest() {
     const priceDisplay = $('#price-display');
     const updatePrice = () => {
         const km = parseFloat(distInp.value);
-        let p = 110;
-        if (km > 30 && km <= 40) p = 145;
-        else if (km > 40) p = 170;
+        let p = tiers.tier1;
+        if (km > 30 && km <= 40) p = tiers.tier2;
+        else if (km > 40) p = tiers.tier3;
         priceDisplay.textContent = p.toFixed(2).replace('.', ',');
     };
     distInp.oninput = updatePrice;

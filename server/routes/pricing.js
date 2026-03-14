@@ -22,6 +22,9 @@ router.put('/', async (req, res) => {
             }
         }
     }
+    if (req.body.b2bTiers) {
+        pricing.value.b2bTiers = req.body.b2bTiers;
+    }
 
     pricing.markModified('value');
     await pricing.save();

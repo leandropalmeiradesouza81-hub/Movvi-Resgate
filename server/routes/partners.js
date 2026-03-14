@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get profile
-router.get('/:id', async (req, res) => {
+router.get(['/:id', '/:id/profile'], async (req, res) => {
     const partner = await Partner.findOne({ id: req.params.id }, '-password');
     if (!partner) return res.status(404).json({ error: 'Parceiro não encontrado' });
     res.json(partner);
@@ -38,6 +38,7 @@ router.put('/:id', async (req, res) => {
 router.post('/:id/order', async (req, res) => {
     const partner = await Partner.findOne({ id: req.params.id });
     if (!partner) return res.status(404).json({ error: 'Parceiro não encontrado' });
+    if (!partner.active) return res.status(403).json({ error: 'Sua conta de parceiro está inativa. Contate o suporte.' });
 
     const { 
         serviceType, 
@@ -49,13 +50,15 @@ router.post('/:id/order', async (req, res) => {
         customerPlate 
     } = req.body;
 
+    // Fetch dynamic B2B Tiers
+    const { Setting } = await import('../models.js');
+    const pricingObj = await Setting.findOne({ key: 'pricing' });
+    const tiers = pricingObj?.value?.b2bTiers || { tier1: 110, tier2: 145, tier3: 170 };
+
     // Fixed Pricing Logic for B2B
-    // <= 30km -> 110
-    // 31-40km -> 145
-    // 41-55km -> 170
-    let price = 110;
-    if (distance > 30 && distance <= 40) price = 145;
-    else if (distance > 40) price = 170; // Assuming 170 for anything above 40 for now, or capping at 55 as per user request
+    let price = tiers.tier1;
+    if (distance > 30 && distance <= 40) price = tiers.tier2;
+    else if (distance > 40) price = tiers.tier3;
 
     const orderId = uuid();
     const txid = uuid().replace(/-/g, '').substring(0, 35);

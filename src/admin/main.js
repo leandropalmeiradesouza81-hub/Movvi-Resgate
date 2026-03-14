@@ -867,7 +867,45 @@ async function renderPricing() {
       </div>`;
   }
 
-  html += `</div></div>`;
+  html += `</div>
+    
+    <!-- B2B Pricing Section -->
+    <div class="saas-card p-10 mt-10 border-acid/20 bg-acid/5">
+      <div class="flex items-center gap-4 mb-8">
+        <div class="size-14 rounded-2xl bg-acid/20 flex items-center justify-center">
+            <span class="material-symbols-outlined text-acid text-4xl">corporate_fare</span>
+        </div>
+        <div>
+            <h2 class="text-2xl font-black text-white uppercase italic">Configuração B2B (Fixa)</h2>
+            <p class="text-[10px] text-text-dim uppercase tracking-[0.3em] font-bold">Valores tabelados para contas corporativas</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="p-6 bg-slate-900/50 rounded-2xl border border-white/5">
+           <label class="text-[10px] font-black text-text-dim uppercase tracking-widest mb-4 block">Até 30km (Total)</label>
+           <div class="relative">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-acid font-black text-sm">R$</span>
+              <input type="number" id="b2b-tier-1" class="w-full bg-black/40 text-white font-black text-2xl py-5 pl-12 pr-6 rounded-xl border border-white/10 outline-none focus:border-acid transition-all" value="${pr.b2bTiers?.tier1 || 110}">
+           </div>
+        </div>
+        <div class="p-6 bg-slate-900/50 rounded-2xl border border-white/5">
+           <label class="text-[10px] font-black text-text-dim uppercase tracking-widest mb-4 block">De 31 a 40km (Total)</label>
+           <div class="relative">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-acid font-black text-sm">R$</span>
+              <input type="number" id="b2b-tier-2" class="w-full bg-black/40 text-white font-black text-2xl py-5 pl-12 pr-6 rounded-xl border border-white/10 outline-none focus:border-acid transition-all" value="${pr.b2bTiers?.tier2 || 145}">
+           </div>
+        </div>
+        <div class="p-6 bg-slate-900/50 rounded-2xl border border-white/5">
+           <label class="text-[10px] font-black text-text-dim uppercase tracking-widest mb-4 block">De 41 a 55km (Total)</label>
+           <div class="relative">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-acid font-black text-sm">R$</span>
+              <input type="number" id="b2b-tier-3" class="w-full bg-black/40 text-white font-black text-2xl py-5 pl-12 pr-6 rounded-xl border border-white/10 outline-none focus:border-acid transition-all" value="${pr.b2bTiers?.tier3 || 170}">
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
   pages.innerHTML = html;
 
   let isLocked = settings.systemLockdown;
@@ -882,8 +920,15 @@ async function renderPricing() {
   btnSave.onclick = async () => {
     btnSave.innerHTML = '<span class="material-symbols-outlined shrink-0 text-black animate-spin">progress_activity</span> <span class="text-black">Salvando...</span>';
     
-    // Save Pricing
-    const pricingPayload = { services: {} };
+    // Save Pricing & B2B Tiers
+    const pricingPayload = { 
+        services: {},
+        b2bTiers: {
+            tier1: parseFloat(document.querySelector('#b2b-tier-1').value),
+            tier2: parseFloat(document.querySelector('#b2b-tier-2').value),
+            tier3: parseFloat(document.querySelector('#b2b-tier-3').value)
+        }
+    };
     for (const key of Object.keys(pr.services)) {
       pricingPayload.services[key] = {
         basePrice: parseFloat(document.querySelector(`#base-${key}`).value),

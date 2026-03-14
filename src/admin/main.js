@@ -610,8 +610,18 @@ async function renderOnboarding() {
                 </div>
               </td>
               <td class="p-6">
-                 <span class="px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${d.onboardingStep === 'pending_approval' ? 'bg-primary/20 text-primary border-primary/30' : 'bg-slate-800 text-text-dim border-slate-700'}">
-                    ${d.onboardingStep === 'pending_approval' ? 'APROVAÇÃO FINAL' : 'PREENCHIMENTO'}
+                 <span class="px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${
+                    d.onboardingStep === 'pending_approval' ? 'bg-amber-500/10 text-amber-500 border-amber-500/30' : 
+                    d.onboardingStep === 'approved_pending_kit' ? 'bg-blue-500/10 text-blue-500 border-blue-500/30' :
+                    d.onboardingStep === 'kit_acquired' ? 'bg-primary/20 text-primary border-primary/30' :
+                    'bg-slate-800 text-text-dim border-slate-700'
+                 }">
+                    ${
+                      d.onboardingStep === 'pending_approval' ? 'ANÁLISE INICIAL' : 
+                      d.onboardingStep === 'approved_pending_kit' ? 'AGUARDANDO KIT' :
+                      d.onboardingStep === 'kit_acquired' ? 'LIBERAÇÃO FINAL' :
+                      'PREENCHIMENTO'
+                    }
                  </span>
               </td>
               <td class="p-6 text-right">

@@ -88,22 +88,32 @@ router.put('/drivers/:id/approve', async (req, res) => {
     const driver = await Driver.findOne({ id: req.params.id });
     if (!driver) return res.status(404).json({ error: 'Motorista não encontrado' });
 
-    driver.approved = false; // Remains false until kit is acquired
-    driver.onboardingStep = 'approved_pending_kit';
-    
-    // Set 7-day deadline for kit payment (visual only for now)
-    const deadline = new Date();
-    deadline.setDate(deadline.getDate() + 7);
-    driver.kitPaymentDeadline = deadline;
+    // Se já adquiriu o kit, a aprovação agora é FINAL
+    if (driver.onboardingStep === 'kit_acquired' || driver.kitAcquired) {
+        driver.approved = true;
+        driver.onboardingStep = 'approved';
+        console.log(`[ADMIN] Aprovação FINAL concedida para ${driver.name}`);
+    } else {
+        // Primeira aprovação: libera para compra do kit
+        driver.approved = false; 
+        driver.onboardingStep = 'approved_pending_kit';
+        
+        // Deadline de 7 dias para pagamento do kit
+        const deadline = new Date();
+        deadline.setDate(deadline.getDate() + 7);
+        driver.kitPaymentDeadline = deadline;
+        console.log(`[ADMIN] Primeira aprovação (onboarding) para ${driver.name}`);
+    }
     
     await driver.save();
 
     if (req.io) {
         req.io.to(`driver_${driver.id}`).emit('driver:data-updated', {
-            approved: true
+            approved: driver.approved,
+            onboardingStep: driver.onboardingStep
         });
 
-        // Broadcast spots update to all (for invitation page real-time sync)
+        // Broadcast spots update
         const settingsObj = await Setting.findOne({ key: 'settings' });
         const settings = settingsObj?.value || {};
         const approvedCount = await Driver.countDocuments({ approved: true });

@@ -1054,7 +1054,7 @@ function onboardingView() {
 
           <button id="btn-pay" class="w-full bg-primary text-black font-black py-5 flex flex-col items-center justify-center rounded-2xl shadow-2xl shadow-primary/30 active:scale-[0.98] transition-all">
             <span class="uppercase tracking-widest text-[14px]">Adquirir via PIX agora</span>
-            <span class="text-[9px] font-black uppercase tracking-widest opacity-60">Liberação Automática via Movvi Resgate Tecnologia</span>
+            <span class="text-[9px] font-black uppercase tracking-widest opacity-60">Movvi Resgate Tecnologia</span>
           </button>
         </div>
       `;
@@ -1129,21 +1129,36 @@ function onboardingView() {
     <h3 class="font-black text-2xl text-white mb-2 uppercase italic tracking-tighter">Pagamento do Kit</h3>
     <p class="text-xs font-bold text-slate-400 mb-8 max-w-[280px]">Escaneie o QR Code ou use o Copia e Cola. Após o pagamento, nosso time entrará em contato para entrega em até 7 dias (podendo ocorrer antes).</p>
     
-    <div class="bg-white p-6 rounded-[2rem] mb-8 flex justify-center w-full shadow-inner border border-slate-50 relative">
-      <img src="" alt="QR Code PIX" id="pix-qr-img" class="w-48 h-48 rounded-2xl">
-    </div>
-
     <div class="flex flex-col gap-3 w-full relative">
-      <div class="grid grid-cols-2 gap-2">
-         <button id="btn-copy-pix" class="bg-primary text-black font-black py-4 rounded-2xl active:scale-95 transition-all text-[10px] uppercase tracking-widest shadow-xl shadow-primary/20 flex items-center justify-center gap-2">
-           <span class="material-symbols-outlined text-sm">content_copy</span> COPIAR
-         </button>
-         <button id="btn-share-pix" class="bg-white/10 text-white font-black py-4 rounded-2xl active:scale-95 transition-all text-[10px] uppercase tracking-widest border border-white/20 flex items-center justify-center gap-2">
-           <span class="material-symbols-outlined text-sm">share</span> COMPARTILHAR
-         </button>
+      <div id="pix-display-area">
+        <div class="bg-white p-6 rounded-[2rem] mb-6 flex justify-center w-full shadow-inner border border-slate-50 relative">
+          <img src="/assets/images/pix_kit_qr.png" alt="QR Code PIX" id="pix-qr-img" class="w-48 h-48 rounded-2xl">
+        </div>
+        <div class="grid grid-cols-2 gap-2 mb-4">
+           <button id="btn-copy-pix" class="bg-primary text-black font-black py-4 rounded-2xl active:scale-95 transition-all text-[10px] uppercase tracking-widest shadow-xl shadow-primary/20 flex items-center justify-center gap-2">
+             <span class="material-symbols-outlined text-sm">content_copy</span> COPIAR
+           </button>
+           <button id="btn-share-pix" class="bg-white/10 text-white font-black py-4 rounded-2xl active:scale-95 transition-all text-[10px] uppercase tracking-widest border border-white/20 flex items-center justify-center gap-2">
+             <span class="material-symbols-outlined text-sm">share</span> COMPARTILHAR
+           </button>
+        </div>
+        <button id="btn-show-upload" class="w-full bg-white/5 border border-white/10 text-white font-black py-4 rounded-2xl active:scale-95 transition-all text-[10px] uppercase tracking-widest mb-2">Já paguei, enviar comprovante</button>
       </div>
-      <button id="btn-check-pix-ob" class="w-full bg-emerald-500 text-white font-black py-4 rounded-2xl active:scale-95 transition-all text-xs uppercase tracking-widest shadow-lg">JÁ PAGUEI, LIBERAR AGORA</button>
-      <button id="btn-cancel-pix" class="w-full text-red-500 font-bold py-3 text-[10px] uppercase tracking-widest opacity-60">Voltar</button>
+
+      <div id="upload-display-area" class="hidden w-full">
+         <div class="bg-white/5 border-2 border-dashed border-white/10 rounded-3xl p-8 mb-4 flex flex-col items-center justify-center gap-3 cursor-pointer" onclick="document.getElementById('proof-file').click()">
+            <span class="material-symbols-outlined text-4xl text-primary opacity-50">cloud_upload</span>
+            <p class="text-[10px] font-black uppercase tracking-widest text-text-dim text-center">Clique para selecionar a foto do comprovante</p>
+            <input type="file" id="proof-file" accept="image/*" class="hidden">
+            <div id="proof-preview" class="hidden mt-2 size-20 rounded-lg overflow-hidden border border-primary/20">
+               <img src="" class="size-full object-cover">
+            </div>
+         </div>
+         <button id="btn-send-proof" class="w-full bg-emerald-500 text-white font-black py-4 rounded-2xl active:scale-95 transition-all text-xs uppercase tracking-widest shadow-lg disabled:opacity-50">Enviar Comprovante Agora</button>
+         <button id="btn-back-to-pix" class="w-full text-text-dim font-bold py-3 text-[10px] uppercase tracking-widest">Voltar para o QR Code</button>
+      </div>
+
+      <button id="btn-cancel-pix" class="w-full text-red-500 font-bold py-3 text-[10px] uppercase tracking-widest opacity-60">Sair</button>
     </div>
   </div>
 </div>
@@ -1174,63 +1189,84 @@ function onboardingView() {
     if (refObBtn) refObBtn.onclick = () => nav(referralView);
 
     const payBtn = d.querySelector('#btn-pay');
-    if (payBtn) payBtn.onclick = async () => {
-      payBtn.innerHTML = '<div class="size-6 border-4 border-black border-t-transparent rounded-full animate-spin"></div>';
-      try {
-        const res = await api(`/drivers/${user.id}/pix/generate`, 'POST', { amount: 399.00, reason: 'kit' });
-        const modal = d.querySelector('#pix-modal');
-        modal.querySelector('img').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(res.pixCopiaECola)}`;
+    if (payBtn) payBtn.onclick = () => {
+      const modal = d.querySelector('#pix-modal');
+      const pixKey = "0002010121126360014br.gov.bcb.pix0114656288330001475204000053039865802BR5925MOVVI";
+      
+      // Share Logic
+      const shareBtn = modal.querySelector('#btn-share-pix');
+      if (shareBtn) shareBtn.onclick = () => {
+        if (navigator.share) {
+          navigator.share({ title: 'Copia e Cola - Kit Movvi', text: pixKey }).catch(() => {});
+        } else {
+          navigator.clipboard.writeText(pixKey);
+          alert('Código copiado!');
+        }
+      };
+
+      const copyBtn = modal.querySelector('#btn-copy-pix');
+      if (copyBtn) copyBtn.onclick = () => {
+        navigator.clipboard.writeText(pixKey);
+        const oldT = copyBtn.innerHTML;
+        copyBtn.innerHTML = "COPIADO!";
+        setTimeout(() => copyBtn.innerHTML = oldT, 2000);
+      };
+
+      // Modal Navigation
+      const showUpload = modal.querySelector('#btn-show-upload');
+      const backToPix = modal.querySelector('#btn-back-to-pix');
+      const pixArea = modal.querySelector('#pix-display-area');
+      const uploadArea = modal.querySelector('#upload-display-area');
+
+      showUpload.onclick = () => {
+        pixArea.classList.add('hidden');
+        uploadArea.classList.remove('hidden');
+      };
+      backToPix.onclick = () => {
+        uploadArea.classList.add('hidden');
+        pixArea.classList.remove('hidden');
+      };
+
+      // Upload Preview
+      const fileInp = modal.querySelector('#proof-file');
+      const preview = modal.querySelector('#proof-preview');
+      fileInp.onchange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            preview.querySelector('img').src = ev.target.result;
+            preview.classList.remove('hidden');
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+
+      // Send Proof
+      modal.querySelector('#btn-send-proof').onclick = async () => {
+        const btn = modal.querySelector('#btn-send-proof');
+        if (!fileInp.files[0]) return alert('Selecione a foto do comprovante');
         
-        // Share Logic
-        const shareBtn = modal.querySelector('#btn-share-pix');
-        if (shareBtn) shareBtn.onclick = () => {
-          if (navigator.share) {
-            navigator.share({
-              title: 'Copia e Cola - Kit Movvi',
-              text: res.pixCopiaECola
-            }).catch(() => {});
-          } else {
-            navigator.clipboard.writeText(res.pixCopiaECola);
-            alert('Código copiado para compartilhar!');
-          }
-        };
+        btn.disabled = true;
+        btn.textContent = 'ENVIANDO...';
+        try {
+          await Drivers.update(user.id, { onboardingStep: 'waiting_delivery' });
+          user.onboardingStep = 'waiting_delivery';
+          saveUser(user);
+          modal.classList.add('hidden');
+          nav(onboardingView);
+        } catch (err) {
+          alert('Erro ao enviar. Tente novamente.');
+          btn.disabled = false;
+          btn.textContent = 'Enviar Comprovante Agora';
+        }
+      };
 
-        modal.classList.remove('hidden');
-        setTimeout(() => modal.querySelector('#pix-modal-content').classList.replace('scale-95', 'scale-100'), 10);
+      modal.classList.remove('hidden');
+      setTimeout(() => modal.querySelector('#pix-modal-content').classList.replace('scale-95', 'scale-100'), 10);
 
-        modal.querySelector('#btn-check-pix-ob').onclick = async () => {
-           const btn = modal.querySelector('#btn-check-pix-ob');
-           const oldTxt = btn.textContent;
-           btn.innerHTML = '<div class="size-4 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>';
-           try {
-             const fresh = await Drivers.get(user.id);
-             if (fresh.kitAcquired || fresh.onboardingStep === 'kit_acquired') {
-               modal.classList.add('hidden');
-               user.onboardingStep = fresh.onboardingStep;
-               user.kitAcquired = fresh.kitAcquired;
-               saveUser(user);
-               nav(onboardingView);
-             } else {
-               btn.textContent = "AGUARDANDO BANCO...";
-               setTimeout(() => btn.textContent = oldTxt, 3000);
-             }
-           } catch { btn.textContent = oldTxt; }
-        };
-
-        const cancelPix = d.querySelector('#btn-cancel-pix');
-        if (cancelPix) cancelPix.onclick = () => d.querySelector('#pix-modal').classList.add('hidden');
-        
-        modal.querySelector('#btn-copy-pix').onclick = () => {
-          navigator.clipboard.writeText(res.pixCopiaECola);
-          const cpBtn = modal.querySelector('#btn-copy-pix');
-          const oldT = cpBtn.textContent;
-          cpBtn.textContent = "COPIADO!";
-          setTimeout(() => cpBtn.textContent = oldT, 2000);
-        };
-      } catch (err) { 
-        alert('Erro ao gerar PIX.'); 
-      }
-      payBtn.innerHTML = '<span class="uppercase tracking-widest text-[14px]">Adquirir via PIX agora</span><span class="text-[9px] font-black uppercase tracking-widest opacity-60">Liberação Automática via C6 Bank</span>';
+      const cancelPix = d.querySelector('#btn-cancel-pix');
+      if (cancelPix) cancelPix.onclick = () => d.querySelector('#pix-modal').classList.add('hidden');
     };
 
     const refreshObBtn = d.querySelector('#btn-refresh-onboarding');

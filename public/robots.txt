@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Allow: /local/
 
 Sitemap: https://movviresgate.com.br/sitemap.xml

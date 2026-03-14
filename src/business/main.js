@@ -3,11 +3,30 @@ import { api } from '../shared/api.js';
 const $ = (s) => document.querySelector(s);
 let partner = null;
 
+// ─── SOCKET LOGIC ──────────────────────────────────────
+const socket = io();
+
+socket.on('order:searching', (data) => {
+    if ($('#status-msg')) {
+        $('#status-msg').textContent = data.message;
+    }
+});
+
+socket.on('order:accepted', (order) => {
+    alert(`Motorista ${order.driverName} aceitou seu chamado!`);
+    renderHistory();
+});
+
+socket.on('order:status', (data) => {
+    renderHistory();
+});
+
 // ─── AUTH LOGIC ───────────────────────────────────────
 async function checkAuth() {
     const loggedStr = localStorage.getItem('movvi_partner');
     if (loggedStr) {
         partner = JSON.parse(loggedStr);
+        socket.emit('join', `client_${partner.id}`);
         showApp();
     }
 }
@@ -31,6 +50,7 @@ $('#login-form').onsubmit = async (e) => {
         const res = await api('/auth/login/partner', { method: 'POST', body: { email, password } });
         partner = res.user;
         localStorage.setItem('movvi_partner', JSON.stringify(partner));
+        socket.emit('join', `client_${partner.id}`);
         showApp();
     } catch (err) {
         errEl.textContent = err.message;
@@ -95,11 +115,11 @@ function renderNewRequest() {
 
                     <div class="space-y-4 pt-4 border-t border-white/5">
                         <div>
-                            <label class="text-[10px] font-black uppercase text-text-dim mb-2 block ml-1">Endereço de Origem (Onde está o carro)</label>
+                            <label class="text-[10px] font-black uppercase text-text-dim mb-2 block ml-1">Endereço de Origem</label>
                             <input type="text" id="addr-orig" required class="w-full bg-black/40 border border-white/5 rounded-xl px-5 py-3 text-white outline-none focus:border-primary transition-all" placeholder="Rua, Número, Bairro, Cidade">
                         </div>
                         <div>
-                            <label class="text-[10px] font-black uppercase text-text-dim mb-2 block ml-1">Endereço de Destino (Pranching/Oficina)</label>
+                            <label class="text-[10px] font-black uppercase text-text-dim mb-2 block ml-1">Endereço de Destino</label>
                             <input type="text" id="addr-dest" required class="w-full bg-black/40 border border-white/5 rounded-xl px-5 py-3 text-white outline-none focus:border-primary transition-all" placeholder="Local de entrega">
                         </div>
                     </div>
@@ -119,18 +139,18 @@ function renderNewRequest() {
                     </div>
 
                     <button type="submit" class="w-full bg-primary hover:brightness-110 text-black font-black uppercase py-5 rounded-2xl shadow-xl active:scale-95 transition-all text-sm tracking-widest flex items-center justify-center gap-3">
-                        Gerar Ordem e Link PIX <span class="material-symbols-outlined font-black">qr_code_2</span>
+                        Solicitar Agora <span class="material-symbols-outlined font-black">send</span>
                     </button>
                 </form>
             </div>
 
-            <!-- Tabela de Preços e Info -->
+            <!-- Preços e Busca Ativa -->
             <div class="space-y-6">
                 <div class="saas-card p-8 bg-black/20 border-white/5">
-                    <h4 class="text-white font-black text-xs uppercase mb-6 tracking-widest">Tabela de Preços Acordada</h4>
+                    <h4 class="text-white font-black text-xs uppercase mb-6 tracking-widest">Tabela de Preços</h4>
                     <div class="space-y-3">
                         <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5">
-                           <span class="text-xs font-bold text-text-dim uppercase tracking-widest">Até 30km (Total)</span>
+                           <span class="text-xs font-bold text-text-dim uppercase tracking-widest">Até 30km</span>
                            <span class="text-white font-black">R$ 110,00</span>
                         </div>
                         <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5">
@@ -142,13 +162,22 @@ function renderNewRequest() {
                            <span class="text-white font-black">R$ 170,00</span>
                         </div>
                     </div>
-                    <p class="mt-8 text-[10px] text-text-dim font-medium uppercase tracking-[0.2em] leading-relaxed italic">Valores brutos. O pagamento via PIX é necessário para a ativação imediata do parceiro na rede.</p>
+                </div>
+
+                <div id="active-search" class="hidden saas-card p-8 border-primary/20 animate-pulse">
+                    <div class="flex items-center gap-4">
+                        <div class="size-10 rounded-full border-4 border-primary border-t-transparent animate-spin"></div>
+                        <div>
+                            <p class="text-xs font-black text-white uppercase italic">Buscando Motorista...</p>
+                            <p id="status-msg" class="text-[9px] text-text-dim uppercase tracking-widest mt-1">Aguarde, estamos notificando a rede.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     `;
 
-    // Pricing Update Logic
+    // Pricing logic
     const distInp = $('#dist-km');
     const priceDisplay = $('#price-display');
     const updatePrice = () => {
@@ -160,91 +189,113 @@ function renderNewRequest() {
     };
     distInp.oninput = updatePrice;
 
-    // Form Submit
     $('#order-form').onsubmit = async (e) => {
         e.preventDefault();
         const btn = e.target.querySelector('button[type="submit"]');
-        const oldHtml = btn.innerHTML;
-        btn.innerHTML = '<div class="size-6 border-4 border-black border-t-transparent rounded-full animate-spin"></div>';
+        btn.disabled = true;
         
         const payload = {
             serviceType: $('#svc-type').value,
             customerName: $('#cust-name').value,
             customerPlate: $('#cust-plate').value,
-            origin: { address: $('#addr-orig').value },
-            destination: { address: $('#addr-dest').value },
+            origin: { address: $('#addr-orig').value, lat: -23.5505, lng: -46.6333 }, // Default SP for test if no map
+            destination: { address: $('#addr-dest').value, lat: -23.5505, lng: -46.6333 },
             distance: parseFloat($('#dist-km').value),
             duration: 0
         };
 
         try {
-            const res = await api(`/partners/${partner.id}/order`, { method: 'POST', body: payload });
-            showPixModal(res.pixCode, res.price);
+            await api(`/partners/${partner.id}/order`, { method: 'POST', body: payload });
+            $('#active-search').classList.remove('hidden');
+            btn.innerHTML = 'Solicitação Enviada';
+            setTimeout(() => renderHistory(), 2000);
         } catch (err) {
             alert(err.message);
-        } finally {
-            btn.innerHTML = oldHtml;
+            btn.disabled = false;
         }
     };
 }
 
-function showPixModal(code, price) {
-    let modal = $('#pix-modal');
-    if (!modal) {
-        modal = document.createElement('div');
-        modal.id = 'pix-modal';
-        modal.className = 'fixed inset-0 z-[3000] bg-black/95 backdrop-blur-xl flex items-center justify-center p-6';
-        modal.innerHTML = `
-            <div class="saas-card w-full max-w-sm p-10 bg-slate-900 border-2 border-slate-800 flex flex-col items-center text-center">
-                <div class="size-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6">
-                    <span class="material-symbols-outlined text-4xl font-black">bolt</span>
-                </div>
-                <h3 class="text-white font-black text-xl uppercase italic">Ativar Chamado</h3>
-                <p class="text-[10px] text-text-dim uppercase font-bold tracking-widest mt-2 mb-8">Pagamento para o banco C6 Bank</p>
-                
-                <div class="bg-white p-4 rounded-3xl mb-8 shadow-inner">
-                    <img id="pix-img" class="size-56">
-                </div>
+async function renderHistory() {
+    $('#view-title').textContent = '— Histórico de Atendimentos';
+    const container = $('#content');
+    container.innerHTML = '<div class="text-center py-20 text-text-dim">Carregando seus pedidos...</div>';
 
-                <div class="w-full bg-black/40 p-4 rounded-xl border border-white/5 mb-6 text-xs text-primary font-mono select-all truncate">
-                    ${code}
-                </div>
+    try {
+        const orders = await api(`/orders?clientId=${partner.id}`);
+        if (orders.length === 0) {
+            container.innerHTML = `<div class="saas-card p-10 text-center text-text-dim uppercase text-[10px] font-black tracking-widest py-20">Nenhum pedido encontrado.</div>`;
+            return;
+        }
 
-                <div class="space-y-3 w-full">
-                    <button id="copy-pix" class="w-full bg-primary text-black font-black py-4 rounded-xl text-xs uppercase tracking-widest shadow-xl">Copiar Código</button>
-                    <button id="close-pix" class="w-full text-text-dim font-black py-4 text-xs uppercase tracking-widest opacity-60">Fechar</button>
-                </div>
+        container.innerHTML = `
+            <div class="grid grid-cols-1 gap-6">
+                ${orders.map(o => `
+                    <div class="saas-card p-6 bg-slate-900/40 border border-white/5">
+                        <div class="flex flex-wrap items-center justify-between gap-4">
+                            <div>
+                                <h4 class="text-white font-black text-sm uppercase">${o.metadata?.customerPlate || '---'}</h4>
+                                <p class="text-[10px] text-text-dim uppercase font-bold tracking-widest mt-1">${o.serviceType} • ${o.distance}km</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-[9px] font-black uppercase text-slate-300">
+                                    ${o.status.replace('_', ' ')}
+                                </span>
+                                <span class="text-primary font-black text-sm">R$ ${o.price.toFixed(2).replace('.', ',')}</span>
+                            </div>
+                        </div>
+
+                        ${o.status === 'searching' ? `
+                            <div class="mt-6 p-4 bg-primary/5 rounded-xl border border-primary/10 flex items-center gap-3">
+                                <div class="size-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                                <p class="text-[10px] text-primary font-black uppercase tracking-widest">Buscando profissional na rede...</p>
+                            </div>
+                        ` : ''}
+
+                        ${o.driverId ? `
+                            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-white/5">
+                                <div class="flex items-center gap-4">
+                                    <div class="size-12 bg-slate-800 rounded-xl overflow-hidden">
+                                        ${o.driverPhoto ? `<img src="${o.driverPhoto}" class="size-full object-cover">` : `<div class="size-full flex items-center justify-center font-black text-slate-500">${o.driverName[0]}</div>`}
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] text-text-dim uppercase font-black uppercase mb-1">Motorista</p>
+                                        <p class="text-xs font-black text-white italic">${o.driverName}</p>
+                                        <p class="text-[10px] text-text-dim font-bold mt-1">${o.driverPlate}</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-primary/10 p-4 rounded-2xl border border-primary/20">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <p class="text-[9px] text-primary font-black uppercase tracking-widest">Pagamento Direto (PIX Motorista)</p>
+                                        <span class="material-symbols-outlined text-primary text-sm">bolt</span>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex-1 bg-black/40 p-3 rounded-lg border border-primary/20 text-center font-mono text-[10px] text-white select-all truncate">
+                                            ${o.driverPixKey || 'Chave não informada'}
+                                        </div>
+                                        <button onclick="navigator.clipboard.writeText('${o.driverPixKey}'); alert('Chave Copiada!')" class="size-10 bg-primary/20 text-primary rounded-lg flex items-center justify-center hover:bg-primary hover:text-black transition-all">
+                                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('')}
             </div>
         `;
-        document.body.appendChild(modal);
+    } catch (err) {
+        container.innerHTML = `<div class="saas-card p-10 text-center text-red-500 uppercase text-[10px] font-black tracking-widest py-20">Erro: ${err.message}</div>`;
     }
-
-    $('#pix-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(code)}`;
-    $('#copy-pix').onclick = () => {
-        navigator.clipboard.writeText(code);
-        alert('Copiado!');
-    };
-    $('#close-pix').onclick = () => {
-        modal.remove();
-        renderHistory();
-    };
-    modal.classList.remove('hidden');
-}
-
-function renderHistory() {
-    $('#view-title').textContent = '— Histórico de Atendimentos';
-    $('#content').innerHTML = `
-        <div class="saas-card p-8">
-            <p class="text-center text-text-dim uppercase text-[10px] font-black tracking-widest py-20">Você ainda não possui atendimentos registrados.</p>
-        </div>
-    `;
 }
 
 function renderBilling() {
     $('#view-title').textContent = '— Extrato Financeiro B2B';
     $('#content').innerHTML = `
-        <div class="saas-card p-8">
-            <p class="text-center text-text-dim uppercase text-[10px] font-black tracking-widest py-20">Extrato detalhado em fase de desenvolvimento.</p>
+        <div class="saas-card p-10 text-center py-20">
+            <span class="material-symbols-outlined text-4xl text-text-dim/20 mb-4">account_balance_wallet</span>
+            <p class="text-[10px] text-text-dim font-black uppercase tracking-widest">Extrato detalhado em fase de desenvolvimento.</p>
         </div>
     `;
 }

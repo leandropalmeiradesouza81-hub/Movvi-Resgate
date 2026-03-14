@@ -61,46 +61,43 @@ router.post('/:id/order', async (req, res) => {
     const txid = uuid().replace(/-/g, '').substring(0, 35);
 
     const order = await Order.create({
-        id: orderId,
-        clientId: partner.id, // We use clientId to store who requested (Partner ID)
+        id: uuid(),
+        clientId: partner.id,
         serviceType,
-        status: 'pending',
+        status: 'searching',
         origin,
+        pickupLat: origin.lat || 0, // In production, we should geocode or get from UI
+        pickupLon: origin.lng || 0,
+        pickupAddress: origin.address,
         destination,
+        destinationLat: destination.lat || 0,
+        destinationLon: destination.lng || 0,
+        destinationAddress: destination.address,
         distance,
         duration,
         price,
-        paymentMethod: 'pix',
+        driverPrice: price, // Direct payment to driver
+        paymentMethod: 'pix_direct',
         txid,
         paid: false,
         metadata: {
             isB2B: true,
             customerName,
             customerPlate
-        }
+        },
+        clientName: partner.companyName,
+        clientPhone: partner.phone
     });
 
-    // Generate PIX
-    try {
-        const pix = await createPixCharge({
-            amount: price,
-            description: `Resgate Movvi B2B - ${customerPlate}`,
-            txid,
-            pixKey: "65628833000147" // Platform PIX Key
-        });
+    // Inicia o matching para encontrar motoristas
+    const { startMatching } = await import('../services/matching.js');
+    startMatching(req.io, {}, order.id);
 
-        order.pixCode = pix.pixCopiaECola;
-        await order.save();
-
-        res.json({
-            success: true,
-            orderId,
-            price,
-            pixCode: pix.pixCopiaECola
-        });
-    } catch (e) {
-        res.status(500).json({ error: 'Erro ao gerar cobrança PIX.' });
-    }
+    res.status(201).json({
+        success: true,
+        orderId: order.id,
+        status: 'searching'
+    });
 });
 
 export default router;

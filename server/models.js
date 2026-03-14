@@ -77,6 +77,8 @@ const orderSchema = new mongoose.Schema({
     pixCode: String,
     txid: String,
     paid: { type: Boolean, default: false },
+    driverPixKey: String,
+    metadata: mongoose.Schema.Types.Mixed,
     createdAt: { type: Date, default: Date.now },
     completedAt: Date
 });

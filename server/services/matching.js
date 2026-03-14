@@ -117,6 +117,7 @@ export async function acceptOrder(io, driverId, orderId) {
     order.driverPhoto = driver.photo;
     order.driverLat = driver.latitude;
     order.driverLon = driver.longitude;
+    order.driverPixKey = driver.pixKey; // Nova chave para pagamento direto
     order.acceptedAt = new Date().toISOString();
 
     await order.save();

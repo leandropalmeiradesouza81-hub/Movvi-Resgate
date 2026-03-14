@@ -74,6 +74,16 @@ function saveUser(u) { user = u; localStorage.setItem('movvi_driver', JSON.strin
 function loadUser() { try { return JSON.parse(localStorage.getItem('movvi_driver')); } catch { return null; } }
 function nav(fn, data) {
   closeSidebar();
+
+  // BLOQUEIO DE SEGURANÇA: Garante que o motorista só acesse o mapa/dashboard se estiver APROVADO e ATIVO (kit pago)
+  // Caso contrário, redireciona sempre para o Onboarding
+  const viewsThatRequireApproval = [dashboardView, earningsView, historyView, referralView, supportChatView, profileView];
+  if (viewsThatRequireApproval.includes(fn)) {
+    if (user && (!user.approved || user.onboardingStep !== 'active')) {
+      fn = onboardingView;
+    }
+  }
+
   currentViewFn = fn;
   currentViewData = data;
   appContent.innerHTML = '';
@@ -2803,7 +2813,7 @@ function clientChatView(data) {
 }
 
 // ─── STARTUP ───
-function startApp() {
+async function startApp() {
   appContent = document.getElementById('app-content');
   sidebar = document.getElementById('sidebar');
   sidebarOverlay = document.getElementById('sidebar-overlay');
@@ -2820,9 +2830,25 @@ function startApp() {
   const saved = loadUser();
   if (saved) {
     user = saved;
+    
+    // Tenta atualizar os dados do motorista para garantir que o status de aprovação/kit esteja sincronizado
+    try {
+      const fresh = await Drivers.get(user.id);
+      Object.assign(user, fresh);
+      saveUser(user);
+    } catch (e) {
+      console.warn('[Startup] Falha ao sincronizar dados do motorista. Usando cache local.', e);
+    }
+
     connectSocket();
     buildSidebar();
-    checkActiveOrder();
+
+    // Verificação rigorosa de acesso
+    if (!user.approved || user.onboardingStep !== 'active') {
+      nav(onboardingView);
+    } else {
+      checkActiveOrder();
+    }
   } else {
     // Se veio de convite, vai direto para registro
     if (isInvite) {

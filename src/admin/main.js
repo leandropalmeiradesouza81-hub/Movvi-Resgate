@@ -65,6 +65,14 @@ window.approveDriver = async (id) => {
   } catch (err) { alert(err.message); }
 };
 
+window.releaseDriverKit = async (id) => {
+  if (!confirm('Deseja liberar o KIT manualmente para este motorista? Isso pulará a necessidade de pagamento via PIX.')) return;
+  try {
+    await Admin.releaseKit(id);
+    if (currentPage === 'onboarding') loadPage('onboarding', true);
+  } catch (err) { alert(err.message); }
+};
+
 window.viewDocuments = async (id) => {
   const drivers = await Drivers.list();
   const d = drivers.find(drv => drv.id === id);
@@ -626,10 +634,24 @@ async function renderOnboarding() {
               </td>
               <td class="p-6 text-right">
                 <div class="flex items-center justify-end gap-2">
-                  <button class="bg-primary/10 text-primary hover:bg-primary hover:text-black px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2" onclick="viewDocuments('${d.id}')">
-                    <span class="material-symbols-outlined text-sm">visibility</span>
-                    Avaliar Perfil
-                  </button>
+                  <div class="flex flex-col gap-2">
+                    <button class="bg-primary/10 text-primary hover:bg-primary hover:text-black px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2" onclick="viewDocuments('${d.id}')">
+                      <span class="material-symbols-outlined text-sm">visibility</span>
+                      Avaliar Perfil
+                    </button>
+                    ${d.onboardingStep === 'approved_pending_kit' ? `
+                      <button class="bg-amber-500/10 text-amber-500 hover:bg-amber-500 hover:text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2" onclick="releaseDriverKit('${d.id}')">
+                        <span class="material-symbols-outlined text-sm">inventory_2</span>
+                        Liberar Kit Manual
+                      </button>
+                    ` : ''}
+                    ${d.onboardingStep === 'kit_acquired' ? `
+                      <button class="bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2" onclick="approveDriver('${d.id}')">
+                        <span class="material-symbols-outlined text-sm">verified</span>
+                        Liberação Final
+                      </button>
+                    ` : ''}
+                  </div>
                   <button class="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white size-9 rounded-xl flex items-center justify-center transition-all shadow-lg" onclick="deleteDriver('${d.id}', '${d.name}')">
                     <span class="material-symbols-outlined text-base">delete</span>
                   </button>

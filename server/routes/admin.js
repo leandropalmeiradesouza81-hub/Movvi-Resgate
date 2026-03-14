@@ -88,10 +88,11 @@ router.put('/drivers/:id/approve', async (req, res) => {
     const driver = await Driver.findOne({ id: req.params.id });
     if (!driver) return res.status(404).json({ error: 'Motorista não encontrado' });
 
-    // Se já adquiriu o kit, a aprovação agora é FINAL
-    if (driver.onboardingStep === 'kit_acquired' || driver.kitAcquired) {
+    // Se já adquiriu o kit OU o admin está forçando a liberação final
+    // Note: Caso o admin clique em aprovar e o kit já esteja marcado como adquirido, fazemos a liberação final.
+    if (driver.kitAcquired || driver.onboardingStep === 'kit_acquired') {
         driver.approved = true;
-        driver.onboardingStep = 'approved';
+        driver.onboardingStep = 'active'; // Mudamos para 'active' que é o status final no app do motorista
         console.log(`[ADMIN] Aprovação FINAL concedida para ${driver.name}`);
     } else {
         // Primeira aprovação: libera para compra do kit
@@ -120,6 +121,26 @@ router.put('/drivers/:id/approve', async (req, res) => {
         req.io.emit('spots:updated', {
             totalSpots: settings.totalSpotsPhase1 || 100,
             occupiedSpots: approvedCount
+        });
+    }
+
+    res.json({ success: true, driver });
+});
+
+router.put('/drivers/:id/release-kit', async (req, res) => {
+    const driver = await Driver.findOne({ id: req.params.id });
+    if (!driver) return res.status(404).json({ error: 'Motorista não encontrado' });
+
+    driver.kitAcquired = true;
+    driver.onboardingStep = 'kit_acquired';
+    await driver.save();
+
+    console.log(`[ADMIN] Kit liberado MANUALMENTE para ${driver.name}`);
+
+    if (req.io) {
+        req.io.to(`driver_${driver.id}`).emit('driver:data-updated', {
+            kitAcquired: true,
+            onboardingStep: 'kit_acquired'
         });
     }
 

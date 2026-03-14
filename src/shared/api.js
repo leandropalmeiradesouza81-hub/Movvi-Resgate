@@ -70,6 +70,7 @@ export const Admin = {
     live: () => api('/admin/live'),
     deleteClient: (id) => api(`/admin/clients/${id}`, { method: 'DELETE' }),
     approveDriver: (id) => api(`/admin/drivers/${id}/approve`, { method: 'PUT' }),
+    releaseKit: (id) => api(`/admin/drivers/${id}/release-kit`, { method: 'PUT' }),
     unblockDriver: (id) => api(`/admin/drivers/${id}/unblock`, { method: 'PUT' }),
     resetDriverBalance: (id) => api(`/admin/drivers/${id}/reset-balance`, { method: 'PUT' }),
     syncDriver: (id) => api(`/admin/drivers/${id}/sync`, { method: 'POST' }),

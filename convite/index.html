@@ -439,6 +439,12 @@
                         <span class="l">Segundos</span>
                     </div>
                 </div>
+                
+                <div style="margin-top: 40px; max-width: 600px; margin-left: auto; margin-right: auto; padding: 25px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,217,0,0.1); border-radius: 20px; animation: fadeIn 1s ease-out 1.2s backwards;">
+                    <p style="font-size: 14px; line-height: 1.6; color: #888; font-weight: 500;">
+                        Vamos iniciar as operações no Rio de Janeiro com intensas divulgações e parcerias estratégicas com empresas locais, garantindo um fluxo constante de chamados e pedidos de serviços para nossos motoristas parceiros desde o primeiro dia.
+                    </p>
+                </div>
             </div>
 
             <div class="stats-grid">
@@ -498,17 +504,16 @@
     <section class="vagas-counter" id="vagas">
         <div class="container">
             <h2 style="font-size: 2.5rem; margin-bottom: 10px;">FASE PIONEIRA 01</h2>
-            <p style="color: #666; font-weight: 600;">Apenas 200 vagas disponíveis para garantir a qualidade operacional.</p>
+            <p style="color: #666; font-weight: 600;">Apenas 200 vagas para a primeira fase da plataforma.</p>
             
             <div class="vagas-track">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: 900; font-family: 'Outfit';">
                     <span style="color: #666; font-size: 10px; letter-spacing: 0.2em;">Vagas Disponíveis</span>
-                    <span id="vagas-text" style="color: var(--primary);">200</span>
+                    <span style="color: var(--primary);">200</span>
                 </div>
                 <div class="v-bar-bg">
-                    <div id="vagas-bar" class="v-bar-fill" style="width: 14%;"></div>
+                    <div class="v-bar-fill" style="width: 100%;"></div>
                 </div>
-                <p style="font-size: 11px; color: #444; font-weight: 700;">* Atualizado em tempo real</p>
             </div>
         </div>
     </section>
@@ -609,24 +614,8 @@
                 setInterval(updateTimer, 1000);
                 updateTimer();
 
-                // --- UPDATE UI FUNCTION ---
-                function updateSpotsUI(data) {
-                    const available = Math.max(0, data.totalSpots - data.occupiedSpots);
-                    const perc = Math.round((data.occupiedSpots / data.totalSpots) * 100);
-                    const vagasText = document.getElementById('vagas-text');
-                    const vagasBar = document.getElementById('vagas-bar');
-                    if (vagasText) vagasText.innerText = available;
-                    if (vagasBar) vagasBar.style.width = perc + '%';
-                }
+                // Launch Date already set from settings above
 
-                // Initial Load
-                updateSpotsUI(settings);
-
-                // --- REAL-TIME SOCKET UPDATES ---
-                const socket = io();
-                socket.on('spots:updated', (data) => {
-                    updateSpotsUI(data);
-                });
 
             } catch (e) { console.error('Failed to init page:', e); }
         }

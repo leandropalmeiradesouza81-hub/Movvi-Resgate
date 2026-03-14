@@ -16,6 +16,7 @@ export default defineConfig({
         convite: resolve(__dirname, 'convite/index.html'),
         negocios: resolve(__dirname, 'modelo-de-negocio.html'),
         parcerias: resolve(__dirname, 'parcerias.html'),
+        business: resolve(__dirname, 'business.html'),
       }
     }
   },

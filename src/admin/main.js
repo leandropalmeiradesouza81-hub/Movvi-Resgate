@@ -928,7 +928,10 @@ async function renderPricing() {
 const PROD_DOMAIN = 'https://movviresgate.com.br';
 
 async function renderPartners() {
-  const leads = await Leads.list().catch(() => []);
+  const [leads, partners] = await Promise.all([
+    Leads.list().catch(() => []),
+    fetch('/api/partners').then(r => r.json()).catch(() => [])
+  ]);
   
   pages.innerHTML = `
     <div class="space-y-8 fade-up">
@@ -940,7 +943,7 @@ async function renderPartners() {
       </div>
 
       <!-- Links Estratégicos -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="saas-card p-6 bg-slate-900/40 border border-white/5">
           <div class="flex items-center gap-4 mb-6">
              <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -948,7 +951,7 @@ async function renderPartners() {
              </div>
              <div>
                 <h3 class="text-sm font-black text-white uppercase">Modelo de Negócio</h3>
-                <p class="text-[10px] text-text-dim">Para investidores e equipe interna</p>
+                <p class="text-[10px] text-text-dim">Equipe interna / Investidores</p>
              </div>
           </div>
           <div class="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/5 mb-4">
@@ -968,8 +971,8 @@ async function renderPartners() {
                 <span class="material-symbols-outlined text-acid" style="color:#bef264">handshake</span>
              </div>
              <div>
-                <h3 class="text-sm font-black text-white uppercase">Página de Parcerias</h3>
-                <p class="text-[10px] text-text-dim">Landing page para Seguradoras e Associações</p>
+                <h3 class="text-sm font-black text-white uppercase">Landing Page B2B</h3>
+                <p class="text-[10px] text-text-dim">Página de Captura / Lead Gen</p>
              </div>
           </div>
           <div class="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/5 mb-4">
@@ -982,13 +985,77 @@ async function renderPartners() {
              Visualizar Página <span class="material-symbols-outlined text-sm">open_in_new</span>
           </a>
         </div>
+
+        <div class="saas-card p-6 border-2 border-primary/20 bg-primary/5">
+          <div class="flex items-center gap-4 mb-6">
+             <div class="size-12 rounded-xl bg-primary/20 flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary">portal</span>
+             </div>
+             <div>
+                <h3 class="text-sm font-black text-white uppercase">Business Center</h3>
+                <p class="text-[10px] text-text-dim">Portal de Pedidos do Parceiro</p>
+             </div>
+          </div>
+          <div class="flex items-center gap-2 p-3 bg-black/40 rounded-xl border border-white/5 mb-4">
+             <input readonly value="${PROD_DOMAIN}/business.html" class="flex-1 bg-transparent border-none text-[11px] text-text-dim font-mono outline-none">
+             <button onclick="navigator.clipboard.writeText('${PROD_DOMAIN}/business.html'); alert('Link de Produção copiado!')" class="text-primary hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-sm">content_copy</span>
+             </button>
+          </div>
+          <a href="/business.html" target="_blank" class="text-[10px] font-black text-primary uppercase tracking-widest flex items-center gap-2 hover:gap-3 transition-all">
+             Acessar Portal B2B <span class="material-symbols-outlined text-sm">login</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Gestão de Contas B2B -->
+      <div class="saas-card overflow-hidden">
+        <div class="p-6 border-b border-white/5 flex items-center justify-between">
+           <h3 class="text-xs font-black text-white uppercase tracking-widest">Contas Corporativas Ativas</h3>
+           <span class="px-3 py-1 bg-white/5 border border-white/10 text-white rounded-full text-[9px] font-black uppercase">${partners.length} Parceiros</span>
+        </div>
+        <div class="overflow-x-auto">
+           <table class="w-full text-left">
+              <thead class="bg-black/20">
+                 <tr class="border-b border-white/5">
+                    <th class="p-6 text-[10px] font-black text-text-dim uppercase tracking-widest">Instituição</th>
+                    <th class="p-6 text-[10px] font-black text-text-dim uppercase tracking-widest">Responsável</th>
+                    <th class="p-6 text-[10px] font-black text-text-dim uppercase tracking-widest">Status</th>
+                    <th class="p-6 text-right text-[10px] font-black text-text-dim uppercase tracking-widest">Ações</th>
+                 </tr>
+              </thead>
+              <tbody class="divide-y divide-white/5">
+                 ${partners.length === 0 ? '<tr><td colspan="4" class="p-10 text-center text-text-dim uppercase text-[10px]">Nenhuma conta B2B registrada.</td></tr>' : partners.map(p => `
+                 <tr class="hover:bg-white/[0.02]">
+                    <td class="p-6">
+                       <span class="text-xs font-black text-white uppercase block">${p.companyName}</span>
+                       <span class="text-[9px] text-text-dim font-mono">CNPJ: ${p.cnpj || '---'}</span>
+                    </td>
+                    <td class="p-6">
+                       <span class="text-xs font-bold text-slate-300 block">${p.name}</span>
+                       <span class="text-[9px] text-text-dim uppercase">${p.email}</span>
+                    </td>
+                    <td class="p-6">
+                       <span class="px-2 py-1 rounded text-[9px] font-black uppercase ${p.active ? 'bg-signal-green/20 text-signal-green' : 'bg-signal-red/20 text-signal-red'}">
+                          ${p.active ? 'Ativo' : 'Inativo'}
+                       </span>
+                    </td>
+                    <td class="p-6 text-right">
+                       <button class="bg-slate-800 hover:bg-slate-700 text-white p-2 rounded-lg transition-all shadow-lg" onclick="window.togglePartnerStatus('${p.id}', ${p.active})">
+                          <span class="material-symbols-outlined text-sm">${p.active ? 'block' : 'check_circle'}</span>
+                       </button>
+                    </td>
+                 </tr>`).join('')}
+              </tbody>
+           </table>
+        </div>
       </div>
 
       <!-- Tabela de Leads -->
       <div class="saas-card overflow-hidden">
         <div class="p-6 border-b border-white/5 flex items-center justify-between">
-           <h3 class="text-xs font-black text-white uppercase tracking-widest">Leads de Negócio Recebidos</h3>
-           <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-[9px] font-black uppercase">${leads.length} Contatos</span>
+           <h3 class="text-xs font-black text-white uppercase tracking-widest">Leads de Negócio (Captura)</h3>
+           <span class="px-3 py-1 bg-acid/20 text-acid rounded-full text-[9px] font-black uppercase" style="color:#bef264">${leads.length} Contatos</span>
         </div>
         <div class="overflow-x-auto">
            <table class="w-full text-left">
@@ -1001,39 +1068,41 @@ async function renderPartners() {
                  </tr>
               </thead>
               <tbody class="divide-y divide-white/5">
-                 ${leads.length ? leads.map(l => `
-                    <tr class="hover:bg-white/2 transition-colors">
-                       <td class="p-6">
-                          <p class="text-xs font-bold text-white uppercase">${l.company || 'Pessoa Física'}</p>
-                          <span class="text-[9px] font-black ${l.type === 'b2b' ? 'text-acid' : 'text-primary'} uppercase">PLATAFORMA_${l.type.toUpperCase()}</span>
-                       </td>
-                       <td class="p-6">
-                          <p class="text-xs font-bold text-white">${l.name}</p>
-                          <p class="text-[10px] text-text-dim">${l.email}</p>
-                          <p class="text-[10px] text-text-dim">${l.phone}</p>
-                       </td>
-                       <td class="p-6">
-                          <p class="text-xs text-text-dim line-clamp-2">${l.message || 'Sem mensagem adicional'}</p>
-                       </td>
-                       <td class="p-6">
-                          <p class="text-[10px] font-mono text-text-dim uppercase">${new Date(l.createdAt).toLocaleDateString('pt-BR')} ${new Date(l.createdAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</p>
-                       </td>
-                    </tr>
-                 `).join('') : `
-                    <tr>
-                       <td colspan="4" class="p-20 text-center">
-                          <span class="material-symbols-outlined text-4xl text-text-dim/20 mb-4">move_to_inbox</span>
-                          <p class="text-[10px] font-black text-text-dim uppercase tracking-widest">Nenhum lead recebido até o momento</p>
-                       </td>
-                    </tr>
-                 `}
+                 ${leads.length === 0 ? '<tr><td colspan="4" class="p-10 text-center text-text-dim uppercase text-[10px]">Nenhuma proposta recebida.</td></tr>' : leads.map(l => `
+                 <tr class="hover:bg-white/[0.02]">
+                    <td class="p-6">
+                       <span class="text-white font-bold block">${l.company || 'Pessoa Física'}</span>
+                       <span class="text-[10px] text-text-dim uppercase">${l.type === 'b2b' ? 'PLATAFORMA_B2B' : 'CONTATO_SITE'}</span>
+                    </td>
+                    <td class="p-6">
+                       <span class="text-slate-300 block text-xs">${l.name}</span>
+                       <span class="text-[9px] text-primary font-mono uppercase">${l.email}</span>
+                    </td>
+                    <td class="p-6">
+                       <p class="text-text-dim text-[10px] max-w-[200px] truncate" title="${l.message}">${l.message || '---'}</p>
+                    </td>
+                    <td class="p-6 text-text-dim text-[10px] uppercase font-mono">
+                       ${new Date(l.createdAt).toLocaleDateString('pt-BR')}
+                    </td>
+                 </tr>`).join('')}
               </tbody>
            </table>
         </div>
       </div>
-    </div>
-  `;
+    </div>`;
 }
+
+window.togglePartnerStatus = async (id, currentStatus) => {
+  if (!confirm(`Deseja ${currentStatus ? 'desativar' : 'ativar'} esta conta de parceiro?`)) return;
+  try {
+    await fetch(`/api/partners/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ active: !currentStatus })
+    });
+    loadPage('partners', true);
+  } catch (err) { alert(err.message); }
+};
 async function renderChat() {
   const drivers = await Drivers.list().catch(() => []);
   let activeDriverId = null;

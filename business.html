@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Movvi Resgate — Business Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ffdb00",
+                        "signal-green": "#10b981",
+                        "signal-red": "#ef4444",
+                        "signal-blue": "#3b82f6",
+                        "bg-main": "#0b0f17",
+                        "bg-card": "#151b26",
+                        "text-dim": "#94a3b8",
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #0b0f17; color: #f8fafc; overflow: hidden; height: 100vh; }
+        .saas-card { background: #151b26; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; position: relative; overflow: hidden; }
+        .nav-item { display: flex; align-items: center; gap: 1rem; padding: 0.875rem 1.5rem; color: #94a3b8; cursor: pointer; transition: all 0.2s; font-size: 0.875rem; font-weight: 600; border-radius: 12px; }
+        .nav-item:hover { color: #fff; background: rgba(255,255,255,0.03); }
+        .nav-item.active { color: #ffdb00; background: rgba(255,219,0,0.08); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div id="login-overlay" class="fixed inset-0 flex items-center justify-center p-6 bg-[#0b0f17] z-[2000]">
+        <div class="w-full max-w-md saas-card p-10 border-2 border-slate-800 shadow-2xl">
+            <div class="flex flex-col items-center mb-10 text-center">
+                <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="h-24 object-contain mb-4" style="filter: brightness(0) invert(86%) sepia(93%) saturate(1450%) hue-rotate(334deg) brightness(108%) contrast(106%);">
+                <p class="text-primary text-[10px] uppercase tracking-[0.3em] font-black">Portal de Parceiros Corporativos</p>
+                <h2 class="text-white text-xl font-bold mt-2 italic">BUSINESS CENTER</h2>
+            </div>
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2 ml-1">E-mail Corporativo</label>
+                    <input type="email" id="email" required class="w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-5 py-4 text-white focus:border-primary outline-none transition-all" placeholder="parceiro@empresa.com">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2 ml-1">Senha de Acesso</label>
+                    <input type="password" id="password" required class="w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-5 py-4 text-white focus:border-primary outline-none transition-all" placeholder="••••••••">
+                </div>
+                <div id="login-error" class="hidden p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold text-center"></div>
+                <button type="submit" class="w-full bg-primary hover:brightness-110 text-black font-black uppercase py-4 rounded-xl shadow-xl active:scale-95 transition-all text-sm tracking-widest">Entrar no Terminal</button>
+            </form>
+            <p class="text-center text-[10px] text-text-dim mt-8 font-bold uppercase tracking-widest">Novo parceiro? <a href="/parcerias.html" class="text-primary underline">Cadastre sua empresa</a></p>
+        </div>
+    </div>
+
+    <div id="main-app" class="flex h-screen opacity-0 transition-opacity duration-500">
+        <aside class="w-72 bg-bg-main/80 backdrop-blur-xl border-right border-white/5 flex flex-col p-6 border-r border-white/5">
+            <div class="mb-10 flex flex-col items-center">
+                <img src="/assets/images/logo_movvi.png" alt="Movvi" class="h-16 object-contain mb-4" style="filter: brightness(0) invert(86%) sepia(93%) saturate(1450%) hue-rotate(334deg) brightness(108%) contrast(106%);">
+                <div class="px-3 py-1 bg-primary/10 border border-primary/20 rounded-full">
+                    <span class="text-[9px] font-black text-primary uppercase tracking-widest">Business Partner</span>
+                </div>
+            </div>
+            <nav class="flex-1 space-y-2">
+                <div class="nav-item active" data-content="new-request">
+                    <span class="material-symbols-outlined">add_circle</span> Solicitar Resgate
+                </div>
+                <div class="nav-item" data-content="history">
+                    <span class="material-symbols-outlined">history</span> Meus Pedidos
+                </div>
+                <div class="nav-item" data-content="billing">
+                    <span class="material-symbols-outlined">payments</span> Extrato e Faturas
+                </div>
+            </nav>
+            <div class="pt-6 border-t border-white/5 space-y-4">
+                <div id="partner-info" class="p-4 bg-slate-900/50 rounded-2xl border border-white/5">
+                    <p id="partner-name" class="text-xs font-black text-white uppercase truncate">---</p>
+                    <p id="partner-company" class="text-[9px] text-text-dim uppercase font-bold mt-1 truncate">---</p>
+                </div>
+                <button id="logout-btn" class="w-full flex items-center justify-center gap-2 text-signal-red font-black text-[10px] uppercase tracking-widest py-3">
+                    <span class="material-symbols-outlined text-sm">power_settings_new</span> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <header class="h-20 px-10 border-b border-white/5 flex items-center bg-bg-main/50 backdrop-blur-md sticky top-0 z-40">
+                <h2 id="view-title" class="text-2xl font-black text-white italic">— Solicitar Resgate Comercial</h2>
+            </header>
+            <div id="content" class="flex-1 overflow-y-auto p-10 custom-scrollbar fade-in">
+                <!-- Content will be injected by main.js -->
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="/src/business/main.js"></script>
+</body>
+</html>

@@ -151,3 +151,19 @@ const leadSchema = new mongoose.Schema({
 });
 
 export const Lead = mongoose.model('Lead', leadSchema);
+
+const partnerSchema = new mongoose.Schema({
+    id: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
+    companyName: { type: String, required: true },
+    cnpj: { type: String, default: '' },
+    email: { type: String, required: true, unique: true },
+    phone: { type: String, required: true },
+    password: { type: String, default: '123456' },
+    active: { type: Boolean, default: true },
+    walletBalance: { type: Number, default: 0 },
+    totalOrders: { type: Number, default: 0 },
+    createdAt: { type: Date, default: Date.now }
+});
+
+export const Partner = mongoose.model('Partner', partnerSchema);

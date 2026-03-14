@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { v4 as uuid } from 'uuid';
 import { Resend } from 'resend';
-import { Client, Driver, Admin } from '../models.js';
+import { Client, Driver, Admin, Partner } from '../models.js';
 
 const router = Router();
 const resend = new Resend('re_aEabgbLG_BFgMQHvJnp5DYjKEbcPawAtS');
@@ -222,6 +222,43 @@ router.post('/login/admin', async (req, res) => {
     } else {
         res.status(401).json({ error: 'Credenciais inválidas' });
     }
+});
+
+router.post('/login/partner', async (req, res) => {
+    const { email, password } = req.body;
+    const partner = await Partner.findOne({ email });
+    if (!partner) return res.status(401).json({ error: 'Parceiro acadastrado não encontrado' });
+    if (partner.password !== password) return res.status(401).json({ error: 'Senha incorreta' });
+    if (!partner.active) return res.status(403).json({ error: 'Sua conta de parceiro está temporariamente inativa. Contate o suporte.' });
+
+    const partnerObj = partner.toObject();
+    delete partnerObj.password;
+    res.json({ user: partnerObj, token: `partner_${partner.id}` });
+});
+
+router.post('/register/partner', async (req, res) => {
+    const { name, companyName, email, phone, cnpj, password } = req.body;
+    if (!name || !companyName || !email || !phone) {
+        return res.status(400).json({ error: 'Dados obrigatórios ausentes.' });
+    }
+    const existing = await Partner.findOne({ email: new RegExp(`^${email}$`, 'i') });
+    if (existing) return res.status(409).json({ error: 'Este e-mail já está cadastrado como parceiro.' });
+
+    const partner = await Partner.create({
+        id: uuid(),
+        name, companyName, email, phone, cnpj: cnpj || '',
+        password: password || '123456',
+        active: false // Approval needed
+    });
+
+    const partnerObj = partner.toObject();
+    delete partnerObj.password;
+
+    if (req.io) {
+        req.io.to('admin').emit('partner:new_registration', partnerObj);
+    }
+
+    res.status(201).json({ user: partnerObj });
 });
 
 export default router;

@@ -133,8 +133,15 @@ async function renderNewRequest() {
     const container = $('#content');
     
     // Fetch dynamic pricing
-    const pricing = await api('/pricing').catch(() => ({ b2bTiers: { tier1: 110, tier2: 145, tier3: 170 } }));
-    const tiers = pricing.b2bTiers || { tier1: 110, tier2: 145, tier3: 170 };
+    const pricing = await api('/pricing').catch(() => ({ services: { tow: { b2bTier1: 110, b2bTier2: 145, b2bTier3: 170 }, battery: { b2bTier1: 110 }, fuel: { b2bTier1: 110 }, tire: { b2bTier1: 110 } } }));
+    const services = pricing.services || {};
+    
+    // Default fallback values if fields are missing
+    const getSvc = (key) => services[key] || { b2bTier1: 110, b2bTier2: 145, b2bTier3: 170 };
+    const towSvc = getSvc('tow');
+    const batSvc = getSvc('battery');
+    const fuelSvc = getSvc('fuel');
+    const tireSvc = getSvc('tire');
 
     container.innerHTML = `
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-6xl">
@@ -191,7 +198,7 @@ async function renderNewRequest() {
                            <span class="text-xs font-bold text-white uppercase">Valor do Resgate</span>
                            <div class="text-right">
                               <span class="text-xs font-bold text-primary">R$</span>
-                              <span id="price-display" class="text-3xl font-black text-primary italic">${tiers.tier1.toFixed(2).replace('.', ',')}</span>
+                              <span id="price-display" class="text-3xl font-black text-primary italic">${towSvc.b2bTier1.toFixed(2).replace('.', ',')}</span>
                            </div>
                         </div>
                     </div>
@@ -210,7 +217,7 @@ async function renderNewRequest() {
                         <span class="text-[9px] text-primary">Operativo Comercial</span>
                     </h4>
                     
-                    <div class="space-y-6">
+                    <div class="space-y-6" id="pricing-table">
                         <!-- Reboque Section -->
                         <div class="bg-white/5 rounded-2xl border border-white/5 overflow-hidden">
                            <div class="p-4 bg-primary/10 border-b border-white/5 flex items-center gap-3">
@@ -220,11 +227,11 @@ async function renderNewRequest() {
                            <div class="p-3 space-y-2">
                               <div class="flex justify-between text-[10px] font-bold">
                                  <span class="text-text-dim">ATÉ 30KM</span>
-                                 <span class="text-white">R$ ${tiers.tier1.toFixed(2).replace('.', ',')}</span>
+                                 <span class="text-white">R$ ${towSvc.b2bTier1.toFixed(2).replace('.', ',')}</span>
                               </div>
                               <div class="flex justify-between text-[10px] font-bold">
                                  <span class="text-text-dim">31KM A 40KM</span>
-                                 <span class="text-white">R$ ${tiers.tier2.toFixed(2).replace('.', ',')}</span>
+                                 <span class="text-white">R$ ${towSvc.b2bTier2?.toFixed(2).replace('.', ',') || '---'}</span>
                               </div>
                            </div>
                         </div>
@@ -238,7 +245,7 @@ async function renderNewRequest() {
                            <div class="p-3 space-y-2">
                               <div class="flex justify-between text-[10px] font-bold">
                                  <span class="text-text-dim">VALOR FIXO (ATÉ 30KM)</span>
-                                 <span class="text-white">R$ ${tiers.tier1.toFixed(2).replace('.', ',')}</span>
+                                 <span class="text-white">R$ ${batSvc.b2bTier1.toFixed(2).replace('.', ',')}</span>
                               </div>
                            </div>
                         </div>
@@ -251,7 +258,7 @@ async function renderNewRequest() {
                            <div class="p-3 space-y-2">
                               <div class="flex justify-between text-[10px] font-bold">
                                  <span class="text-text-dim">VALOR FIXO (ATÉ 30KM)</span>
-                                 <span class="text-white">R$ ${tiers.tier1.toFixed(2).replace('.', ',')}</span>
+                                 <span class="text-white">R$ ${fuelSvc.b2bTier1.toFixed(2).replace('.', ',')}</span>
                               </div>
                            </div>
                         </div>
@@ -264,10 +271,11 @@ async function renderNewRequest() {
                            <div class="p-3 space-y-2">
                               <div class="flex justify-between text-[10px] font-bold">
                                  <span class="text-text-dim">VALOR FIXO (ATÉ 30KM)</span>
-                                 <span class="text-white">R$ ${tiers.tier1.toFixed(2).replace('.', ',')}</span>
+                                 <span class="text-white">R$ ${tireSvc.b2bTier1.toFixed(2).replace('.', ',')}</span>
                               </div>
                            </div>
                         </div>
+                    </div>
 
                         <p class="text-[8px] text-text-dim/60 uppercase font-black text-center tracking-[0.2em] pt-4 border-t border-white/5">Consulte valores para distâncias acima de 55km com nosso suporte.</p>
                     </div>
@@ -290,13 +298,19 @@ async function renderNewRequest() {
     const distInp = $('#dist-km');
     const priceDisplay = $('#price-display');
     const updatePrice = () => {
-        const km = parseFloat(distInp.value);
-        let p = tiers.tier1;
-        if (km > 30 && km <= 40) p = tiers.tier2;
-        else if (km > 40) p = tiers.tier3;
-        priceDisplay.textContent = p.toFixed(2).replace('.', ',');
+        const km = parseFloat($('#dist-km').value) || 0;
+        const type = $('#svc-type').value;
+        const svc = getSvc(type);
+        
+        let price = svc.b2bTier1;
+        if (km > 55 && svc.b2bTier3) price = svc.b2bTier3; // Fallback to max tier
+        else if (km > 40 && svc.b2bTier3) price = svc.b2bTier3;
+        else if (km > 30 && svc.b2bTier2) price = svc.b2bTier2;
+        
+        $('#price-display').textContent = price.toFixed(2).replace('.', ',');
     };
     distInp.oninput = updatePrice;
+    $('#svc-type').onchange = updatePrice; // Add this line to update price on service type change
 
     $('#order-form').onsubmit = async (e) => {
         e.preventDefault();

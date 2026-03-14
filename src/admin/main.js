@@ -856,54 +856,89 @@ async function renderPricing() {
     <div class="saas-card p-8 mb-8 border-primary/20 bg-primary/5">
       <div class="flex items-center gap-3 mb-8">
         <span class="material-symbols-outlined text-primary text-3xl">settings_input_component</span>
-        <h2 class="text-xl font-bold text-white uppercase tracking-widest leading-none">Status do Sistema (Lockdown)</h2>
+        <h2 class="text-xl font-bold text-white uppercase tracking-widest leading-none">Status e Vagas</h2>
       </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
-          <label class="text-xs font-bold text-text-dim uppercase tracking-widest mb-3 block">Modo Pré-Lançamento (Bloqueia o Site)</label>
+          <label class="text-xs font-bold text-text-dim uppercase tracking-widest mb-3 block">Modo Pré-Lançamento</label>
           <div class="flex items-center gap-4">
             <button id="toggle-lockdown" class="px-6 py-3 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all ${settings.systemLockdown ? 'bg-signal-red text-white' : 'bg-slate-800 text-text-dim border border-white/5'}">
               ${settings.systemLockdown ? 'ATIVADO (Site Bloqueado)' : 'DESATIVADO (Site Aberto)'}
             </button>
-            <p class="text-[10px] text-text-dim/60 font-mono uppercase">Status: ${settings.systemLockdown ? 'BLOCKED' : 'LIVE'}</p>
           </div>
         </div>
         <div>
-          <label class="text-xs font-bold text-text-dim uppercase tracking-widest mb-3 block">Data Oficial de Lançamento (Contador)</label>
-          <input type="date" id="launch-date" class="w-full bg-slate-950 border border-slate-700/50 rounded-xl px-5 py-3 text-white focus:border-primary outline-none transition-all" value="${settings.launchDate || '2026-04-20'}">
+          <label class="text-xs font-bold text-text-dim uppercase tracking-widest mb-3 block">Data Oficial de Lançamento</label>
+          <input type="date" id="launch-date" class="w-full bg-slate-950 border border-white/5 rounded-xl px-5 py-3 text-white focus:border-primary outline-none transition-all" value="${settings.launchDate || '2026-04-20'}">
         </div>
         <div>
           <label class="text-xs font-bold text-text-dim uppercase tracking-widest mb-3 block">Total de Vagas - Fase 01</label>
-          <input type="number" id="total-spots" class="w-full bg-slate-950 border border-slate-700/50 rounded-xl px-5 py-3 text-white focus:border-primary outline-none transition-all font-black text-xl" value="${settings.totalSpotsPhase1 || 100}">
+          <input type="number" id="total-spots" class="w-full bg-slate-950 border border-white/5 rounded-xl px-5 py-3 text-white focus:border-primary outline-none transition-all font-black text-xl" value="${settings.totalSpotsPhase1 || 100}">
         </div>
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">`;
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">`;
 
   for (const [key, svc] of Object.entries(pr.services)) {
     html += `
-      <div class="saas-card relative overflow-hidden group">
+      <div class="saas-card relative overflow-hidden group border-white/5">
         <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
         <div class="relative z-10 p-6">
-          <div class="flex items-center gap-3 mb-6">
-            <span class="material-symbols-outlined text-primary text-3xl">build_circle</span>
-            <h2 class="text-xl font-bold text-white uppercase tracking-widest leading-none">${svc.name}</h2>
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-primary text-3xl">build_circle</span>
+              <h2 class="text-xl font-bold text-white uppercase tracking-widest leading-none">${svc.name}</h2>
+            </div>
+            <span class="text-[9px] font-black text-text-dim uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full border border-white/10 italic">SERVICE_CONFIG</span>
           </div>
-          <div class="space-y-4">
-            <div>
-              <label class="text-xs font-bold text-text-dim uppercase tracking-widest mb-1 block pl-1">Taxa Base (Deslocamento)</label>
-              <div class="relative">
-                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-black font-black opacity-50 text-sm">R$</span>
-                <input type="number" step="0.01" id="base-${key}" class="w-full bg-slate-50 text-black font-black text-lg py-3 pl-12 pr-4 rounded-xl outline-none focus:ring-2 focus:ring-primary border-transparent transition-all" value="${svc.basePrice}">
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- PUBLIC PRICING -->
+            <div class="space-y-4">
+              <p class="text-[10px] font-black text-primary uppercase tracking-widest border-b border-primary/20 pb-2 mb-4">Preço Público (B2C)</p>
+              <div>
+                <label class="text-[10px] font-bold text-text-dim uppercase tracking-widest mb-1 block pl-1">Taxa Base</label>
+                <div class="relative">
+                  <span class="absolute left-4 top-1/2 -translate-y-1/2 text-black font-black opacity-50 text-sm">R$</span>
+                  <input type="number" step="0.01" id="base-${key}" class="w-full bg-slate-50 text-black font-black text-lg py-3 pl-12 pr-4 rounded-xl outline-none focus:ring-2 focus:ring-primary border-transparent transition-all" value="${svc.basePrice}">
+                </div>
+              </div>
+              <div>
+                <label class="text-[10px] font-bold text-text-dim uppercase tracking-widest mb-1 block pl-1">Km Adicional</label>
+                <div class="relative">
+                  <span class="absolute left-4 top-1/2 -translate-y-1/2 text-black font-black opacity-50 text-sm">R$</span>
+                  <input type="number" step="0.01" id="km-${key}" class="w-full bg-slate-50 text-black font-black text-lg py-3 pl-12 pr-4 rounded-xl outline-none focus:ring-2 focus:ring-primary border-transparent transition-all" value="${svc.pricePerKm}">
+                </div>
               </div>
             </div>
-            <div>
-              <label class="text-xs font-bold text-text-dim uppercase tracking-widest mb-1 block pl-1">Valor por Km (Adicional)</label>
-              <div class="relative">
-                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-black font-black opacity-50 text-sm">R$</span>
-                <input type="number" step="0.01" id="km-${key}" class="w-full bg-slate-50 text-black font-black text-lg py-3 pl-12 pr-4 rounded-xl outline-none focus:ring-2 focus:ring-primary border-transparent transition-all" value="${svc.pricePerKm}">
+
+            <!-- B2B PRICING -->
+            <div class="space-y-4 bg-acid/5 p-4 rounded-2xl border border-acid/10">
+              <p class="text-[10px] font-black text-acid uppercase tracking-widest border-b border-acid/20 pb-2 mb-4">Preços B2B (Corporativo)</p>
+              <div class="space-y-3">
+                <div>
+                  <label class="text-[9px] font-bold text-text-dim uppercase mb-1 block">Até 30km</label>
+                  <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-acid font-black text-xs">R$</span>
+                    <input type="number" step="0.01" id="b2b-t1-${key}" class="w-full bg-black/40 text-white font-black text-sm py-2 pl-9 pr-3 rounded-lg border border-white/10 outline-none focus:border-acid" value="${svc.b2bTier1 || 110}">
+                  </div>
+                </div>
+                <div>
+                  <label class="text-[9px] font-bold text-text-dim uppercase mb-1 block">31-40km</label>
+                  <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-acid font-black text-xs">R$</span>
+                    <input type="number" step="0.01" id="b2b-t2-${key}" class="w-full bg-black/40 text-white font-black text-sm py-2 pl-9 pr-3 rounded-lg border border-white/10 outline-none focus:border-acid" value="${svc.b2bTier2 || 145}">
+                  </div>
+                </div>
+                <div>
+                  <label class="text-[9px] font-bold text-text-dim uppercase mb-1 block">41-55km</label>
+                  <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-acid font-black text-xs">R$</span>
+                    <input type="number" step="0.01" id="b2b-t3-${key}" class="w-full bg-black/40 text-white font-black text-sm py-2 pl-9 pr-3 rounded-lg border border-white/10 outline-none focus:border-acid" value="${svc.b2bTier3 || 170}">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -913,39 +948,15 @@ async function renderPricing() {
 
   html += `</div>
     
-    <!-- B2B Pricing Section -->
+    <!-- Global B2B Status -->
     <div class="saas-card p-10 mt-10 border-acid/20 bg-acid/5">
-      <div class="flex items-center gap-4 mb-8">
+      <div class="flex items-center gap-4">
         <div class="size-14 rounded-2xl bg-acid/20 flex items-center justify-center">
             <span class="material-symbols-outlined text-acid text-4xl">corporate_fare</span>
         </div>
         <div>
-            <h2 class="text-2xl font-black text-white uppercase italic">Configuração B2B (Fixa)</h2>
-            <p class="text-[10px] text-text-dim uppercase tracking-[0.3em] font-bold">Valores tabelados para contas corporativas</p>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="p-6 bg-slate-900/50 rounded-2xl border border-white/5">
-           <label class="text-[10px] font-black text-text-dim uppercase tracking-widest mb-4 block">Até 30km (Total)</label>
-           <div class="relative">
-              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-acid font-black text-sm">R$</span>
-              <input type="number" id="b2b-tier-1" class="w-full bg-black/40 text-white font-black text-2xl py-5 pl-12 pr-6 rounded-xl border border-white/10 outline-none focus:border-acid transition-all" value="${pr.b2bTiers?.tier1 || 110}">
-           </div>
-        </div>
-        <div class="p-6 bg-slate-900/50 rounded-2xl border border-white/5">
-           <label class="text-[10px] font-black text-text-dim uppercase tracking-widest mb-4 block">De 31 a 40km (Total)</label>
-           <div class="relative">
-              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-acid font-black text-sm">R$</span>
-              <input type="number" id="b2b-tier-2" class="w-full bg-black/40 text-white font-black text-2xl py-5 pl-12 pr-6 rounded-xl border border-white/10 outline-none focus:border-acid transition-all" value="${pr.b2bTiers?.tier2 || 145}">
-           </div>
-        </div>
-        <div class="p-6 bg-slate-900/50 rounded-2xl border border-white/5">
-           <label class="text-[10px] font-black text-text-dim uppercase tracking-widest mb-4 block">De 41 a 55km (Total)</label>
-           <div class="relative">
-              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-acid font-black text-sm">R$</span>
-              <input type="number" id="b2b-tier-3" class="w-full bg-black/40 text-white font-black text-2xl py-5 pl-12 pr-6 rounded-xl border border-white/10 outline-none focus:border-acid transition-all" value="${pr.b2bTiers?.tier3 || 170}">
-           </div>
+            <h2 class="text-2xl font-black text-white uppercase italic">Configuração B2B Ativa</h2>
+            <p class="text-[10px] text-text-dim uppercase tracking-[0.3em] font-bold">Cada serviço acima possui seus próprios valores para parceiros corporativos.</p>
         </div>
       </div>
     </div>
@@ -964,23 +975,20 @@ async function renderPricing() {
   btnSave.onclick = async () => {
     btnSave.innerHTML = '<span class="material-symbols-outlined shrink-0 text-black animate-spin">progress_activity</span> <span class="text-black">Salvando...</span>';
     
-    // Save Pricing & B2B Tiers
+    // Save Pricing with B2B per Service
     const pricingPayload = { 
-        services: {},
-        b2bTiers: {
-            tier1: parseFloat(document.querySelector('#b2b-tier-1').value),
-            tier2: parseFloat(document.querySelector('#b2b-tier-2').value),
-            tier3: parseFloat(document.querySelector('#b2b-tier-3').value)
-        }
+        services: {}
     };
     for (const key of Object.keys(pr.services)) {
       pricingPayload.services[key] = {
         basePrice: parseFloat(document.querySelector(`#base-${key}`).value),
-        pricePerKm: parseFloat(document.querySelector(`#km-${key}`).value)
+        pricePerKm: parseFloat(document.querySelector(`#km-${key}`).value),
+        b2bTier1: parseFloat(document.querySelector(`#b2b-t1-${key}`).value),
+        b2bTier2: parseFloat(document.querySelector(`#b2b-t2-${key}`).value),
+        b2bTier3: parseFloat(document.querySelector(`#b2b-t3-${key}`).value)
       };
     }
 
-    // Save Settings
     const settingsPayload = {
       systemLockdown: isLocked,
       launchDate: document.querySelector('#launch-date').value,

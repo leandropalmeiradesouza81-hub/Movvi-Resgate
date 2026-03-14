@@ -1054,7 +1054,7 @@ function onboardingView() {
 
           <button id="btn-pay" class="w-full bg-primary text-black font-black py-5 flex flex-col items-center justify-center rounded-2xl shadow-2xl shadow-primary/30 active:scale-[0.98] transition-all">
             <span class="uppercase tracking-widest text-[14px]">Adquirir via PIX agora</span>
-            <span class="text-[9px] font-black uppercase tracking-widest opacity-60">Liberação Automática via C6 Bank</span>
+            <span class="text-[9px] font-black uppercase tracking-widest opacity-60">Liberação Automática via Movvi Resgate Tecnologia</span>
           </button>
         </div>
       `;
@@ -1067,7 +1067,7 @@ function onboardingView() {
             <span class="material-symbols-outlined text-[40px] font-black">hourglass_top</span>
           </div>
           <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-4 text-white">Preparando Entrega</h2>
-          <p class="text-base font-bold text-white/60 mb-10 leading-relaxed px-4">Seu Kit foi adquirido com sucesso. Em até <strong class="text-primary">48 horas</strong> nossa equipe entrará em contato para agendar a entrega física e treinamento básico.</p>
+          <p class="text-base font-bold text-white/60 mb-10 leading-relaxed px-4">Seu Kit foi adquirido com sucesso. Ao adquirir, nosso time entrará em contato para agendar a entrega física e treinamento básico em até <strong class="text-primary">7 dias</strong> (podendo ocorrer antes).</p>
           
           <div class="bg-white/5 border border-white/10 rounded-2xl p-6 mb-8 w-full flex items-center gap-4">
              <div class="size-2 rounded-full bg-primary animate-pulse"></div>
@@ -1126,16 +1126,23 @@ function onboardingView() {
     <div class="size-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6 relative">
       <span class="material-symbols-outlined text-3xl font-black">qr_code_2</span>
     </div>
-    <h3 class="font-black text-2xl text-white mb-2 uppercase italic tracking-tighter">Finalizar Adesão</h3>
-    <p class="text-xs font-bold text-slate-400 mb-8 max-w-[240px]">Escaneie o QR Code ou use o Copia e Cola para garantir sua vaga pioneira.</p>
+    <h3 class="font-black text-2xl text-white mb-2 uppercase italic tracking-tighter">Pagamento do Kit</h3>
+    <p class="text-xs font-bold text-slate-400 mb-8 max-w-[280px]">Escaneie o QR Code ou use o Copia e Cola. Após o pagamento, nosso time entrará em contato para entrega em até 7 dias (podendo ocorrer antes).</p>
     
     <div class="bg-white p-6 rounded-[2rem] mb-8 flex justify-center w-full shadow-inner border border-slate-50 relative">
       <img src="" alt="QR Code PIX" id="pix-qr-img" class="w-48 h-48 rounded-2xl">
     </div>
 
     <div class="flex flex-col gap-3 w-full relative">
-      <button id="btn-copy-pix" class="w-full bg-primary text-black font-black py-4 rounded-2xl active:scale-95 transition-all text-sm uppercase tracking-[0.2em] shadow-xl shadow-primary/20">Copiar Código PIX</button>
-      <button id="btn-check-pix-ob" class="w-full bg-emerald-500 text-white font-black py-4 rounded-2xl active:scale-95 transition-all text-xs uppercase tracking-widest shadow-lg">JÁ PAGUEI, LIBERAR</button>
+      <div class="grid grid-cols-2 gap-2">
+         <button id="btn-copy-pix" class="bg-primary text-black font-black py-4 rounded-2xl active:scale-95 transition-all text-[10px] uppercase tracking-widest shadow-xl shadow-primary/20 flex items-center justify-center gap-2">
+           <span class="material-symbols-outlined text-sm">content_copy</span> COPIAR
+         </button>
+         <button id="btn-share-pix" class="bg-white/10 text-white font-black py-4 rounded-2xl active:scale-95 transition-all text-[10px] uppercase tracking-widest border border-white/20 flex items-center justify-center gap-2">
+           <span class="material-symbols-outlined text-sm">share</span> COMPARTILHAR
+         </button>
+      </div>
+      <button id="btn-check-pix-ob" class="w-full bg-emerald-500 text-white font-black py-4 rounded-2xl active:scale-95 transition-all text-xs uppercase tracking-widest shadow-lg">JÁ PAGUEI, LIBERAR AGORA</button>
       <button id="btn-cancel-pix" class="w-full text-red-500 font-bold py-3 text-[10px] uppercase tracking-widest opacity-60">Voltar</button>
     </div>
   </div>
@@ -1173,6 +1180,21 @@ function onboardingView() {
         const res = await api(`/drivers/${user.id}/pix/generate`, 'POST', { amount: 399.00, reason: 'kit' });
         const modal = d.querySelector('#pix-modal');
         modal.querySelector('img').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(res.pixCopiaECola)}`;
+        
+        // Share Logic
+        const shareBtn = modal.querySelector('#btn-share-pix');
+        if (shareBtn) shareBtn.onclick = () => {
+          if (navigator.share) {
+            navigator.share({
+              title: 'Copia e Cola - Kit Movvi',
+              text: res.pixCopiaECola
+            }).catch(() => {});
+          } else {
+            navigator.clipboard.writeText(res.pixCopiaECola);
+            alert('Código copiado para compartilhar!');
+          }
+        };
+
         modal.classList.remove('hidden');
         setTimeout(() => modal.querySelector('#pix-modal-content').classList.replace('scale-95', 'scale-100'), 10);
 

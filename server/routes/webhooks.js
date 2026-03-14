@@ -27,7 +27,11 @@ router.post('/pix', async (req, res) => {
 
             let transactionDescription = 'Recarga via PIX (Automático)';
 
-            if (driver.onboardingStep === 'kit' || driver.onboardingStep === 'kit_payment') {
+            const isKitPayment = driver.onboardingStep === 'kit' || 
+                                 driver.onboardingStep === 'kit_payment' || 
+                                 driver.onboardingStep === 'approved_pending_kit';
+
+            if (isKitPayment) {
                 driver.kitAcquired = true;
                 driver.onboardingStep = 'kit_acquired';
                 // driver.approved = true; // Mantém falso até aprovação manual do admin

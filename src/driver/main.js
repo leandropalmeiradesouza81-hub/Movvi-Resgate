@@ -1132,7 +1132,7 @@ function onboardingView() {
     <div class="flex flex-col gap-3 w-full relative">
       <div id="pix-display-area">
         <div class="bg-white p-6 rounded-[2rem] mb-6 flex justify-center w-full shadow-inner border border-slate-50 relative">
-          <img src="/assets/images/pix_kit_qr.png" alt="QR Code PIX" id="pix-qr-img" class="w-48 h-48 rounded-2xl">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=0002010121126360014br.gov.bcb.pix0114656288330001475204000053039865802BR5925MOVVI" alt="QR Code PIX" id="pix-qr-img" class="w-48 h-48 rounded-2xl">
         </div>
         <div class="grid grid-cols-2 gap-2 mb-4">
            <button id="btn-copy-pix" class="bg-primary text-black font-black py-4 rounded-2xl active:scale-95 transition-all text-[10px] uppercase tracking-widest shadow-xl shadow-primary/20 flex items-center justify-center gap-2">

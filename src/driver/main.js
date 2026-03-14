@@ -1131,8 +1131,11 @@ function onboardingView() {
     
     <div class="flex flex-col gap-3 w-full relative">
       <div id="pix-display-area">
-        <div class="bg-white p-6 rounded-[2rem] mb-6 flex justify-center w-full shadow-inner border border-slate-50 relative">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=0002010121126360014br.gov.bcb.pix0114656288330001475204000053039865802BR5925MOVVI" alt="QR Code PIX" id="pix-qr-img" class="w-48 h-48 rounded-2xl">
+        <div class="bg-white p-6 rounded-[2rem] mb-4 flex flex-col items-center justify-center w-full shadow-inner border border-slate-50 relative">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=0002010121126360014br.gov.bcb.pix0114656288330001475204000053039865802BR5925MOVVI" alt="QR Code PIX" id="pix-qr-img" class="w-44 h-44 rounded-2xl mb-4">
+          <div class="text-[10px] font-black text-slate-900 uppercase tracking-widest bg-slate-100 px-4 py-2 rounded-full border border-slate-200">
+             Chave CNPJ: 65.628.833/0001-47
+          </div>
         </div>
         <div class="grid grid-cols-2 gap-2 mb-4">
            <button id="btn-copy-pix" class="bg-primary text-black font-black py-4 rounded-2xl active:scale-95 transition-all text-[10px] uppercase tracking-widest shadow-xl shadow-primary/20 flex items-center justify-center gap-2">
@@ -1191,24 +1194,25 @@ function onboardingView() {
     const payBtn = d.querySelector('#btn-pay');
     if (payBtn) payBtn.onclick = () => {
       const modal = d.querySelector('#pix-modal');
-      const pixKey = "0002010121126360014br.gov.bcb.pix0114656288330001475204000053039865802BR5925MOVVI";
+      const cnpjKey = "65.628.833/0001-47";
+      const pixCopiaECola = "0002010121126360014br.gov.bcb.pix0114656288330001475204000053039865802BR5925MOVVI";
       
       // Share Logic
       const shareBtn = modal.querySelector('#btn-share-pix');
       if (shareBtn) shareBtn.onclick = () => {
         if (navigator.share) {
-          navigator.share({ title: 'Copia e Cola - Kit Movvi', text: pixKey }).catch(() => {});
+          navigator.share({ title: 'Chave PIX - Kit Movvi', text: cnpjKey }).catch(() => {});
         } else {
-          navigator.clipboard.writeText(pixKey);
-          alert('Código copiado!');
+          navigator.clipboard.writeText(cnpjKey);
+          alert('Chave CNPJ copiada!');
         }
       };
 
       const copyBtn = modal.querySelector('#btn-copy-pix');
       if (copyBtn) copyBtn.onclick = () => {
-        navigator.clipboard.writeText(pixKey);
+        navigator.clipboard.writeText(cnpjKey);
         const oldT = copyBtn.innerHTML;
-        copyBtn.innerHTML = "COPIADO!";
+        copyBtn.innerHTML = "CNPJ COPIADO!";
         setTimeout(() => copyBtn.innerHTML = oldT, 2000);
       };
 

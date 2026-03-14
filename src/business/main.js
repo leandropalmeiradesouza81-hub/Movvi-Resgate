@@ -205,7 +205,29 @@ async function renderNewRequest() {
             <!-- Preços e Busca Ativa -->
             <div class="space-y-6">
                 <div class="saas-card p-8 bg-black/20 border-white/5">
-                    <h4 class="text-white font-black text-xs uppercase mb-6 tracking-widest">Tabela de Preços</h4>
+                    <h4 class="text-white font-black text-xs uppercase mb-6 tracking-widest flex items-center justify-between">
+                        <span>Tabela de Preços</span>
+                        <span class="text-[9px] text-primary">Operativo B2B</span>
+                    </h4>
+                    
+                    <div class="mb-6 p-4 bg-white/5 rounded-2xl border border-white/5">
+                        <p class="text-[9px] text-text-dim uppercase font-black tracking-widest mb-3">Serviços Compatíveis</p>
+                        <div class="grid grid-cols-1 gap-2">
+                           <div class="flex items-center gap-2 text-[10px] font-bold text-white/60">
+                              <span class="material-symbols-outlined text-sm text-primary">check_circle</span> Reboque no Cambão
+                           </div>
+                           <div class="flex items-center gap-2 text-[10px] font-bold text-white/60">
+                              <span class="material-symbols-outlined text-sm text-primary">check_circle</span> Chupeta / Bateria
+                           </div>
+                           <div class="flex items-center gap-2 text-[10px] font-bold text-white/60">
+                              <span class="material-symbols-outlined text-sm text-primary">check_circle</span> Pane Seca
+                           </div>
+                           <div class="flex items-center gap-2 text-[10px] font-bold text-white/60">
+                              <span class="material-symbols-outlined text-sm text-primary">check_circle</span> Reparo em Pneu
+                           </div>
+                        </div>
+                    </div>
+
                     <div class="space-y-3">
                         <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5">
                            <span class="text-xs font-bold text-text-dim uppercase tracking-widest">Até 30km</span>

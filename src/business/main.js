@@ -205,42 +205,71 @@ async function renderNewRequest() {
             <!-- Preços e Busca Ativa -->
             <div class="space-y-6">
                 <div class="saas-card p-8 bg-black/20 border-white/5">
-                    <h4 class="text-white font-black text-xs uppercase mb-6 tracking-widest flex items-center justify-between">
-                        <span>Tabela de Preços</span>
-                        <span class="text-[9px] text-primary">Operativo B2B</span>
+                    <h4 class="text-white font-black text-xs uppercase mb-8 tracking-widest flex items-center justify-between">
+                        <span>Tabela de Preços B2B</span>
+                        <span class="text-[9px] text-primary">Operativo Comercial</span>
                     </h4>
                     
-                    <div class="mb-6 p-4 bg-white/5 rounded-2xl border border-white/5">
-                        <p class="text-[9px] text-text-dim uppercase font-black tracking-widest mb-3">Serviços Compatíveis</p>
-                        <div class="grid grid-cols-1 gap-2">
-                           <div class="flex items-center gap-2 text-[10px] font-bold text-white/60">
-                              <span class="material-symbols-outlined text-sm text-primary">check_circle</span> Reboque no Cambão
+                    <div class="space-y-6">
+                        <!-- Reboque Section -->
+                        <div class="bg-white/5 rounded-2xl border border-white/5 overflow-hidden">
+                           <div class="p-4 bg-primary/10 border-b border-white/5 flex items-center gap-3">
+                              <span class="material-symbols-outlined text-sm text-primary">tow_truck</span>
+                              <span class="text-[10px] font-black text-white uppercase tracking-widest">Reboque no Cambão</span>
                            </div>
-                           <div class="flex items-center gap-2 text-[10px] font-bold text-white/60">
-                              <span class="material-symbols-outlined text-sm text-primary">check_circle</span> Chupeta / Bateria
-                           </div>
-                           <div class="flex items-center gap-2 text-[10px] font-bold text-white/60">
-                              <span class="material-symbols-outlined text-sm text-primary">check_circle</span> Pane Seca
-                           </div>
-                           <div class="flex items-center gap-2 text-[10px] font-bold text-white/60">
-                              <span class="material-symbols-outlined text-sm text-primary">check_circle</span> Reparo em Pneu
+                           <div class="p-3 space-y-2">
+                              <div class="flex justify-between text-[10px] font-bold">
+                                 <span class="text-text-dim">ATÉ 30KM</span>
+                                 <span class="text-white">R$ ${tiers.tier1.toFixed(2).replace('.', ',')}</span>
+                              </div>
+                              <div class="flex justify-between text-[10px] font-bold">
+                                 <span class="text-text-dim">31KM A 40KM</span>
+                                 <span class="text-white">R$ ${tiers.tier2.toFixed(2).replace('.', ',')}</span>
+                              </div>
                            </div>
                         </div>
-                    </div>
 
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5">
-                           <span class="text-xs font-bold text-text-dim uppercase tracking-widest">Até 30km</span>
-                           <span class="text-white font-black">R$ ${tiers.tier1.toFixed(2).replace('.', ',')}</span>
+                        <!-- Outros Serviços Section -->
+                        <div class="bg-white/5 rounded-2xl border border-white/5 overflow-hidden">
+                           <div class="p-4 bg-white/5 border-b border-white/5 flex items-center gap-3">
+                              <span class="material-symbols-outlined text-sm text-primary">bolt</span>
+                              <span class="text-[10px] font-black text-white uppercase tracking-widest">Chupeta / Bateria</span>
+                           </div>
+                           <div class="p-3 space-y-2">
+                              <div class="flex justify-between text-[10px] font-bold">
+                                 <span class="text-text-dim">VALOR FIXO (ATÉ 30KM)</span>
+                                 <span class="text-white">R$ ${tiers.tier1.toFixed(2).replace('.', ',')}</span>
+                              </div>
+                           </div>
                         </div>
-                        <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5">
-                           <span class="text-xs font-bold text-text-dim uppercase tracking-widest">31km a 40km</span>
-                           <span class="text-white font-black">R$ ${tiers.tier2.toFixed(2).replace('.', ',')}</span>
+
+                        <div class="bg-white/5 rounded-2xl border border-white/5 overflow-hidden">
+                           <div class="p-4 bg-white/5 border-b border-white/5 flex items-center gap-3">
+                              <span class="material-symbols-outlined text-sm text-primary">local_gas_station</span>
+                              <span class="text-[10px] font-black text-white uppercase tracking-widest">Pane Seca</span>
+                           </div>
+                           <div class="p-3 space-y-2">
+                              <div class="flex justify-between text-[10px] font-bold">
+                                 <span class="text-text-dim">VALOR FIXO (ATÉ 30KM)</span>
+                                 <span class="text-white">R$ ${tiers.tier1.toFixed(2).replace('.', ',')}</span>
+                              </div>
+                           </div>
                         </div>
-                        <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5">
-                           <span class="text-xs font-bold text-text-dim uppercase tracking-widest">41km a 55km</span>
-                           <span class="text-white font-black">R$ ${tiers.tier3.toFixed(2).replace('.', ',')}</span>
+
+                        <div class="bg-white/5 rounded-2xl border border-white/5 overflow-hidden">
+                           <div class="p-4 bg-white/5 border-b border-white/5 flex items-center gap-3">
+                              <span class="material-symbols-outlined text-sm text-primary">tire_repair</span>
+                              <span class="text-[10px] font-black text-white uppercase tracking-widest">Reparo em Pneu</span>
+                           </div>
+                           <div class="p-3 space-y-2">
+                              <div class="flex justify-between text-[10px] font-bold">
+                                 <span class="text-text-dim">VALOR FIXO (ATÉ 30KM)</span>
+                                 <span class="text-white">R$ ${tiers.tier1.toFixed(2).replace('.', ',')}</span>
+                              </div>
+                           </div>
                         </div>
+
+                        <p class="text-[8px] text-text-dim/60 uppercase font-black text-center tracking-[0.2em] pt-4 border-t border-white/5">Consulte valores para distâncias acima de 55km com nosso suporte.</p>
                     </div>
                 </div>
 

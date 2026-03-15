@@ -1379,7 +1379,9 @@ async function renderLinks() {
     { title: 'Pitch de Venda B2B', url: '/parcerias.html', icon: 'ads_click', desc: 'Página comercial para prospecção de novas parcerias.' },
     { title: 'Inscrição Motorista', url: '/driver-invite.html', icon: 'person_add', desc: 'Fluxo de cadastro de novos parceiros reboquistas.' },
     { title: 'Link de Indicação', url: '/convite', icon: 'share', desc: 'URL para compartilhamento do programa de indicação.' },
-    { title: 'Modelo de Negócio', url: '/modelo-de-negocio.html', icon: 'analytics', desc: 'Documento estratégico sobre a operação da plataforma.' }
+    { title: 'Modelo de Negócio', url: '/modelo-de-negocio.html', icon: 'analytics', desc: 'Documento estratégico sobre a operação da plataforma.' },
+    { title: 'Mapa do Site SEO (XML)', url: '/sitemap-seo.xml', icon: 'account_tree', desc: 'Protocolo técnico de indexação para o Google (600+ páginas).' },
+    { title: 'Landing Page SEO (Elite)', url: '/seo/reboque-barra-da-tijuca.html', icon: 'ads_click', desc: 'Exemplo de página otimizada para captura de tráfego local.' }
   ];
 
   window.copyLink = (url, btnId) => {

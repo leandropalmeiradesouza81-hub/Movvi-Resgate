@@ -314,6 +314,9 @@
             letter-spacing: 0.1em;
             cursor: pointer;
             transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
 
         .btn-submit:hover {
@@ -325,6 +328,52 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
+
+        /* --- COMPARISON TABLE --- */
+        .vs-section {
+            padding: 150px 0;
+            background: #000;
+        }
+
+        .vs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .vs-header {
+            padding: 40px;
+            text-align: center;
+            background: var(--bg);
+        }
+
+        .vs-cell {
+            padding: 30px;
+            background: var(--bg);
+            border-top: 1px solid rgba(255,255,255,0.03);
+            font-size: 14px;
+        }
+
+        .vs-label {
+            font-size: 10px;
+            font-weight: 900;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .vs-value {
+            font-weight: 700;
+        }
+
+        .vs-movvi { background: linear-gradient(135deg, rgba(255,217,0,0.05), transparent); }
+        .vs-movvi .vs-value { color: var(--primary); }
+
+        .vs-guincho { opacity: 0.5; }
 
         /* --- REVEAL --- */
         .reveal {
@@ -398,14 +447,108 @@
             </div>
         </section>
 
+        <section class="vs-section">
+            <div class="container">
+                <div class="reveal mb-20 text-center">
+                    <span class="hero-tag">THE COMPARISON</span>
+                    <h2>MOVVI vs <span>GUINCHO TRADICIONAL</span></h2>
+                    <p class="max-w-2xl mx-auto mt-6 text-text-dim uppercase text-xs font-black tracking-widest">A revolução da micro-logística contra o modelo arcaico de guinchos pesados.</p>
+                </div>
+                
+                    <img src="movvi_vs_big_truck_visual_1773576147934.png" alt="Movvi vs Tradicional" class="w-full h-auto rounded-3xl border border-white/5 shadow-2xl shadow-primary/10">
+                </div>
+                
+                <div class="vs-grid reveal">
+                    <div class="vs-header vs-guincho">
+                        <p class="text-2xl font-black">GUINCHO COMUM</p>
+                        <p class="text-[10px] text-text-dim mt-2 tracking-widest uppercase italic">Modelo Tradicional</p>
+                    </div>
+                    <div class="vs-header vs-movvi">
+                        <p class="text-2xl font-black text-primary">PLATAFORMA MOVVI</p>
+                        <p class="text-[10px] text-primary mt-2 tracking-widest uppercase italic shadow-primary/20">Micro-Logística Inteligente</p>
+                    </div>
+
+                    <div class="vs-cell vs-guincho">
+                        <span class="vs-label">Custo Médio</span>
+                        <span class="vs-value">R$ 280 - R$ 450</span>
+                    </div>
+                    <div class="vs-cell vs-movvi">
+                        <span class="vs-label">Custo Médio</span>
+                        <span class="vs-value text-xl">R$ 80 - R$ 120</span>
+                    </div>
+
+                    <div class="vs-cell vs-guincho">
+                        <span class="vs-label">Tempo de Resposta (SLA)</span>
+                        <span class="vs-value">60min - 120min</span>
+                    </div>
+                    <div class="vs-cell vs-movvi">
+                        <span class="vs-label">Tempo de Resposta (SLA)</span>
+                        <span class="vs-value text-xl">15min - 25min</span>
+                    </div>
+
+                    <div class="vs-cell vs-guincho">
+                        <span class="vs-label">Agilidade Urbana</span>
+                        <span class="vs-value text-signal-red">BAIXA (Retido no Trânsito)</span>
+                    </div>
+                    <div class="vs-cell vs-movvi">
+                        <span class="vs-label">Agilidade Urbana</span>
+                        <span class="vs-value text-signal-green text-xl italic uppercase">ALTÍSSIMA (Unidade Tática Mobile)</span>
+                    </div>
+
+                    <div class="vs-cell vs-guincho">
+                        <span class="vs-label">Foco de Operação</span>
+                        <span class="vs-value">Colisões / Pane Pesada</span>
+                    </div>
+                    <div class="vs-cell vs-movvi">
+                        <span class="vs-label">Foco de Operação</span>
+                        <span class="vs-value text-xl">Pneu, Bateria, Pane Seca & Pequenos Reparos em 70% dos Casos</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="staggered-narrative container">
+            <div class="reveal mb-12 text-center">
+                <span class="hero-tag">A SOLUÇÃO TÁTICA</span>
+                <h2>POR QUE <span>DESPERDIÇAR RECURSOS?</span></h2>
+            </div>
             <div class="narrative-item reveal">
                 <div class="n-media">
-                    <img src="https://images.unsplash.com/photo-1544006659-f0b21f04cb1d?w=800" alt="Pane Seca">
+                    <img src="fuel_refill_human_touch_1773576332992.png" alt="Atendimento de Pane Seca Movvi Resgate">
                 </div>
                 <div class="n-text">
                     <h2>70% DOS SEUS CHAMADOS SÃO <span>BAIXA COMPLEXIDADE.</span></h2>
-                    <p>Pneu furado, bateria descarregada e pane seca não exigem um guincho plataforma de R$ 350. Nossas unidades táticas resolvem 7 a cada 10 ocorrências por uma fração do preço.</p>
+                    <p>Um guincho comum pesa 4 toneladas e custa caro. Mandar um caminhão para trocar um pneu ou levar 5L de combustível é um erro operacional que sangra sua margem. Nossas unidades táticas resolvem 7 a cada 10 ocorrências por uma fração do preço e 3x mais rápido.</p>
+                    <div class="mt-8 grid grid-cols-2 gap-4">
+                        <div class="p-5 border-l-2 border-primary bg-white/5">
+                            <p class="text-xs font-black uppercase text-primary mb-1">CUSTO DISRUPTIVO</p>
+                            <p class="text-[11px] font-medium opacity-80">Economia imediata no LVR. Pague pelo serviço, não pelo peso do caminhão.</p>
+                        </div>
+                        <div class="p-5 border-l-2 border-primary bg-white/5">
+                            <p class="text-xs font-black uppercase text-primary mb-1">SATISFAÇÃO 10/10</p>
+                            <p class="text-[11px] font-medium opacity-80">Seu segurado assistido em menos de 20 minutos no meio do trânsito.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal mb-20">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="saas-card p-8 border-white/5 bg-white/[0.02]">
+                        <span class="material-symbols-outlined text-4xl text-primary mb-4">bolt</span>
+                        <h4 class="text-xs font-black uppercase mb-3 tracking-widest text-primary">AGILIDADE TÁTICA</h4>
+                        <p class="text-[11px] font-medium text-text-dim leading-relaxed uppercase tracking-widest">Enquanto o guincho fica retido no trânsito, nossas unidades táticas usam corredores e rotas alternativas para chegar 3x mais rápido.</p>
+                    </div>
+                    <div class="saas-card p-8 border-white/5 bg-white/[0.02]">
+                        <span class="material-symbols-outlined text-4xl text-primary mb-4">analytics</span>
+                        <h4 class="text-xs font-black uppercase mb-3 tracking-widest text-primary">INTELIGÊNCIA DE DADOS</h4>
+                        <p class="text-[11px] font-medium text-text-dim leading-relaxed uppercase tracking-widest">Dashboard em tempo real para controle de faturamento, geolocalização exata de cada unidade e histórico completo de SLAs.</p>
+                    </div>
+                    <div class="saas-card p-8 border-white/5 bg-white/[0.02]">
+                        <span class="material-symbols-outlined text-4xl text-primary mb-4">integration_instructions</span>
+                        <h4 class="text-xs font-black uppercase mb-3 tracking-widest text-primary">INTEGRAÇÃO NATIVA</h4>
+                        <p class="text-[11px] font-medium text-text-dim leading-relaxed uppercase tracking-widest">API REST pronta para integrar com seu CRM ou sistema de despacho, automatizando o acionamento sem intervenção humana.</p>
+                    </div>
                 </div>
             </div>
 

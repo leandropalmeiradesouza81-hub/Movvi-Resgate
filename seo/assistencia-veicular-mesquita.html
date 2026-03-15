@@ -3,10 +3,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    <title>Assistência Veicular em Mesquita | Movvi Resgate 24h</title>
-    <meta name="description" content="Precisa de assistência veicular em Mesquita? Atendimento via app em 20 minutos. Veja o preço antes de pedir. Não pague por guinchos pesados sem necessidade. Nossas unidades táticas resolvem 70% dos problemas no local." />
+    <title>Assistência Veicular em Mesquita | Resgate com Carro de Passeio Movvi</title>
+    <meta name="description" content="Socorro emergencial de assistência veicular em Mesquita utilizando carros de passeio ágeis. Chegada rápida. Valor justo. Rede de assistência 24 horas monitorada. Atendimento especializado para resolvê-lo rapidamente e tirar você da zona de risco." />
     <link rel="canonical" href="https://movviresgate.com.br/seo/assistencia-veicular-mesquita.html" />
     
+    <!-- Open Graph -->
+    <meta property="og:title" content="Assistência Veicular em Mesquita | Resgate com Carro de Passeio Movvi" />
+    <meta property="og:description" content="Socorro emergencial de assistência veicular em Mesquita utilizando carros de passeio ágeis. Chegada rápida. Valor justo. Rede de assistência 24 horas monitorada. Atendimento especializado para resolvê-lo rapidamente e tirar você da zona de risco." />
+    <meta property="og:image" content="https://movviresgate.com.br/movvi_passenger_car_rescue_night_1773604928930.png" />
+    <meta property="og:type" content="website" />
+
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,1&display=swap" rel="stylesheet" />
@@ -18,7 +24,6 @@
             --surface: #0a0a0a;
             --text: #ffffff;
             --text-dim: #888888;
-            --signal-green: #10b981;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -37,7 +42,8 @@
         .logo img { height: 28px; }
 
         /* Hero */
-        .hero { padding: 100px 0 60px; text-align: center; }
+        .hero { padding: 120px 0 80px; text-align: center; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100%; height: 100%; background: radial-gradient(circle, rgba(255,217,0,0.05) 0%, transparent 70%); pointer-events: none; }
         .hero-tag { display: inline-block; background: var(--primary); color: #000; padding: 4px 12px; font-size: 10px; font-weight: 900; letter-spacing: 0.2em; border-radius: 2px; margin-bottom: 24px; }
         .hero h1 { font-size: clamp(40px, 8vw, 80px); line-height: 0.9; margin-bottom: 24px; }
         .hero h1 span { color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.3); }
@@ -48,83 +54,106 @@
             background: var(--primary);
             color: #000;
             text-decoration: none;
-            padding: 20px 48px;
+            padding: 22px 52px;
             font-family: 'Outfit';
-            font-weight: 900;
+            font-weight: 950;
             display: inline-flex;
             align-items: center;
             gap: 12px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             border-radius: 4px;
-            transition: 0.3s;
-            box-shadow: 0 20px 40px rgba(255, 217, 0, 0.2);
+            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 20px 40px rgba(255, 217, 0, 0.25);
         }
-        .btn-cta:hover { transform: scale(1.05); background: #fff; }
+        .btn-cta:hover { transform: translateY(-5px) scale(1.02); background: #fff; box-shadow: 0 30px 60px rgba(255, 217, 0, 0.4); }
 
-        /* Steps */
-        .steps { padding: 80px 0; background: var(--surface); }
-        .grid-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-top: 40px; }
-        .step-card { background: #111; padding: 40px; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; }
-        .step-num { font-family: 'Outfit'; font-size: 40px; font-weight: 900; color: var(--primary); opacity: 0.3; margin-bottom: 20px; display: block; }
-        .step-card h3 { font-size: 14px; margin-bottom: 12px; }
-        .step-card p { font-size: 13px; color: var(--text-dim); }
+        /* Features */
+        .features { padding: 100px 0; background: var(--surface); }
+        .grid-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        .f-card { background: #111; padding: 48px; border: 1px solid rgba(255,255,255,0.03); border-radius: 2px; transition: 0.3s; }
+        .f-card:hover { border-color: var(--primary); }
+        .f-icon { color: var(--primary); font-size: 40px; margin-bottom: 24px; display: block; }
+        .f-card h3 { margin-bottom: 16px; font-size: 18px; }
+        .f-card p { color: var(--text-dim); font-size: 14px; }
 
         /* FAQ */
-        .faq { padding: 80px 0; }
-        .faq-item { margin-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 24px; }
-        .faq-item h4 { font-size: 16px; margin-bottom: 12px; color: var(--primary); }
+        .faq { padding: 100px 0; }
+        .faq-grid { display: grid; grid-template-columns: 1fr; gap: 60px; }
+        @media (min-width: 992px) { .faq-grid { grid-template-columns: 1fr 1fr; } }
+        .faq-item { border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 32px; }
+        .faq-item h4 { font-size: 16px; margin-bottom: 12px; color: var(--primary); font-weight: 800; }
         .faq-item p { font-size: 14px; color: var(--text-dim); }
 
-        /* Bottom Fixed CTA */
+        /* Dynamic Image */
+        .visual-section { padding: 60px 0; text-align: center; }
+        .visual-section img { width: 100%; max-width: 1000px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 40px 100px rgba(0,0,0,0.5); }
+
+        /* Sticky CTA */
         .sticky-cta {
             position: fixed;
             bottom: 20px; left: 20px; right: 20px;
             background: var(--primary);
             color: #000;
-            padding: 16px;
+            padding: 20px;
             text-align: center;
-            font-weight: 900;
+            font-weight: 950;
             text-decoration: none;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 5px;
+            box-shadow: 0 15px 45px rgba(255,217,0,0.3);
             z-index: 1000;
             display: none;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             font-family: 'Outfit';
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
-        @media (max-width: 768px) { .sticky-cta { display: flex; } .hero { padding-top: 60px; } }
+        @media (max-width: 768px) { .sticky-cta { display: flex; } }
     </style>
 
-    <!-- Schema Markup -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "name": "Movvi Resgate - Assistência Veicular Mesquita",
-        "image": "https://movviresgate.com.br/assets/images/logo_movvi.png",
-        "url": "https://movviresgate.com.br/seo/assistencia-veicular-mesquita.html",
-        "telephone": "",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Mesquita",
-            "addressRegion": "RJ",
-            "addressCountry": "BR"
+        "@type": "Service",
+        "name": "Assistência Veicular em Mesquita",
+        "description": "Socorro emergencial de assistência veicular em Mesquita utilizando carros de passeio ágeis. Chegada rápida. Valor justo. Rede de assistência 24 horas monitorada. Atendimento especializado para resolvê-lo rapidamente e tirar você da zona de risco.",
+        "provider": {
+            "@type": "LocalBusiness",
+            "name": "Movvi Resgate",
+            "image": "https://movviresgate.com.br/assets/images/logo_movvi.png",
+            "priceRange": "$$",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Mesquita",
+                "addressRegion": "RJ",
+                "addressCountry": "BR"
+            }
         },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "-22.9068",
-            "longitude": "-43.1729"
+        "areaServed": {
+            "@type": "City",
+            "name": "Mesquita"
         },
-        "openingHoursSpecification": {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": [
-                "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-            ],
-            "opens": "00:00",
-            "closes": "23:59"
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Assistência Veicular Emergencial",
+            "itemListElement": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Socorro Veicular"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Atendimento Emergencial"
+                    }
+                }
+            ]
         }
     }
     </script>
@@ -134,7 +163,7 @@
         <div class="container">
             <a href="/" class="logo">
                 <img src="/assets/images/logo_movvi.png" alt="Movvi">
-                <span>MOVVI_RESGATE</span>
+                <span>MOVVI_ELITE_SEO</span>
             </a>
         </div>
     </nav>
@@ -142,72 +171,86 @@
     <main>
         <section class="hero">
             <div class="container">
-                <span class="hero-tag">ASSISTÊNCIA TÁTICA 24H</span>
-                <h1>Assistência Veicular EM <span>Mesquita</span></h1>
-                <p>Não pague por guinchos pesados sem necessidade. Nossas unidades táticas resolvem 70% dos problemas no local.</p>
+                <span class="hero-tag">ATENDIMENTO CRÍTICO 24H</span>
+                <h1>Assistência Veicular <span>Mesquita</span></h1>
+                <p>Rede de assistência 24 horas monitorada. Atendimento especializado para resolvê-lo rapidamente e tirar você da zona de risco.</p>
                 <a href="/app" class="btn-cta">
-                    <span class="material-symbols-outlined">bolt</span>
-                    Solicitar Resgate Agora
+                    <span class="material-symbols-outlined">electric_bolt</span>
+                    SOLICITAR AGORA
                 </a>
             </div>
         </section>
 
-        <section class="steps">
+        <section class="visual-section container">
+            <img src="/movvi_passenger_car_rescue_night_1773604928930.png" alt="Socorro Veicular Ágil com Carro de Passeio em Mesquita">
+        </section>
+
+        <section class="features">
             <div class="container">
-                <h2 style="font-size: 24px; text-align: center;">Como funciona o atendimento</h2>
-                <div class="grid-steps">
-                    <div class="step-card">
-                        <span class="step-num">01</span>
-                        <h3>Pedido Online</h3>
-                        <p>Acesse nossa plataforma e solicite Assistência Veicular para sua localização em Mesquita.</p>
+                <div style="margin-bottom: 60px; text-align: center;">
+                    <span class="hero-tag" style="background: rgba(255,255,255,0.05); color: var(--primary);">AGILE MICRO-LOGISTICS</span>
+                    <h2 style="font-size: 32px; margin-top: 20px;">TECNOLOGIA DE RESGATE LOCAL</h2>
+                </div>
+                <div class="grid-features">
+                    <div class="f-card">
+                        <span class="material-symbols-outlined f-icon">speed</span>
+                        <h3>RESPOSTA ULTRA-RÁPIDA</h3>
+                        <p>Nossa plataforma conecta você a um parceiro com carro de passeio em Mesquita em tempo real. Sem a lentidão e o custo de guinchos pesados.</p>
                     </div>
-                    <div class="step-card">
-                        <span class="step-num">02</span>
-                        <h3>Busca Inteligente</h3>
-                        <p>Nossa rede localiza automaticamente o motorista tático mais próximo de você.</p>
+                    <div class="f-card">
+                        <span class="material-symbols-outlined f-icon">gps_fixed</span>
+                        <h3>PRECISÃO GPS</h3>
+                        <p>Identificamos o ponto exato da sua ocorrência para garantir que o socorro chegue sem erros de rota, mesmo em locais de difícil acesso.</p>
                     </div>
-                    <div class="step-card">
-                        <span class="step-num">03</span>
-                        <h3>Preço na Tela</h3>
-                        <p>Veja o valor real do serviço antes de confirmar. Sem surpresas no faturamento.</p>
-                    </div>
-                    <div class="step-card">
-                        <span class="step-num">04</span>
-                        <h3>Socorro Médio</h3>
-                        <p>Acompanhe o deslocamento em tempo real no mapa até a sua chegada em Mesquita.</p>
+                    <div class="f-card">
+                        <span class="material-symbols-outlined f-icon">payments</span>
+                        <h3>PREÇO TRANSPARENTE</h3>
+                        <p>O algoritmo calcula o valor baseado na distância exata em Mesquita para um veículo comum. Você confirma o pagamento sabendo o custo final.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="faq">
+        <section class="faq container">
+            <h2 style="font-size: 32px; margin-bottom: 60px; text-align: center;">PERGUNTAS SOBRE Assistência Veicular</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>Qual o valor do Assistência Veicular em Mesquita?</h4>
+                    <p>O valor é calculado na hora pelo Web App. Por usarmos carros de passeio comuns para socorro tático, o custo é drasticamente menor que um guincho comum.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>A Movvi atende 24h em Mesquita?</h4>
+                    <p>Sim, operamos em regime ininterrupto (24/7) garantindo assistência em qualquer via de Mesquita, incluindo rodovias e bairros residenciais.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Como é feito o socorro sem guincho?</h4>
+                    <p>70% dos problemas são resolvidos no local por nossos parceiros treinados utilizando carros comuns equipados com Kit de Resgate.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>É seguro ser atendido por um carro de passeio?</h4>
+                    <p>Sim. Nossos parceiros são auditados e utilizam sinalização técnica de segurança para atendimento em Mesquita, focando em rapidez e proteção.</p>
+                </div>
+            </div>
+        </section>
+
+        <section style="padding: 100px 0; background: linear-gradient(to top, #111, transparent); text-align: center;">
             <div class="container">
-                <h2 style="font-size: 24px; margin-bottom: 40px;">Dúvidas Frequentes</h2>
-                <div class="faq-item">
-                    <h4>Como solicitar Assistência Veicular em Mesquita?</h4>
-                    <p>Basta clicar no botão "Solicitar Resgate", informar sua localização e o tipo de problema. O sistema cuidará de todo o resto automaticamente.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Quanto tempo demora o atendimento em Mesquita?</h4>
-                    <p>Nosso SLA médio em perímetros urbanos como Mesquita é de 15 a 25 minutos, devido às nossas unidades táticas usarem motocicletas preparadas.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Os profissionais são certificados?</h4>
-                    <p>Sim, todos os motoristas da rede Movvi passam por rigorosa auditoria de documentação e treinamento de micro-logística de resgate.</p>
-                </div>
+                <h2 style="font-size: 40px; margin-bottom: 24px;">NÃO ESPERE NA <span>ZONA DE RISCO</span></h2>
+                <p style="color: var(--text-dim); margin-bottom: 48px; max-width: 600px; margin-left: auto; margin-right: auto;">Sua segurança em Mesquita é prioridade. Peça agora pelo Web App e veja o motorista chegando pelo mapa.</p>
+                <a href="/app" class="btn-cta">ACESSAR WEB APP</a>
             </div>
         </section>
     </main>
 
     <a href="/app" class="sticky-cta">
-        <span class="material-symbols-outlined">electric_bolt</span>
-        SOLICITAR AGORA
+        <span class="material-symbols-outlined">bolt</span>
+        CHAMAR RESGATE AGORA
     </a>
 
     <footer style="padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; opacity: 0.5; font-size: 11px;">
         <div class="container">
-            <p>© 2026 MOVVI TECHNOLOGIES // ROAD TO 2027</p>
-            <p style="margin-top: 10px;">Assistência Veicular - Atendimento emergencial em Mesquita e região metropolitana do Rio de Janeiro.</p>
+            <p>© 2026 MOVVI TECHNOLOGIES // ELITE SEO ENGINE</p>
+            <p style="margin-top: 10px;">Atendimento Ágil com Carros de Passeio em Mesquita - Rio de Janeiro.</p>
         </div>
     </footer>
 </body>

@@ -40,6 +40,7 @@ TEMPLATE = """<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <title>{TITLE}</title>
     <meta name="description" content="{DESCRIPTION}" />
+    <meta name="google-site-verification" content="vWLT2eeqZMPdEGoYw5p_e_809P0_Wp-67Gf67m9IExk" />
     <link rel="canonical" href="https://movviresgate.com.br/seo/{SLUG}.html" />
     
     <!-- Open Graph -->

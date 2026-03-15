@@ -330,7 +330,7 @@ async function loadPage(page, isUpdate = false) {
   }
 }
 
-document.querySelectorAll('.nav-item').forEach(btn => {
+document.querySelectorAll('.nav-item[data-page]').forEach(btn => {
   btn.onclick = () => loadPage(btn.dataset.page);
 });
 

@@ -113,7 +113,7 @@
             letter-spacing: 0.02em;
         }
 
-        .nav-item:hover {
+        .nav-item:hover, .nav-item-static:hover {
             color: #ffffff;
             background: rgba(255,255,255,0.1);
         }
@@ -123,6 +123,21 @@
             background: #ffdb00;
             font-weight: 800;
             box-shadow: 0 10px 15px -3px rgba(255, 219, 0, 0.3);
+        }
+
+        .nav-item-static {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.875rem 1.5rem;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.825rem;
+            font-weight: 500;
+            border-radius: 12px;
+            margin: 0 0.75rem;
+            letter-spacing: 0.02em;
         }
 
 
@@ -325,7 +340,7 @@
             </div>
             
             <p class="nav-category">Recursos Externos</p>
-            <div class="nav-item" onclick="const m = document.getElementById('external-links-menu'); m.classList.toggle('open'); this.querySelector('.expand-icon').innerText = m.classList.contains('open') ? 'expand_less' : 'expand_more'">
+            <div class="nav-item-static" onclick="const m = document.getElementById('external-links-menu'); m.classList.toggle('open'); this.querySelector('.expand-icon').innerText = m.classList.contains('open') ? 'expand_less' : 'expand_more'">
                 <span class="material-symbols-outlined text-xl text-primary">link</span>
                 <span class="flex-1 opacity-90">Links Externos</span>
                 <span class="material-symbols-outlined text-xs expand-icon">expand_more</span>

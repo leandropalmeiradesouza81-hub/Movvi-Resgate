@@ -5,7 +5,11 @@ import unicodedata
 # --- CONFIGURAÇÃO DE DADOS ---
 SERVICES = [
     {"slug": "reboque", "name": "Reboque", "icon": "engineering", "desc": "Serviço de reboque profissional para veículos leves e utilitários."},
+    {"slug": "reboque-24-horas", "name": "Reboque 24 horas", "icon": "engineering", "desc": "Reboque emergencial disponível 24h por dia."},
+    {"slug": "reboque-perto-de-mim", "name": "Reboque perto de mim", "icon": "location_on", "desc": "Encontre o reboque mais próximo da sua localização agora."},
     {"slug": "guincho", "name": "Guincho 24h", "icon": "tow_truck", "desc": "Guincho urgente com atendimento imediato e monitoramento real-time."},
+    {"slug": "guincho-24-horas", "name": "Guincho 24 horas", "icon": "tow_truck", "desc": "Serviço de guincho disponível 24 horas por dia."},
+    {"slug": "guincho-perto-de-mim", "name": "Guincho perto de mim", "icon": "location_on", "desc": "Guincho mais próximo disponível para resgate imediato."},
     {"slug": "pane-seca", "name": "Socorro para Pane Seca", "icon": "local_gas_station", "desc": "Entrega de combustível e auxílio tático para veículos parados por falta de gasolina."},
     {"slug": "chupeta-bateria", "name": "Carga de Bateria (Chupeta)", "icon": "battery_charging_full", "desc": "Recarga auxiliar de bateria para veículos que não ligam."},
     {"slug": "troca-de-pneu", "name": "Troca de Pneu", "icon": "tire_repair", "desc": "Auxílio técnico para substituição de pneus furados com segurança."},

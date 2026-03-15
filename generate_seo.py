@@ -1,5 +1,6 @@
 import os
 import json
+import unicodedata
 
 # --- CONFIGURAÇÃO DE DADOS ---
 SERVICES = [
@@ -12,17 +13,12 @@ SERVICES = [
 ]
 
 LOCATIONS = [
-    # Rio de Janeiro - Zonas
     "Barra da Tijuca", "Recreio dos Bandeirantes", "Copacabana", "Ipanema", "Leblon", "Centro RJ", "Botafogo", "Flamengo", "Tijuca", "Grajaú", "Vila Isabel", "Meier", "Madureira", "Bangu", "Campo Grande", "Santa Cruz", "Jacarepaguá", "Freguesia", "Taquara", "Pechincha", "Curicica", "Vargem Pequena", "Vargem Grande", "Ilha do Governador", "Penha", "Bonsucesso", "Olaria", "Pavuna", "Irajá", "Realengo", "Padre Miguel", "Senador Camará", "Guaratiba", "Sepetiba",
-    # Baixada Fluminense
     "Duque de Caxias", "Nova Iguaçu", "São João de Meriti", "Belford Roxo", "Nilópolis", "Mesquita", "Queimados", "Japeri", "Magé", "Itaguaí",
-    # Niterói & São Gonçalo
     "Icaraí", "Santa Rosa", "Centro Niterói", "Piratininga", "Itaipu", "Fonseca", "Barreto", "São Gonçalo Centro", "Alcântara", "Neves", "Porto da Pedra", "Colubandê", "Mutuá",
-    # Rodovias & Vias Expressas
     "Avenida Brasil", "Linha Vermelha", "Linha Amarela", "Ponte Rio-Niterói", "Rodovia Dutra", "Rodovia Washington Luiz", "Arco Metropolitano", "Grajaú-Jacarepaguá", "Transolímpica"
 ]
 
-# Variações de texto agressivas para SEO extremo
 TEXT_VARIANTS = [
     "Socorro veicular tático com chegada em menos de 20 minutos. Ideal para quem está parado no fluxo intenso e precisa de agilidade.",
     "Solicitação totalmente online sem burocracia. O sistema identifica sua posição exata via GPS e envia a unidade mais próxima.",
@@ -51,7 +47,7 @@ TEMPLATE = """<!DOCTYPE html>
 
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,1&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;1&display=swap" rel="stylesheet" />
 
     <style>
         :root {{
@@ -68,22 +64,36 @@ TEMPLATE = """<!DOCTYPE html>
             color: var(--text);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            overflow-x: hidden;
         }}
         h1, h2, h3 {{ font-family: 'Outfit', sans-serif; text-transform: uppercase; font-weight: 950; letter-spacing: -0.05em; }}
         .container {{ max-width: 1200px; margin: 0 auto; padding: 0 24px; }}
         
         /* Nav */
-        nav {{ padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }}
+        nav {{ padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 2000; }}
         .logo {{ font-family: 'Outfit'; font-weight: 900; font-size: 20px; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 10px; }}
         .logo img {{ height: 28px; }}
 
-        /* Hero */
-        .hero {{ padding: 120px 0 80px; text-align: center; position: relative; overflow: hidden; }}
+        /* Hero - FULL WIDTH */
+        .hero {{ padding: clamp(60px, 15vh, 120px) 0 80px; text-align: center; position: relative; overflow: hidden; }}
         .hero::before {{ content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100%; height: 100%; background: radial-gradient(circle, rgba(255,217,0,0.05) 0%, transparent 70%); pointer-events: none; }}
         .hero-tag {{ display: inline-block; background: var(--primary); color: #000; padding: 4px 12px; font-size: 10px; font-weight: 900; letter-spacing: 0.2em; border-radius: 2px; margin-bottom: 24px; }}
         .hero h1 {{ font-size: clamp(40px, 8vw, 80px); line-height: 0.9; margin-bottom: 24px; }}
         .hero h1 span {{ color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.3); }}
-        .hero p {{ font-size: 18px; color: var(--text-dim); max-width: 700px; margin: 0 auto 40px; }}
+        .hero p {{ font-size: clamp(16px, 2vw, 20px); color: var(--text-dim); max-width: 700px; margin: 0 auto 40px; }}
+
+        /* Image - CORRIGIDA */
+        .visual-section {{ padding: 40px 0; text-align: center; }}
+        .visual-section img {{ 
+            width: 100%; 
+            max-width: 1100px; 
+            border-radius: 12px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+            display: block;
+            margin: 0 auto;
+        }}
 
         /* CTA Button */
         .btn-cta {{
@@ -121,10 +131,6 @@ TEMPLATE = """<!DOCTYPE html>
         .faq-item h4 {{ font-size: 16px; margin-bottom: 12px; color: var(--primary); font-weight: 800; }}
         .faq-item p {{ font-size: 14px; color: var(--text-dim); }}
 
-        /* Dynamic Image */
-        .visual-section {{ padding: 60px 0; text-align: center; }}
-        .visual-section img {{ width: 100%; max-width: 1000px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 40px 100px rgba(0,0,0,0.5); }}
-
         /* Sticky CTA */
         .sticky-cta {{
             position: fixed;
@@ -137,14 +143,13 @@ TEMPLATE = """<!DOCTYPE html>
             text-decoration: none;
             border-radius: 5px;
             box-shadow: 0 15px 45px rgba(255,217,0,0.3);
-            z-index: 1000;
+            z-index: 3000;
             display: none;
             align-items: center;
             justify-content: center;
             gap: 12px;
             font-family: 'Outfit';
             text-transform: uppercase;
-            letter-spacing: 0.1em;
         }}
         @media (max-width: 768px) {{ .sticky-cta {{ display: flex; }} }}
     </style>
@@ -159,7 +164,7 @@ TEMPLATE = """<!DOCTYPE html>
             "@type": "LocalBusiness",
             "name": "Movvi Resgate",
             "image": "https://movviresgate.com.br/assets/images/logo_movvi.png",
-            "priceRange": "$$",
+            "priceRange": "R$80+",
             "address": {{
                 "@type": "PostalAddress",
                 "addressLocality": "{LOCATION}",
@@ -170,26 +175,6 @@ TEMPLATE = """<!DOCTYPE html>
         "areaServed": {{
             "@type": "City",
             "name": "{LOCATION}"
-        }},
-        "hasOfferCatalog": {{
-            "@type": "OfferCatalog",
-            "name": "Assistência Veicular Emergencial",
-            "itemListElement": [
-                {{
-                    "@type": "Offer",
-                    "itemOffered": {{
-                        "@type": "Service",
-                        "name": "Socorro Veicular"
-                    }}
-                }},
-                {{
-                    "@type": "Offer",
-                    "itemOffered": {{
-                        "@type": "Service",
-                        "name": "Atendimento Emergencial"
-                    }}
-                }}
-            ]
         }}
     }}
     </script>
@@ -236,12 +221,12 @@ TEMPLATE = """<!DOCTYPE html>
                     <div class="f-card">
                         <span class="material-symbols-outlined f-icon">gps_fixed</span>
                         <h3>PRECISÃO GPS</h3>
-                        <p>Identificamos o ponto exato da sua ocorrência para garantir que o socorro chegue sem erros de rota, mesmo em locais de difícil acesso.</p>
+                        <p>Identificamos o ponto exato da sua ocorrência para garantir que o socorro chegue sem erros de rota.</p>
                     </div>
                     <div class="f-card">
                         <span class="material-symbols-outlined f-icon">payments</span>
                         <h3>PREÇO TRANSPARENTE</h3>
-                        <p>O algoritmo calcula o valor baseado na distância exata em {LOCATION} para um veículo comum. Você confirma o pagamento sabendo o custo final.</p>
+                        <p>O algoritmo calcula o valor baseado na distância exata em {LOCATION} para um veículo comum.</p>
                     </div>
                 </div>
             </div>
@@ -252,19 +237,11 @@ TEMPLATE = """<!DOCTYPE html>
             <div class="faq-grid">
                 <div class="faq-item">
                     <h4>Qual o valor do {SERVICE_NAME} em {LOCATION}?</h4>
-                    <p>O valor é calculado na hora pelo Web App. Por usarmos carros de passeio comuns para socorro tático, o custo é drasticamente menor que um guincho comum.</p>
+                    <p>O valor é calculado na hora pelo Web App. Por usarmos carros de passeio comuns, o custo é drasticamente menor.</p>
                 </div>
                 <div class="faq-item">
                     <h4>A Movvi atende 24h em {LOCATION}?</h4>
-                    <p>Sim, operamos em regime ininterrupto (24/7) garantindo assistência em qualquer via de {LOCATION}, incluindo rodovias e bairros residenciais.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Como é feito o socorro sem guincho?</h4>
-                    <p>70% dos problemas são resolvidos no local por nossos parceiros treinados utilizando carros comuns equipados com Kit de Resgate.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>É seguro ser atendido por um carro de passeio?</h4>
-                    <p>Sim. Nossos parceiros são auditados e utilizam sinalização técnica de segurança para atendimento em {LOCATION}, focando em rapidez e proteção.</p>
+                    <p>Sim, operamos em regime ininterrupto (24/7) garantindo assistência em qualquer via de {LOCATION}.</p>
                 </div>
             </div>
         </section>
@@ -272,7 +249,7 @@ TEMPLATE = """<!DOCTYPE html>
         <section style="padding: 100px 0; background: linear-gradient(to top, #111, transparent); text-align: center;">
             <div class="container">
                 <h2 style="font-size: 40px; margin-bottom: 24px;">NÃO ESPERE NA <span>ZONA DE RISCO</span></h2>
-                <p style="color: var(--text-dim); margin-bottom: 48px; max-width: 600px; margin-left: auto; margin-right: auto;">Sua segurança em {LOCATION} é prioridade. Peça agora pelo Web App e veja o motorista chegando pelo mapa.</p>
+                <p style="color: var(--text-dim); margin-bottom: 48px; max-width: 600px; margin-left: auto; margin-right: auto;">Sua segurança em {LOCATION} é prioridade. Peça agora pelo Web App.</p>
                 <a href="/app" class="btn-cta">ACESSAR WEB APP</a>
             </div>
         </section>
@@ -280,7 +257,7 @@ TEMPLATE = """<!DOCTYPE html>
 
     <a href="/app" class="sticky-cta">
         <span class="material-symbols-outlined">bolt</span>
-        CHAMAR RESGATE AGORA
+        CHAMAR AGORA
     </a>
 
     <footer style="padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; opacity: 0.5; font-size: 11px;">
@@ -293,25 +270,35 @@ TEMPLATE = """<!DOCTYPE html>
 </html>
 """
 
+def slugify(text):
+    text = text.lower().replace(' ', '-')
+    text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8')
+    return text.replace('&', 'e').replace('?', '').replace(',', '')
+
 def generate_seo_system():
-    if not os.path.exists('seo'):
-        os.makedirs('seo')
+    # Caminho corrigido para garantir inclusão no build (Vite copia 'public' para 'dist')
+    output_dir = 'public/seo'
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
     
+    # Limpar pasta seo para evitar lixo
+    for f in os.listdir(output_dir):
+        os.remove(os.path.join(output_dir, f))
+        
     sitemap_links = []
     total_pages = 0
 
-    print("Gerando páginas SEO ELITE com FOCO EM CARROS DE PASSEIO...")
+    print("Gerando páginas SEO ELITE em public/seo (Full-Width)...")
     
     for service in SERVICES:
         for i, loc in enumerate(LOCATIONS):
-            slug = f"{service['slug']}-{loc.lower().replace(' ', '-').replace('&', 'e')}"
-            file_path = f"seo/{slug}.html"
-            
+            slug = f"{slugify(service['slug'])}-{slugify(loc)}"
+            file_path = f"{output_dir}/{slug}.html"
             variant = TEXT_VARIANTS[i % len(TEXT_VARIANTS)]
             
             content = TEMPLATE.format(
                 TITLE=f"{service['name']} em {loc} | Resgate com Carro de Passeio Movvi",
-                DESCRIPTION=f"Socorro emergencial de {service['name'].lower()} em {loc} utilizando carros de passeio ágeis. Chegada rápida. Valor justo. {variant}",
+                DESCRIPTION=f"Socorro emergencial de {service['name'].lower()} em {loc} utilizando carros de passeio ágeis. {variant}",
                 SERVICE_NAME=service['name'],
                 LOCATION=loc,
                 VARIANT=variant,
@@ -325,21 +312,21 @@ def generate_seo_system():
             total_pages += 1
 
     PROBLEMS = [
-        {"slug": "carro-nao-liga", "name": "Carro Não Liga", "icon": "block"},
-        {"slug": "bateria-descarregada", "name": "Bateria Descarregada", "icon": "battery_alert"},
-        {"slug": "pneu-furado", "name": "Pneu Furado", "icon": "no_crash"},
-        {"slug": "fiquei-sem-gasolina", "name": "Fiquei sem Gasolina", "icon": "gas_meter"}
+        {"slug": "carro-nao-liga", "name": "Carro Não Liga"},
+        {"slug": "bateria-descarregada", "name": "Bateria Descarregada"},
+        {"slug": "pneu-furado", "name": "Pneu Furado"},
+        {"slug": "fiquei-sem-gasolina", "name": "Fiquei sem Gasolina"}
     ]
     
     for prob in PROBLEMS:
         for i, loc in enumerate(LOCATIONS):
-            slug = f"{prob['slug']}-{loc.lower().replace(' ', '-')}"
-            file_path = f"seo/{slug}.html"
+            slug = f"{slugify(prob['slug'])}-{slugify(loc)}"
+            file_path = f"{output_dir}/{slug}.html"
             variant = TEXT_VARIANTS[i % len(TEXT_VARIANTS)]
             
             content = TEMPLATE.format(
                 TITLE=f"{prob['name']} em {loc}? Resgate Ágil com Carro | Movvi",
-                DESCRIPTION=f"Problema de {prob['name'].lower()} em {loc}? Nossos parceiros com carros de passeio chegam rápido para te ajudar. {variant}",
+                DESCRIPTION=f"{prob['name']} em {loc}? Nossos parceiros chegam rápido. {variant}",
                 SERVICE_NAME=prob['name'],
                 LOCATION=loc,
                 VARIANT=variant,
@@ -361,7 +348,7 @@ def generate_seo_system():
     with open('public/sitemap-seo.xml', 'w', encoding='utf-8') as f:
         f.write(xml_content)
 
-    print(f"ESTRATÉGIA DE CARROS DE PASSEIO FINALIZADA! {total_pages} páginas geradas.")
+    print(f"ESTRATÉGIA FINALIZADA! {total_pages} páginas geradas.")
 
 if __name__ == "__main__":
     generate_seo_system()

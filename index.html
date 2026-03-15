@@ -486,49 +486,34 @@
         }
 
         .hero-title {
-            font-size: clamp(34px, 10vw, 96px);
-            font-weight: 900;
+            font-size: clamp(38px, 8vw, 84px);
+            font-weight: 800;
+            line-height: 1.1;
             color: var(--text-main);
             max-width: 900px;
             margin-bottom: 24px;
+            letter-spacing: -0.04em;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.15);
             position: relative;
             z-index: 2;
         }
 
-        .hero-title em {
-            font-style: normal;
-            color: var(--primary);
-            text-shadow: 0 2px 20px rgba(255, 217, 0, 0.4);
-            position: relative;
-        }
-
-        .hero-title em::after {
-            content: '';
-            position: absolute;
-            bottom: 6px;
-            left: 0;
-            right: 0;
-            height: 8px;
-            background: var(--primary);
-            opacity: 0.2;
-            z-index: -1;
+        .hero-title-white {
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .hero-sub {
-            font-size: clamp(18px, 2.2vw, 26px);
-            /* Increased size */
-            color: #fff;
-            /* White for maximum contrast */
+            font-size: clamp(18px, 2.2vw, 24px);
+            color: rgba(255, 255, 255, 0.9);
             max-width: 600px;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             position: relative;
             z-index: 10;
-            font-weight: 700;
-            /* Bolder */
-            line-height: 1.4;
+            font-weight: 600;
+            line-height: 1.5;
             letter-spacing: -0.01em;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-            /* Stronger shadow for readability */
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
         }
 
         .hero-sub strong {
@@ -1369,17 +1354,17 @@
             }
 
             .hero-title {
-                font-size: 24px !important;
-                /* Compact title for slim view */
-                margin-bottom: 12px !important;
+                font-size: 32px !important;
+                margin-bottom: 16px !important;
                 line-height: 1.1 !important;
             }
 
             .hero-sub {
-                font-size: 14px !important;
-                /* Discrete sub */
-                margin-bottom: 25px !important;
-                max-width: 100% !important;
+                font-size: 16px !important;
+                line-height: 1.5 !important;
+                margin-bottom: 30px !important;
+                max-width: 90% !important;
+                opacity: 1 !important;
             }
 
             .hero-actions {
@@ -1572,24 +1557,17 @@
         /* Removed duplicated rule */
 
         @media (max-width: 767px) {
-
-            /* Preserve Desktop Visual globally */
             .hero-title,
             .hero-sub {
                 text-align: left;
             }
 
             .hero-title {
-                font-size: 38px !important; /* 60% larger than 24px */
+                font-size: 36px !important;
             }
 
             .hero-sub {
-                font-size: 22.4px !important; /* 60% larger than 14px */
-            }
-
-            .hero-actions {
-                display: flex;
-                justify-content: flex-start;
+                font-size: 18px !important;
             }
         }
         /* Smart App Bar */
@@ -1697,14 +1675,14 @@
 
         <div class="hero-content-wrapper"
             style="max-width: 1280px; margin: 0 auto; width: 100%; position: relative; z-index: 10; padding: 0 24px;">
-            <h1 class="hero-title"
-                style="font-size: clamp(38px, 8vw, 84px); font-weight: 800; line-height: 1.1; margin-bottom: 20px; letter-spacing: -0.04em; text-shadow: 0 2px 10px rgba(255,255,255,0.8);">
+            <h1 class="hero-title">
                 <span class="hero-title-yellow">Reboque e Guincho 24h</span><br>
-                <span style="color: #111;">Tá </span><span class="text-aura-red">enguiçado?</span>
+                <span class="hero-title-white">Tá </span><span class="text-aura-red">enguiçado?</span>
             </h1>
 
             <p class="hero-sub">
-                O <strong>reboque perto de mim</strong> mais barato do RJ. Socorro mecânico e assistência veicular rápida.
+                O <strong>reboque perto de você</strong> mais barato do RJ.<br class="hidden md:block">
+                Socorro mecânico e assistência veicular rápida 24h.
             </p>
 
             <div class="hero-actions">

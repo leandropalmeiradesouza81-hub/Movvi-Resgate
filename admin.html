@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="dark" lang="pt-BR">
+<html lang="pt-BR">
 
 <head>
     <meta charset="utf-8" />
@@ -16,18 +16,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: "class",
             theme: {
                 extend: {
                     colors: {
                         "primary": "#ffdb00",
-                        "signal-green": "#10b981",
-                        "signal-red": "#ef4444",
-                        "signal-blue": "#3b82f6",
-                        "bg-main": "#0b0f17",
-                        "bg-card": "#151b26",
-                        "border-pro": "#232d3d",
-                        "text-dim": "#94a3b8",
+                        "signal-green": "#059669",
+                        "signal-red": "#dc2626",
+                        "signal-blue": "#2563eb",
+                        "bg-main": "#f8fafc",
+                        "bg-card": "#ffffff",
+                        "border-pro": "#e2e8f0",
+                        "text-dim": "#64748b",
                     },
                     fontFamily: {
                         "sans": ["Inter", "sans-serif"],
@@ -40,8 +39,8 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: #0b0f17;
-            color: #f8fafc;
+            background: #f8fafc;
+            color: #1e293b;
             min-height: 100vh;
             overflow: hidden;
         }
@@ -55,34 +54,34 @@
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #1e293b;
+            background: #cbd5e1;
             border-radius: 10px;
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #334155;
+            background: #94a3b8;
         }
 
         .saas-card {
-            background: #151b26;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 16px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
         }
 
         .saas-card:hover {
-            border-color: rgba(255, 219, 0, 0.2);
+            border-color: #ffdb00;
             transform: translateY(-2px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
         .sidebar {
             width: 280px;
-            background: rgba(11, 15, 23, 0.9);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(255, 255, 255, 0.03);
+            background: #0f172a; /* Deep Slate Sidebar */
+            border-right: 1px solid rgba(255,255,255,0.05);
             height: 100vh;
             position: fixed;
             left: 0;
@@ -104,23 +103,26 @@
             align-items: center;
             gap: 1rem;
             padding: 0.875rem 1.5rem;
-            color: #94a3b8;
+            color: rgba(255,255,255,0.6); /* Clear but soft white */
             cursor: pointer;
             transition: all 0.2s;
-            font-size: 0.875rem;
-            font-weight: 600;
+            font-size: 0.825rem;
+            font-weight: 500;
             border-radius: 12px;
             margin: 0 0.75rem;
+            letter-spacing: 0.02em;
         }
 
         .nav-item:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.03);
+            color: #ffffff;
+            background: rgba(255,255,255,0.1);
         }
 
         .nav-item.active {
-            color: #ffdb00;
-            background: rgba(255, 219, 0, 0.08);
+            color: #000;
+            background: #ffdb00;
+            font-weight: 800;
+            box-shadow: 0 10px 15px -3px rgba(255, 219, 0, 0.3);
         }
 
 
@@ -142,7 +144,7 @@
         }
 
         #login-overlay {
-            background: #0b0f17;
+            background: #f8fafc;
             z-index: 2000;
             transition: opacity 0.4s ease, visibility 0.4s ease;
         }
@@ -156,9 +158,9 @@
             z-index: -1 !important;
         }
         @keyframes blink-yellow {
-            0% { background: rgba(255, 219, 0, 0.08); color: #ffdb00; }
-            50% { background: rgba(255, 219, 0, 0.4); color: #000; box-shadow: 0 0 15px rgba(255, 219, 0, 0.3); }
-            100% { background: rgba(255, 219, 0, 0.08); color: #ffdb00; }
+            0% { background: #fef08a; color: #854d0e; }
+            50% { background: #ffdb00; color: #000; box-shadow: 0 0 15px rgba(255, 219, 0, 0.4); }
+            100% { background: #fef08a; color: #854d0e; }
         }
 
         .blink-notification {
@@ -166,13 +168,12 @@
         }
 
         .nav-category {
-            font-size: 0.65rem;
-            color: #ffffff;
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.4); /* Faint white for hierarchy */
             text-transform: uppercase;
-            font-weight: 300;
-            letter-spacing: 0.25em;
+            font-weight: 800;
+            letter-spacing: 0.3em;
             padding: 2rem 1.75rem 0.5rem;
-            opacity: 0.9;
         }
 
         #external-links-menu {
@@ -220,10 +221,9 @@
     <!-- LOGIN GATEWAY -->
     <div id="login-overlay"
         class="fixed inset-0 flex items-center justify-center p-6 transition-opacity duration-500 hidden">
-        <div class="w-full max-w-md saas-card p-10 bg-slate-900 border-2 border-slate-800 shadow-2xl">
+        <div class="w-full max-w-md saas-card p-10 bg-white">
             <div class="flex flex-col items-center mb-10">
-                <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="h-40 object-contain mb-4"
-                    style="filter: brightness(0) invert(86%) sepia(93%) saturate(1450%) hue-rotate(334deg) brightness(108%) contrast(106%) drop-shadow(0 10px 20px rgba(255, 219, 0, 0.2));">
+                <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="h-40 object-contain mb-4">
                 <p class="text-text-dim text-[10px] uppercase tracking-[0.3em] font-bold">Painel de Controle</p>
             </div>
 
@@ -232,14 +232,14 @@
                     <label
                         class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2 ml-1">E-mail</label>
                     <input type="email" id="email" required
-                        class="w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-5 py-4 text-white focus:border-primary outline-none transition-all"
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-4 text-slate-900 focus:border-primary outline-none transition-all"
                         placeholder="seu@email.com">
                 </div>
                 <div>
                     <label
                         class="block text-[10px] font-black uppercase tracking-widest text-text-dim mb-2 ml-1">Password</label>
                     <input type="password" id="password" required
-                        class="w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-5 py-4 text-white focus:border-primary outline-none transition-all"
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-4 text-slate-900 focus:border-primary outline-none transition-all"
                         placeholder="••••••••">
                 </div>
                 <div id="login-error"
@@ -250,7 +250,7 @@
                     Acessar Painel <span class="material-symbols-outlined">bolt</span>
                 </button>
                 <button type="button" id="btn-diag"
-                    class="w-full bg-slate-800 text-white text-xs font-bold py-3 rounded-xl border border-slate-700 hover:bg-slate-700">Verificar
+                    class="w-full bg-slate-100 text-slate-900 text-xs font-bold py-3 rounded-xl border border-slate-200 hover:bg-slate-200">Verificar
                     Sistema</button>
             </form>
         </div>
@@ -258,17 +258,17 @@
 
     <!-- Diagnostic Modal -->
     <div id="diag-modal"
-        class="fixed inset-0 z-[1100] bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-6">
-        <div class="saas-card w-full max-w-2xl bg-slate-900 border-2 border-slate-800 p-8">
+        class="fixed inset-0 z-[1100] bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-6">
+        <div class="saas-card w-full max-w-2xl bg-white p-8">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-white font-black uppercase text-sm flex items-center gap-2">
+                <h3 class="text-slate-900 font-black uppercase text-sm flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary">terminal</span> Diagnóstico de Rede
                 </h3>
-                <button id="close-diag" class="text-text-dim hover:text-white"><span
+                <button id="close-diag" class="text-text-dim hover:text-slate-900"><span
                         class="material-symbols-outlined">close</span></button>
             </div>
             <div id="diag-results"
-                class="text-[11px] font-mono text-text-dim space-y-2 h-64 overflow-y-auto custom-scrollbar bg-black/30 p-4 rounded-xl">
+                class="text-[11px] font-mono text-slate-600 space-y-2 h-64 overflow-y-auto custom-scrollbar bg-slate-50 p-4 rounded-xl border border-slate-200">
                 <p>> Auditoria de sistema iniciada...</p>
             </div>
         </div>
@@ -277,9 +277,8 @@
     <!-- MAIN SIDEBAR -->
     <aside class="sidebar" id="sidebar">
         <div class="p-8 mb-4 border-b border-white/5 flex flex-col items-center justify-center text-center">
-            <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="h-24 object-contain mb-2"
-                style="filter: brightness(0) invert(86%) sepia(93%) saturate(1450%) hue-rotate(334deg) brightness(108%) contrast(106%);">
-            <p class="text-primary text-[9px] font-bold tracking-[0.2em] uppercase">Painel de Administração</p>
+            <img src="/assets/images/logo_movvi.png" alt="Movvi Resgate" class="h-20 object-contain mb-4 brightness-0 invert opacity-90">
+            <p class="text-primary text-[9px] font-black tracking-[0.3em] uppercase opacity-80">Terminal de Comando</p>
         </div>
 
         <nav class="flex-1 space-y-1 pt-2 overflow-y-auto custom-scrollbar" id="nav">
@@ -326,28 +325,36 @@
             </div>
             
             <p class="nav-category">Recursos Externos</p>
-            <div class="nav-item" onclick="document.getElementById('external-links-menu').classList.toggle('open')">
+            <div class="nav-item" onclick="const m = document.getElementById('external-links-menu'); m.classList.toggle('open'); this.querySelector('.expand-icon').innerText = m.classList.contains('open') ? 'expand_less' : 'expand_more'">
                 <span class="material-symbols-outlined text-xl text-primary">link</span>
-                <span class="flex-1 text-white">Links Externos</span>
-                <span class="material-symbols-outlined text-xs">expand_more</span>
+                <span class="flex-1 opacity-90">Links Externos</span>
+                <span class="material-symbols-outlined text-xs expand-icon">expand_more</span>
             </div>
             <div id="external-links-menu" class="space-y-1">
-                <a href="/convite" target="_blank" class="flex items-center gap-3 px-6 py-3 text-text-dim hover:text-white transition-all text-xs font-medium rounded-xl hover:bg-white/5">
+                <a href="/convite" target="_blank" class="flex items-center gap-3 px-6 py-3 text-white/50 hover:text-white transition-all text-xs font-medium rounded-xl hover:bg-white/5">
                     <span class="material-symbols-outlined text-sm">share</span>
                     <span>Link de Indicação</span>
                 </a>
-                <a href="/modelo-de-negocio.html" target="_blank" class="flex items-center gap-3 px-6 py-3 text-text-dim hover:text-white transition-all text-xs font-medium rounded-xl hover:bg-white/5">
+                <a href="/modelo-de-negocio.html" target="_blank" class="flex items-center gap-3 px-6 py-3 text-white/50 hover:text-white transition-all text-xs font-medium rounded-xl hover:bg-white/5">
                     <span class="material-symbols-outlined text-sm">analytics</span>
                     <span>Modelo de Negócio</span>
+                </a>
+                <a href="/parcerias.html" target="_blank" class="flex items-center gap-3 px-6 py-3 text-white/50 hover:text-white transition-all text-xs font-medium rounded-xl hover:bg-white/5">
+                    <span class="material-symbols-outlined text-sm">handshake</span>
+                    <span>Landing Page B2B</span>
+                </a>
+                <a href="/business.html" target="_blank" class="flex items-center gap-3 px-6 py-3 text-white/50 hover:text-white transition-all text-xs font-medium rounded-xl hover:bg-white/5">
+                    <span class="material-symbols-outlined text-sm">corporate_fare</span>
+                    <span>Business Center</span>
                 </a>
             </div>
         </nav>
 
         <div class="p-6 border-t border-white/5 space-y-4">
             <button id="logout-btn"
-                class="flex items-center gap-3 text-signal-red text-xs font-black uppercase tracking-widest hover:brightness-110 transition-all px-2">
+                class="flex items-center gap-3 text-signal-red text-xs font-black uppercase tracking-widest hover:brightness-110 transition-all px-2 opacity-80 hover:opacity-100">
                 <span class="material-symbols-outlined">power_settings_new</span>
-                <span>Sair do Sistema</span>
+                <span>Sair do Terminal</span>
             </button>
         </div>
     </aside>
@@ -355,16 +362,16 @@
     <!-- CONTENT AREA -->
     <main class="main-content">
         <header
-            class="h-24 px-10 border-b border-white/5 flex items-center justify-between bg-bg-main/50 backdrop-blur-md sticky top-0 z-40">
+            class="h-24 px-10 border-b border-slate-200 flex items-center justify-between bg-white/80 backdrop-blur-md sticky top-0 z-40">
             <div>
-                <h2 id="page-title" class="text-2xl font-black text-white tracking-tight uppercase italic">— Painel de
+                <h2 id="page-title" class="text-2xl font-black text-slate-900 tracking-tight uppercase italic">— Painel de
                     Controle</h2>
             </div>
-
+ 
             <div class="flex items-center gap-8">
-                <div class="flex items-center gap-3 bg-slate-900/5 px-4 py-2 rounded-xl border border-white/5">
+                <div class="flex items-center gap-3 bg-slate-100 px-4 py-2 rounded-xl border border-slate-200">
                     <span class="size-2 rounded-full bg-signal-green shadow-[0_0_8px_#10b981]"></span>
-                    <span class="text-[10px] uppercase font-black tracking-widest text-white">Rede Ativa</span>
+                    <span class="text-[10px] uppercase font-black tracking-widest text-slate-900">Rede Ativa</span>
                 </div>
             </div>
         </header>

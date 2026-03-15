@@ -290,7 +290,8 @@ async function loadPage(page, isUpdate = false) {
     clients: '— Gestão de Base de Clientes',
     pricing: '— Gestão Financeira',
     chat: '— Central de Suporte SAC',
-    partners: '— Expansão e Parcerias B2B'
+    partners: '— Expansão e Parcerias B2B',
+    links: '— Central de Links e Portais'
   };
   $('#page-title').textContent = titleMap[page] || '— Movvi Dashboard';
 
@@ -314,7 +315,8 @@ async function loadPage(page, isUpdate = false) {
     clients: renderClients,
     pricing: renderPricing,
     chat: renderChat,
-    partners: renderPartners
+    partners: renderPartners,
+    links: renderLinks
   };
 
   try {
@@ -1366,5 +1368,64 @@ async function renderChat() {
   };
 }
 
+// ─── LINKS & PORTAIS ─────────────────────────────────
+async function renderLinks() {
+  const urlBase = window.location.origin;
+  const links = [
+    { title: 'Site Oficial', url: '/', icon: 'home', desc: 'Portal público da plataforma Movvi Resgate.' },
+    { title: 'Portal do Cliente', url: '/client.html', icon: 'person', desc: 'Interface de solicitação de socorro para usuários finais.' },
+    { title: 'Portal do Motorista', url: '/driver.html', icon: 'engineering', desc: 'Console de operação para motoristas logados.' },
+    { title: 'Painel Business', url: '/business.html', icon: 'corporate_fare', desc: 'Gestão de chamados e faturamento para parceiros corporativos.' },
+    { title: 'Pitch de Venda B2B', url: '/parcerias.html', icon: 'ads_click', desc: 'Página comercial para prospecção de novas parcerias.' },
+    { title: 'Inscrição Motorista', url: '/driver-invite.html', icon: 'person_add', desc: 'Fluxo de cadastro de novos parceiros reboquistas.' },
+    { title: 'Link de Indicação', url: '/convite', icon: 'share', desc: 'URL para compartilhamento do programa de indicação.' },
+    { title: 'Modelo de Negócio', url: '/modelo-de-negocio.html', icon: 'analytics', desc: 'Documento estratégico sobre a operação da plataforma.' }
+  ];
+
+  window.copyLink = (url, btnId) => {
+    const fullUrl = url.startsWith('http') ? url : window.location.origin + url;
+    navigator.clipboard.writeText(fullUrl).then(() => {
+      const btn = document.getElementById(btnId);
+      const original = btn.innerHTML;
+      btn.innerHTML = '<span class="material-symbols-outlined text-sm">done</span> COPIADO';
+      btn.classList.replace('bg-slate-100', 'bg-signal-green');
+      btn.classList.replace('text-slate-900', 'text-white');
+      setTimeout(() => {
+        btn.innerHTML = original;
+        btn.classList.replace('bg-signal-green', 'bg-slate-100');
+        btn.classList.replace('text-white', 'text-slate-900');
+      }, 2000);
+    });
+  };
+
+  pages.innerHTML = `
+    <div class="max-w-6xl mx-auto py-6 fade-up">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        ${links.map((l, i) => `
+          <div class="saas-card p-8 flex items-start gap-6 group hover:border-primary transition-all">
+            <div class="size-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined text-3xl">${l.icon}</span>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="text-sm font-black text-slate-900 uppercase italic tracking-tight">${l.title}</h4>
+                <button id="btn-copy-${i}" onclick="copyLink('${l.url}', 'btn-copy-${i}')" 
+                   class="flex items-center gap-2 bg-slate-100 text-slate-900 text-[9px] font-black uppercase px-4 py-2 rounded-lg hover:bg-slate-200 active:scale-95 transition-all">
+                   <span class="material-symbols-outlined text-sm">content_copy</span> COPIAR LINK
+                </button>
+              </div>
+              <p class="text-[11px] text-text-dim leading-relaxed uppercase font-bold tracking-widest mb-4 opacity-70">${l.desc}</p>
+              <div class="flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200 overflow-hidden">
+                <span class="material-symbols-outlined text-xs text-text-dim">language</span>
+                <span class="text-[10px] font-mono text-slate-500 truncate">${urlBase}${l.url}</span>
+                <a href="${l.url}" target="_blank" class="ml-auto text-primary hover:underline"><span class="material-symbols-outlined text-sm">open_in_new</span></a>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
 
 checkAdminAuth();

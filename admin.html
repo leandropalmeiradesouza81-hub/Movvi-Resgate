@@ -122,22 +122,6 @@
             color: #000;
             background: #ffdb00;
             font-weight: 800;
-            box-shadow: 0 10px 15px -3px rgba(255, 219, 0, 0.3);
-        }
-
-        .nav-item-static {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.875rem 1.5rem;
-            color: rgba(255,255,255,0.6);
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.825rem;
-            font-weight: 500;
-            border-radius: 12px;
-            margin: 0 0.75rem;
-            letter-spacing: 0.02em;
         }
 
 
@@ -199,12 +183,6 @@
             margin: 0 0.75rem;
         }
 
-        #external-links-menu.open {
-            max-height: 500px;
-            opacity: 1;
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
     </style>
     <script>
         // ─── AUTHENTICATION ───────────────────────────────────
@@ -339,45 +317,9 @@
                 <span>Tabelas de Preços</span>
             </div>
             
-            <p class="nav-category">Recursos Externos</p>
-            <div class="nav-item-static" onclick="const m = document.getElementById('external-links-menu'); m.classList.toggle('open'); this.querySelector('.expand-icon').innerText = m.classList.contains('open') ? 'expand_less' : 'expand_more'">
+            <div class="nav-item" data-page="links">
                 <span class="material-symbols-outlined text-xl text-primary">link</span>
-                <span class="flex-1 opacity-90">Links Externos</span>
-                <span class="material-symbols-outlined text-xs expand-icon">expand_more</span>
-            </div>
-            <div id="external-links-menu" class="space-y-1">
-                <a href="/index.html" target="_blank" class="flex items-center gap-3 px-6 py-3 text-white/50 hover:text-white transition-all text-xs font-medium rounded-xl hover:bg-white/5">
-                    <span class="material-symbols-outlined text-sm">home</span>
-                    <span>Site Oficial</span>
-                </a>
-                <a href="/client.html" target="_blank" class="flex items-center gap-3 px-6 py-3 text-white/50 hover:text-white transition-all text-xs font-medium rounded-xl hover:bg-white/5">
-                    <span class="material-symbols-outlined text-sm">person</span>
-                    <span>Portal do Cliente</span>
-                </a>
-                <a href="/driver.html" target="_blank" class="flex items-center gap-3 px-6 py-3 text-white/50 hover:text-white transition-all text-xs font-medium rounded-xl hover:bg-white/5">
-                    <span class="material-symbols-outlined text-sm">engineering</span>
-                    <span>Portal do Motorista</span>
-                </a>
-                 <a href="/business.html" target="_blank" class="flex items-center gap-3 px-6 py-3 text-white/50 hover:text-white transition-all text-xs font-medium rounded-xl hover:bg-white/5">
-                    <span class="material-symbols-outlined text-sm" style="color:#ffdb00">corporate_fare</span>
-                    <span>Painel Business</span>
-                </a>
-                <a href="/parcerias.html" target="_blank" class="flex items-center gap-3 px-6 py-3 text-white/50 hover:text-white transition-all text-xs font-medium rounded-xl hover:bg-white/5">
-                    <span class="material-symbols-outlined text-sm" style="color:#bef264">ads_click</span>
-                    <span>Pitch de Venda B2B</span>
-                </a>
-                <a href="/driver-invite.html" target="_blank" class="flex items-center gap-3 px-6 py-3 text-white/50 hover:text-white transition-all text-xs font-medium rounded-xl hover:bg-white/5">
-                    <span class="material-symbols-outlined text-sm">person_add</span>
-                    <span>Inscrição Motorista</span>
-                </a>
-                <a href="/convite" target="_blank" class="flex items-center gap-3 px-6 py-3 text-white/50 hover:text-white transition-all text-xs font-medium rounded-xl hover:bg-white/5">
-                    <span class="material-symbols-outlined text-sm">share</span>
-                    <span>Link de Indicação</span>
-                </a>
-                <a href="/modelo-de-negocio.html" target="_blank" class="flex items-center gap-3 px-6 py-3 text-white/50 hover:text-white transition-all text-xs font-medium rounded-xl hover:bg-white/5">
-                    <span class="material-symbols-outlined text-sm">analytics</span>
-                    <span>Modelo de Negócio</span>
-                </a>
+                <span class="flex-1 opacity-90">Links & Portais</span>
             </div>
         </nav>
 

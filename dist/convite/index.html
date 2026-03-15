@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,1&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 
     <style>
         :root {
@@ -281,15 +282,12 @@
             background: #0a0a0a;
             border: 1px solid #1a1a1a;
             border-radius: 40px;
-            padding: 60px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 60px;
-            align-items: center;
+            padding: 80px 60px;
+            text-align: center;
         }
 
         @media (min-width: 992px) {
-            .kit-box { grid-template-columns: 1fr 1fr; }
+            .kit-box { padding: 100px; }
         }
 
         .kit-media img {
@@ -377,7 +375,43 @@
         </div>
     </nav>
 
-    <section class="hero">
+    <section class="hero" id="referral-section" style="display: none;">
+        <div class="container">
+            <div class="hero-top">
+                <div class="nav-logo" style="margin-bottom: 40px;">
+                    <img src="/assets/images/logo_movvi.png" alt="Movvi">
+                    <p style="font-size: 10px; font-weight: 800; color: var(--primary); letter-spacing: 0.3em; margin-top: 10px;">REBOCANDO O PASSADO, ACELERANDO O FUTURO</p>
+                </div>
+
+                <div id="referrer-info" style="margin-bottom: 40px; animation: fadeUp 0.8s ease-out;">
+                    <div class="referrer-photo-wrapper" style="position: relative; width: 120px; height: 120px; margin: 0 auto 20px;">
+                        <img id="ref-photo" src="" alt="Indicação" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 4px solid var(--primary); box-shadow: 0 0 30px rgba(255,217,0,0.3);">
+                        <div style="position: absolute; bottom: 0; right: 0; background: var(--primary); color: #000; padding: 4px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <span class="material-symbols-outlined" style="font-size: 16px; font-weight: 900;">verified</span>
+                        </div>
+                    </div>
+                    <h2 style="font-size: 1.5rem; text-transform: none; font-family: 'Inter'; font-weight: 400; color: #888;">
+                        <strong id="ref-name" style="color: #fff; font-family: 'Outfit'; text-transform: uppercase;">...</strong> está te convidando para participar da
+                    </h2>
+                    <h1 style="font-size: clamp(2.5rem, 8vw, 4rem); margin-top: 10px;">MOVVI <span>RESGATE</span></h1>
+                    <p style="color: var(--primary); font-weight: 900; text-transform: uppercase; font-size: 12px; letter-spacing: 0.3em; margin-top: 16px;">Venha ser um parceiro exclusivo</p>
+                </div>
+
+                <div class="badge-rio">
+                    <span class="material-symbols-outlined" style="font-size: 16px; font-weight: 950;">timer</span>
+                    CONVITE EXPIRA EM: <span id="ref-timer" style="margin-left: 8px;">--:--:--</span>
+                </div>
+
+                <p style="max-width: 500px; margin: 0 auto 40px;">Aproveite esta oportunidade agora, pois são poucas vagas disponíveis para a primeira fase de pioneiros no Rio de Janeiro!</p>
+                
+                <a href="/driver.html?download=1&invite=pioneer" id="btn-garantir" class="btn-dark" style="background: var(--primary); color: #000; padding: 20px 60px; border-radius: 20px;">
+                    Aceitar Convite de <span id="ref-name-btn">...</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="hero" id="main-hero">
         <div class="container">
             <div class="hero-top">
                 <div class="badge-rio">
@@ -404,6 +438,12 @@
                         <span class="n" id="s">00</span>
                         <span class="l">Segundos</span>
                     </div>
+                </div>
+                
+                <div style="margin-top: 40px; max-width: 600px; margin-left: auto; margin-right: auto; padding: 25px; background: rgba(255,219,0,0.05); border: 1px solid rgba(255,217,0,0.2); border-radius: 20px; animation: fadeIn 1s ease-out 1.2s backwards;">
+                    <p style="font-size: 15px; line-height: 1.6; color: #fff; font-weight: 500;">
+                        Vamos iniciar as operações no Rio de Janeiro com intensas divulgações e parcerias estratégicas com empresas locais, garantindo um fluxo constante de chamados e pedidos de serviços para nossos motoristas parceiros desde o primeiro dia.
+                    </p>
                 </div>
             </div>
 
@@ -443,16 +483,13 @@
     <section class="kit-section">
         <div class="container">
             <div class="kit-box">
-                <div class="kit-media">
-                    <img src="/assets/images/kit_oficial_movvi_v2.png" alt="Kit Movvi">
-                </div>
                 <div class="kit-info">
-                    <h2>O KIT HEAVY DUTY.</h2>
-                    <ul class="kit-items">
-                        <li><i class="fas fa-check-circle"></i> Cambão Articulado (Aço Carbono)</li>
-                        <li><i class="fas fa-check-circle"></i> Cabos de Transferência (Chupeta)</li>
-                        <li><i class="fas fa-check-circle"></i> Reparadores e Galão Tático</li>
-                        <li><i class="fas fa-check-circle"></i> Homologação Vitalícia no Sistema</li>
+                    <h2>KIT MOVVI RESGATE</h2>
+                    <ul class="kit-items" style="display: inline-block; text-align: left; list-style: none; margin-bottom: 40px;">
+                        <li style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; font-weight: 600; color: #eee;"><i class="fas fa-check-circle" style="color: var(--primary);"></i> Cambão Articulado (Aço Carbono)</li>
+                        <li style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; font-weight: 600; color: #eee;"><i class="fas fa-check-circle" style="color: var(--primary);"></i> Cabos de Transferência (Chupeta)</li>
+                        <li style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; font-weight: 600; color: #eee;"><i class="fas fa-check-circle" style="color: var(--primary);"></i> Reparadores e Galão Tático</li>
+                        <li style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; font-weight: 600; color: #eee;"><i class="fas fa-check-circle" style="color: var(--primary);"></i> Homologação Vitalícia no Sistema</li>
                     </ul>
                     <div style="font-family: 'Outfit'; font-weight: 900;">
                         <span style="font-size: 1.5rem; opacity: 0.5;">R$</span>
@@ -467,17 +504,16 @@
     <section class="vagas-counter" id="vagas">
         <div class="container">
             <h2 style="font-size: 2.5rem; margin-bottom: 10px;">FASE PIONEIRA 01</h2>
-            <p style="color: #666; font-weight: 600;">Apenas 100 vagas disponíveis para garantir a qualidade operacional.</p>
+            <p style="color: #666; font-weight: 600;">Apenas 200 vagas para a primeira fase da plataforma.</p>
             
             <div class="vagas-track">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: 900; font-family: 'Outfit';">
-                    <span style="color: #666;">PREENCHIDAS</span>
-                    <span style="color: var(--primary);">14 / 100</span>
+                    <span style="color: #666; font-size: 10px; letter-spacing: 0.2em;">Vagas Disponíveis</span>
+                    <span style="color: var(--primary);">200</span>
                 </div>
                 <div class="v-bar-bg">
-                    <div class="v-bar-fill" style="width: 14%;"></div>
+                    <div class="v-bar-fill" style="width: 100%;"></div>
                 </div>
-                <p style="font-size: 11px; color: #444; font-weight: 700;">* Atualizado em tempo real</p>
             </div>
         </div>
     </section>
@@ -497,26 +533,93 @@
     </div>
 
     <script>
-        // --- TIMER LOGIC ---
-        const targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() + 29);
+        async function initPage() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const refCode = params.get('ref');
 
-        function updateTimer() {
-            const now = new Date();
-            const diff = targetDate - now;
+                if (refCode) {
+                    try {
+                        const refRes = await fetch(`/api/drivers/referral/${refCode}`);
+                        if (refRes.ok) {
+                            const refData = await refRes.json();
+                            document.getElementById('main-hero').style.display = 'none';
+                            document.getElementById('referral-section').style.display = 'block';
+                            
+                            // Set referrer name (First and Last name only as requested)
+                            const nameParts = refData.name.split(' ');
+                            const shortName = nameParts.length > 1 ? `${nameParts[0]} ${nameParts[nameParts.length - 1]}` : nameParts[0];
+                            
+                            document.getElementById('ref-name').innerText = shortName;
+                            document.getElementById('ref-name-btn').innerText = nameParts[0];
+                            document.getElementById('ref-photo').src = refData.photo || '/assets/images/default_avatar.png';
 
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
+                            // Referral Countdown (24h)
+                            const expiry = new Date(refData.expiresAt);
+                            function updateRefTimer() {
+                                const now = new Date();
+                                const diff = expiry - now;
+                                if (diff <= 0) {
+                                    document.getElementById('ref-timer').innerText = "EXPIRADO";
+                                    document.getElementById('btn-garantir').style.opacity = '0.5';
+                                    document.getElementById('btn-garantir').style.pointerEvents = 'none';
+                                    return;
+                                }
+                                const h = Math.floor(diff / (1000 * 60 * 60));
+                                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                                const s = Math.floor((diff % (1000 * 60)) / 1000);
+                                document.getElementById('ref-timer').innerText = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                            }
+                            setInterval(updateRefTimer, 1000);
+                            updateRefTimer();
 
-            document.getElementById('d').innerText = d.toString().padStart(2, '0');
-            document.getElementById('h').innerText = h.toString().padStart(2, '0');
-            document.getElementById('m').innerText = m.toString().padStart(2, '0');
-            document.getElementById('s').innerText = s.toString().padStart(2, '0');
+                        } else {
+                           console.warn("Invalid or expired referral code");
+                        }
+                    } catch (err) {
+                        console.error("Error fetching referral:", err);
+                    }
+                }
+
+                const res = await fetch('/api/pricing/public');
+                const settings = await res.json();
+                
+                // --- TIMER LOGIC (Launch Date) ---
+                const targetDate = new Date(settings.launchDate + "T00:00:00");
+
+                function updateTimer() {
+                    const now = new Date();
+                    const diff = targetDate - now;
+
+                    if (diff <= 0) {
+                        document.querySelectorAll('.t-chunk .n').forEach(el => el.innerText = '00');
+                        return;
+                    }
+
+                    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+                    const dEl = document.getElementById('d');
+                    const hEl = document.getElementById('h');
+                    const mEl = document.getElementById('m');
+                    const sEl = document.getElementById('s');
+
+                    if (dEl) dEl.innerText = d.toString().padStart(2, '0');
+                    if (hEl) hEl.innerText = h.toString().padStart(2, '0');
+                    if (mEl) mEl.innerText = m.toString().padStart(2, '0');
+                    if (sEl) sEl.innerText = s.toString().padStart(2, '0');
+                }
+                setInterval(updateTimer, 1000);
+                updateTimer();
+
+                // Launch Date already set from settings above
+
+
+            } catch (e) { console.error('Failed to init page:', e); }
         }
-        setInterval(updateTimer, 1000);
-        updateTimer();
+        initPage();
     </script>
 </body>
 </html>

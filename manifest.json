@@ -8,13 +8,13 @@
     "theme_color": "#ffd900",
     "icons": [
         {
-            "src": "assets/images/logo_movvi_icon.png",
+            "src": "assets/images/pwa_brand_icon.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any maskable"
         },
         {
-            "src": "assets/images/logo_movvi_icon.png",
+            "src": "assets/images/pwa_brand_icon.png",
             "sizes": "512x512",
             "type": "image/png"
         }

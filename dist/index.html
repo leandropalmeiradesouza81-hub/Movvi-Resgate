@@ -4,14 +4,41 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    <title>Movvi Resgate - Reboque Mais Barato a partir de R$ 80</title>
+    <meta name="google-site-verification" content="yCfsupcyBMiWH8H7mbsYM3fRhUzJg_mNH-npzuftbh8" />
+    <title>Movvi Resgate | Reboque e Guincho 24h Mais Barato do Rio (R$ 80)</title>
 
     <meta name="description"
-        content="Precisa de resgate agora? A Movvi Resgate é o app parceiro mais barato, com taxa fixa inicial a partir de R$ 80 + km. Motoristas de app espalhados pela cidade te salvam com reboque no cambão (barra rígida)!" />
+        content="Precisa de Guincho ou Reboque 24h? A Movvi Resgate é a solução mais barata no Rio de Janeiro. Reboque no cambão a partir de R$ 80 + km. Atendimento rápido perto de você!" />
     <meta name="keywords"
-        content="reboque, resgate barato, reboque de carros, aplicativo de reboque, cambão, barra rígida, reboque barra rígida, pane seca, recarga de bateria, trocar pneu, guincho barato, movvi resgate" />
+        content="reboque, guincho 24h, reboque perto de mim, guincho perto de mim, reboque barato, guincho barato, reboque rj, guincho rj, reboque no cambão, barra rígida, pane seca, recarga de bateria, trocar pneu, movvi resgate" />
+    <link rel="canonical" href="https://movviresgate.com.br/" />
+
+    <!-- JSON-LD para Google (Schema.org) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EmergencyService",
+      "name": "Movvi Resgate",
+      "description": "Serviço de reboque e assistência veicular 24h com o melhor preço do Rio de Janeiro.",
+      "url": "https://movviresgate.com.br",
+      "telephone": "+5521999999999",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Rio de Janeiro",
+        "addressRegion": "RJ",
+        "addressCountry": "BR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -22.9068,
+        "longitude": -43.1729
+      },
+      "openingHours": "Mo-Su 00:00-23:59",
+      "priceRange": "R$80+"
+    }
+    </script>
     <meta name="theme-color" content="#ffd900" />
-    <link id="manifest-link" rel="manifest" href="/assets/manifest_client-89yilBLH.json">
+    <link id="manifest-link" rel="manifest" href="/assets/manifest_client-BchrLp-E.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Movvi Resgate">
@@ -459,49 +486,34 @@
         }
 
         .hero-title {
-            font-size: clamp(34px, 10vw, 96px);
-            font-weight: 900;
+            font-size: clamp(38px, 8vw, 84px);
+            font-weight: 800;
+            line-height: 1.1;
             color: var(--text-main);
             max-width: 900px;
             margin-bottom: 24px;
+            letter-spacing: -0.04em;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.15);
             position: relative;
             z-index: 2;
         }
 
-        .hero-title em {
-            font-style: normal;
-            color: var(--primary);
-            text-shadow: 0 2px 20px rgba(255, 217, 0, 0.4);
-            position: relative;
-        }
-
-        .hero-title em::after {
-            content: '';
-            position: absolute;
-            bottom: 6px;
-            left: 0;
-            right: 0;
-            height: 8px;
-            background: var(--primary);
-            opacity: 0.2;
-            z-index: -1;
+        .hero-title-white {
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .hero-sub {
-            font-size: clamp(18px, 2.2vw, 26px);
-            /* Increased size */
-            color: #fff;
-            /* White for maximum contrast */
-            max-width: 600px;
-            margin-bottom: 50px;
+            font-size: clamp(17px, 2.5vw, 22px);
+            color: #ffffff; /* Pure white mandatory */
+            max-width: 580px;
+            margin-bottom: 35px;
             position: relative;
             z-index: 10;
-            font-weight: 700;
-            /* Bolder */
-            line-height: 1.4;
+            font-weight: 500;
+            line-height: 1.6;
             letter-spacing: -0.01em;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-            /* Stronger shadow for readability */
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
         }
 
         .hero-sub strong {
@@ -1342,17 +1354,19 @@
             }
 
             .hero-title {
-                font-size: 24px !important;
-                /* Compact title for slim view */
-                margin-bottom: 12px !important;
+                font-size: 32px !important;
+                margin-bottom: 16px !important;
                 line-height: 1.1 !important;
             }
 
             .hero-sub {
-                font-size: 14px !important;
-                /* Discrete sub */
+                font-size: 15px !important;
+                line-height: 1.6 !important;
                 margin-bottom: 25px !important;
-                max-width: 100% !important;
+                max-width: 95% !important;
+                color: #ffffff !important;
+                opacity: 0.95 !important;
+                font-weight: 600 !important;
             }
 
             .hero-actions {
@@ -1545,24 +1559,18 @@
         /* Removed duplicated rule */
 
         @media (max-width: 767px) {
-
-            /* Preserve Desktop Visual globally */
             .hero-title,
             .hero-sub {
                 text-align: left;
             }
 
             .hero-title {
-                font-size: 38px !important; /* 60% larger than 24px */
+                font-size: 36px !important;
             }
 
             .hero-sub {
-                font-size: 22.4px !important; /* 60% larger than 14px */
-            }
-
-            .hero-actions {
-                display: flex;
-                justify-content: flex-start;
+                font-size: 16px !important;
+                max-width: 100% !important;
             }
         }
         /* Smart App Bar */
@@ -1670,14 +1678,14 @@
 
         <div class="hero-content-wrapper"
             style="max-width: 1280px; margin: 0 auto; width: 100%; position: relative; z-index: 10; padding: 0 24px;">
-            <h1 class="hero-title"
-                style="font-size: clamp(38px, 8vw, 84px); font-weight: 800; line-height: 1.1; margin-bottom: 20px; letter-spacing: -0.04em; text-shadow: 0 2px 10px rgba(255,255,255,0.8);">
-                <span class="hero-title-yellow">Seu carro quebrou?</span>
-                <span style="color: #111;">Tá </span><span class="text-aura-red">enguiçado?</span>
+            <h1 class="hero-title">
+                <span class="hero-title-yellow">Reboque e Guincho 24h</span><br>
+                <span class="hero-title-white">Tá </span><span class="text-aura-red">enguiçado?</span>
             </h1>
 
             <p class="hero-sub">
-                Não se preocupe, o resgate rápido está a um clique de distância.
+                A solução mais barata e rápida do Rio para qualquer emergência.<br class="hidden md:block">
+                Reboque, socorro mecânico e assistência 24h direto no seu celular.
             </p>
 
             <div class="hero-actions">
@@ -1693,18 +1701,18 @@
     <!-- ═══ TICKER ═══ -->
     <div class="ticker">
         <div class="ticker-track">
-            <span class="ticker-item">Reboque (Barra Rígida)</span>
-            <span class="ticker-item">Pane Seca</span>
-            <span class="ticker-item">Troca de Pneu</span>
-            <span class="ticker-item">Carga na Bateria</span>
-            <span class="ticker-item">Motorista Próximo</span>
-            <span class="ticker-item">Mais Barato</span>
-            <span class="ticker-item">Reboque (Barra Rígida)</span>
-            <span class="ticker-item">Pane Seca</span>
-            <span class="ticker-item">Troca de Pneu</span>
-            <span class="ticker-item">Carga na Bateria</span>
-            <span class="ticker-item">Motorista Próximo</span>
-            <span class="ticker-item">Mais Barato</span>
+            <span class="ticker-item">Reboque Perto de Mim</span>
+            <span class="ticker-item">Guincho 24h</span>
+            <span class="ticker-item">Reboque Barato</span>
+            <span class="ticker-item">Assistência Veicular</span>
+            <span class="ticker-item">Socorro Mecânico</span>
+            <span class="ticker-item">RJ e Baixada</span>
+            <span class="ticker-item">Guincho 24h</span>
+            <span class="ticker-item">Reboque Perto de Mim</span>
+            <span class="ticker-item">Reboque Barato</span>
+            <span class="ticker-item">Assistência Veicular</span>
+            <span class="ticker-item">Socorro Mecânico</span>
+            <span class="ticker-item">RJ e Baixada</span>
         </div>
     </div>
 
@@ -1908,7 +1916,7 @@
         // ═══ LOCKDOWN LOGIC ═══
         async function checkLockdown() {
             try {
-                const res = await fetch('/api/pricing/settings');
+                const res = await fetch('/api/pricing/public');
                 const settings = await res.json();
                 
                 if (settings.systemLockdown) {
@@ -1917,6 +1925,16 @@
                     
                     startLockCountdown(settings.launchDate || "2026-04-20");
                 }
+
+                // Update any generic vacancy counters if they exist (added for consistency)
+                const vText = document.getElementById('vagas-text');
+                const vBar = document.getElementById('vagas-bar');
+                if (vText && vBar) {
+                    const perc = Math.round((settings.occupiedSpots / settings.totalSpots) * 100);
+                    vText.innerText = `${settings.occupiedSpots} / ${settings.totalSpots}`;
+                    vBar.style.width = perc + '%';
+                }
+
             } catch (e) {
                 console.error('Lockdown check failed:', e);
             }
@@ -1931,7 +1949,9 @@
                 
                 if (diff <= 0) {
                     clearInterval(timer);
-                    location.reload();
+                    // Don't reload automatically if it's already open, 
+                    // but the user might want it to reveal the site.
+                    // location.reload(); 
                     return;
                 }
                 
@@ -1940,10 +1960,15 @@
                 const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 const s = Math.floor((diff % (1000 * 60)) / 1000);
                 
-                document.getElementById('lock-d').innerText = d.toString().padStart(2, '0');
-                document.getElementById('lock-h').innerText = h.toString().padStart(2, '0');
-                document.getElementById('lock-m').innerText = m.toString().padStart(2, '0');
-                document.getElementById('lock-s').innerText = s.toString().padStart(2, '0');
+                const dEl = document.getElementById('lock-d');
+                const hEl = document.getElementById('lock-h');
+                const mEl = document.getElementById('lock-m');
+                const sEl = document.getElementById('lock-s');
+
+                if (dEl) dEl.innerText = d.toString().padStart(2, '0');
+                if (hEl) hEl.innerText = h.toString().padStart(2, '0');
+                if (mEl) mEl.innerText = m.toString().padStart(2, '0');
+                if (sEl) sEl.innerText = s.toString().padStart(2, '0');
             }, 1000);
         }
 
